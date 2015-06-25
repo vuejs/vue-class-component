@@ -1,4 +1,4 @@
-var Vue
+var Vue = require('vue')
 
 var internalHooks = [
   'created',
@@ -11,7 +11,7 @@ var internalHooks = [
   'detached'
 ]
 
-function decorate (Component) {
+function decorator (Component) {
   var capture = new Component(false)
   var options = {}
   // instance properties are data
@@ -22,8 +22,6 @@ function decorate (Component) {
     }
   }
   // prototype props.
-  // only need to identify hooks and methods.
-  // computed properties just work!
   var proto = Component.prototype
   Object.getOwnPropertyNames(proto).forEach(function (key) {
     if (key === 'constructor') {
@@ -34,25 +32,28 @@ function decorate (Component) {
       options[key] = proto[key]
       return
     }
-    // methods
     var descriptor = Object.getOwnPropertyDescriptor(proto, key)
     if (typeof descriptor.value === 'function') {
+      // methods
       (options.methods || (options.methods = {}))[key] = descriptor.value
+    } else if (descriptor.get || descriptor.set) {
+      // computed properties
+      (options.computed || (options.computed = {}))[key] = {
+        get: descriptor.get,
+        set: descriptor.set
+      }
     }
   })
   // copy static options
   Object.keys(Component).forEach(function (key) {
     options[key] = Component[key]
   })
-  // set options
+  // find super
   var Super = proto.__proto__.constructor
-  Component.options = Vue.util.mergeOptions(Super.options, options)
-  Component['super'] = Super
-  Component.extend = Super.extend
-  // asset registers
-  Vue.config._assetTypes.forEach(function (type) {
-    Component[type] = Super[type]
-  })
+  if (!(Super instanceof Vue)) {
+    Super = Vue
+  }
+  return Super.extend(options)
 }
 
 function clone (val) {
@@ -69,9 +70,4 @@ function clone (val) {
   }
 }
 
-function install (externalVue) {
-  Vue = externalVue
-  Vue.componentClass = decorate
-}
-
-module.exports = install
+module.exports = decorator

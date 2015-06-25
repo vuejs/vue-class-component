@@ -1,10 +1,7 @@
-import Vue from 'vue'
-import VueClassy from '../'
+import component from '../'
 
-Vue.use(VueClassy)
-
-@Vue.componentClass
-export default class Component extends Vue {
+@component
+export default class Component {
 
   // template
   static template = `

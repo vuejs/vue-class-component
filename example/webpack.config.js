@@ -8,5 +8,6 @@ module.exports = {
     loaders: [
       { test: /\.es7\.js$/, loader: 'babel?stage=0' }
     ]
-  }
+  },
+  devtool: 'source-map'
 }
