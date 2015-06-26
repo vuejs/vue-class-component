@@ -12,13 +12,12 @@ var internalHooks = [
 ]
 
 function decorator (Component) {
-  var capture = new Component(false)
   var options = {}
   // instance properties are data
-  var fields = Object.keys(capture)
-  if (fields.length) {
+  var data = new Component()
+  if (Object.keys(data).length) {
     options.data = function () {
-      return clone(capture)
+      return clone(data)
     }
   }
   // prototype props.
