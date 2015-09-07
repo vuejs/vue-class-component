@@ -56,7 +56,7 @@ function decorator (Component) {
 }
 
 function clone (val) {
-  if (typeof val !== 'object') {
+  if (val === null || typeof val !== 'object') {
     return val
   } else if (Array.isArray(val)) {
     return val.map(clone)
