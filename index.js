@@ -8,7 +8,8 @@ var internalHooks = [
   'beforeDestroy',
   'destroyed',
   'attached', 
-  'detached'
+  'detached',
+  'activate'
 ]
 
 function decorator (Component) {
