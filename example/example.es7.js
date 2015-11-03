@@ -9,7 +9,7 @@ export default class Component {
       <input v-model="msg">
       <p>msg: {{msg}}</p>
       <p>computed msg: {{computedMsg}}</p>
-      <button v-on="click:greet">Greet</button>
+      <button @click="greet">Greet</button>
     </div>
   `
 
