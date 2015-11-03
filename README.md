@@ -1,48 +1,59 @@
 # vue-class-component
 
-> Experimental ES7 / TypeScript decorator for class-style Vue components.
+> Experimental ES2016/TypeScript decorator for class-style Vue components.
 
 ### Example Usage with Babel stage=0:
 
-``` js
-import component from 'vue-class-component'
+Note:
 
-@component
+1. `data`, `el` and all Vue lifecycle hooks can be directly declared as class member methods, but you cannot invoke them on the instance itself. When declaring custom methods, you should avoid these reserved names.
+
+2. For all other options, declare them as **static properties**.
+
+``` js
+import VueComponent from 'vue-class-component'
+
+@VueComponent
 export default class Component {
 
   // template
   static template = `
     <div>
       <input v-model="msg">
+      <p>prop: {{propMessage}}</p>
       <p>msg: {{msg}}</p>
       <p>computed msg: {{computedMsg}}</p>
-      <button v-on="click:greet">Greet</button>
+      <button @click="greet">Greet</button>
     </div>
   `
 
-  // data
-  msg = 'hello'
+  // props
+  static props = {
+    propMessage: String
+  }
+
+  // return initial data
+  data () {
+    return {
+      msg: 123
+    }
+  }
+
+  // lifecycle hook
+  ready () {
+    this.greet()
+  }
 
   // computed
-  get computedMsg() {
+  get computedMsg () {
     return 'computed ' + this.msg
   }
 
   // method
-  greet() {
+  greet () {
     alert('greeting: ' + this.msg)
   }
-
-  // lifecycle hook
-  ready() {
-    this.greet()
-  }
 }
-
-// mount
-new Component({
-  el: '#el'
-})
 ```
 
 ### Build the Example

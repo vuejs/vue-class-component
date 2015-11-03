@@ -1,26 +1,22 @@
 var Vue = require('vue')
 
 var internalHooks = [
+  'data',
+  'el',
+  'init',
   'created',
   'ready',
   'beforeCompile',
-  'compiled', 
+  'compiled',
   'beforeDestroy',
   'destroyed',
-  'attached', 
+  'attached',
   'detached',
   'activate'
 ]
 
 function decorator (Component) {
   var options = {}
-  // instance properties are data
-  var data = new Component()
-  if (Object.keys(data).length) {
-    options.data = function () {
-      return clone(data)
-    }
-  }
   // prototype props.
   var proto = Component.prototype
   Object.getOwnPropertyNames(proto).forEach(function (key) {
@@ -54,20 +50,6 @@ function decorator (Component) {
     Super = Vue
   }
   return Super.extend(options)
-}
-
-function clone (val) {
-  if (val === null || typeof val !== 'object') {
-    return val
-  } else if (Array.isArray(val)) {
-    return val.map(clone)
-  } else {
-    var res = {}
-    Object.keys(val).forEach(function (key) {
-      res[key] = clone(val[key])
-    })
-    return res
-  }
 }
 
 module.exports = decorator

@@ -1,12 +1,16 @@
 module.exports = {
-  entry: './example/example.es7.js',
+  entry: './example/example.js',
   output: {
     path: './example',
     filename: 'build.js'
   },
   module: {
     loaders: [
-      { test: /\.es7\.js$/, loader: 'babel?stage=0' }
+      {
+        test: /\.js$/,
+        exclude: /node_modules|vue\/src/,
+        loader: 'babel?stage=0'
+      }
     ]
   },
   devtool: 'source-map'
