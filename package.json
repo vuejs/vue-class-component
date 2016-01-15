@@ -1,6 +1,6 @@
 {
   "name": "vue-class-component",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "ES7/TypeScript class decorator for Vue components",
   "main": "index.js",
   "scripts": {
