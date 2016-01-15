@@ -17,6 +17,7 @@ var internalHooks = [
 
 function decorator (Component) {
   var options = {}
+  options.name = Component.name
   // prototype props.
   var proto = Component.prototype
   Object.getOwnPropertyNames(proto).forEach(function (key) {
