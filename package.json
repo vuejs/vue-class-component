@@ -1,7 +1,7 @@
 {
   "name": "vue-class-component",
-  "version": "2.0.1",
-  "description": "ES7/TypeScript class decorator for Vue components",
+  "version": "3.0.0",
+  "description": "ES201X/TypeScript class decorator for Vue components",
   "main": "index.js",
   "scripts": {
     "build": "webpack --config example/webpack.config.js",

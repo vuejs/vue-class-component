@@ -1,10 +1,10 @@
-import VueCompoent from '../'
+import Component from '../'
 
-@VueCompoent
-class App {
-
-// template
-  static template = `
+@Component({
+  props: {
+    propMessage: String
+  },
+  template: `
     <div>
       <input v-model="msg">
       <p>prop: {{propMessage}}</p>
@@ -13,12 +13,8 @@ class App {
       <button @click="greet">Greet</button>
     </div>
   `
-
-  // props
-  static props = {
-    propMessage: String
-  }
-
+})
+class App {
   // return initial data
   data () {
     return {

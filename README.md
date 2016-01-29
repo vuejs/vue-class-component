@@ -2,22 +2,24 @@
 
 > Experimental ES2016/TypeScript decorator for class-style Vue components.
 
-### Example Usage with Babel stage=0:
+### Usage
+
+Required: Babel with stage 1 transforms (for [decorators](https://github.com/wycats/javascript-decorators/blob/master/README.md)).
 
 Note:
 
 1. `data`, `el` and all Vue lifecycle hooks can be directly declared as class member methods, but you cannot invoke them on the instance itself. When declaring custom methods, you should avoid these reserved names.
 
-2. For all other options, declare them as **static properties**.
+2. For all other options, pass them to the decorator function.
 
 ``` js
-import VueComponent from 'vue-class-component'
+import Component from 'vue-class-component'
 
-@VueComponent
-export default class Component {
-
-  // template
-  static template = `
+@Component({
+  props: {
+    propMessage: String
+  },
+  template: `
     <div>
       <input v-model="msg">
       <p>prop: {{propMessage}}</p>
@@ -26,12 +28,8 @@ export default class Component {
       <button @click="greet">Greet</button>
     </div>
   `
-
-  // props
-  static props = {
-    propMessage: String
-  }
-
+})
+class App {
   // return initial data
   data () {
     return {
