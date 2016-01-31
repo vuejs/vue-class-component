@@ -44,7 +44,6 @@ function componentFactory (Component, options) {
     }
   })
   // find super
-  var Super
   var superProto = Object.getPrototypeOf(Component.prototype)
   var Super = superProto instanceof Vue
     ? superProto.constructor
