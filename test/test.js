@@ -81,4 +81,24 @@ describe('vue-class-component', () => {
       done()
     })
   })
+
+  it('extending', function () {
+    @Component
+    class Base {
+      data () {
+        return { a: 1 }
+      }
+    }
+
+    @Component
+    class A extends Base {
+      data () {
+        return { b: 2 }
+      }
+    }
+
+    const a = new A()
+    expect(a.a).to.equal(1)
+    expect(a.b).to.equal(2)
+  })
 })

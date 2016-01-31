@@ -44,10 +44,11 @@ function componentFactory (Component, options) {
     }
   })
   // find super
-  var Super = proto.__proto__.constructor
-  if (!(Super instanceof Vue)) {
-    Super = Vue
-  }
+  var Super
+  var superProto = Object.getPrototypeOf(Component.prototype)
+  var Super = superProto instanceof Vue
+    ? superProto.constructor
+    : Vue
   return Super.extend(options)
 }
 
