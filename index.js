@@ -1,3 +1,7 @@
+Object.defineProperty(exports, '__esModule', {
+  value: true
+})
+
 var Vue = require('vue')
 
 var internalHooks = [
@@ -60,4 +64,4 @@ function decorator (options) {
   }
 }
 
-module.exports = decorator
+exports.default = decorator
