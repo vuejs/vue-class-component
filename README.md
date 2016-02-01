@@ -1,16 +1,20 @@
 # vue-class-component
 
-> Experimental ES2016/TypeScript decorator for class-style Vue components.
+> ECMAScript / TypeScript decorator for class-style Vue components.
 
 ### Usage
 
-Required: Babel with stage 1 transforms (for [decorators](https://github.com/wycats/javascript-decorators/blob/master/README.md)).
+**Required**: Babel with stage 1 transforms, or TypeScript 1.5+ (for [decorators](https://github.com/wycats/javascript-decorators/blob/master/README.md)).
 
 Note:
 
-1. `data`, `el` and all Vue lifecycle hooks can be directly declared as class member methods, but you cannot invoke them on the instance itself. When declaring custom methods, you should avoid these reserved names.
+1. `methods` can be declared directly as class member methods.
 
-2. For all other options, pass them to the decorator function.
+2. Computed properties can be declared as class property accessors.
+
+3. `data`, `el` and all Vue lifecycle hooks can be directly declared as class member methods as well, but you cannot invoke them on the instance itself. When declaring custom methods, you should avoid these reserved names.
+
+4. For all other options, pass them to the decorator function.
 
 ``` js
 import Component from 'vue-class-component'
@@ -59,5 +63,3 @@ class App {
 ``` bash
 $ npm install && npm run build
 ```
-
-Theoretically, this should also work properly as a TypeScript 1.5+ decorator, but I'm not familiar enough with TypeScript to figure out how type checks would come into play. If you'd like to make it work properly with TypeScript, feel free to contribute!
