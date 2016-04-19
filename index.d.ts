@@ -1,10 +1,10 @@
 export interface PropOption {
-    type?: { (...args: any[]): any; };
+    type?: { new (...args: any[]): any; };
     required?: boolean;
     default?: any;
     twoWay?: boolean;
-    validator?: (value: any) => boolean;
-    coerce?: (value: any) => any;
+    validator?(value: any): boolean;
+    coerce?(value: any): any;
 }
 
 export interface WatchOption {
@@ -32,6 +32,9 @@ export interface FilterOption {
 
 export interface TransitionOption {
     css?: boolean;
+    animation?: string;
+    enterClass?: string;
+    leaveClass?: string;
     beforeEnter?(el: HTMLElement): void;
     enter?(el: HTMLElement, done?: () => void): void;
     afterEnter?(el: HTMLElement): void;
@@ -41,12 +44,18 @@ export interface TransitionOption {
     afterLeave?(el: HTMLElement): void;
     leaveCancelled?(el: HTMLElement): void;
     stagger?(index: number): number;
+    enterStagger?(index: number): number;
+    leaveStagger?(index: number): number;
+    [key: string]: any;
 }
 
 export interface ComponentOption {
+    data?(): {[key: string]: any};
     props?: string[] | { [key: string]: (PropOption | { new (...args: any[]): any; }) };
     watch?: { [key: string]: ((val: any, oldVal: any) => void) | string | WatchOption };
+    el?: string | HTMLElement | (() => HTMLElement);
     template?: string;
+    replace?: boolean;
     directives?: { [key: string]: (DirectiveOption | Function) };
     elementDirectives?: { [key: string]: (DirectiveOption | Function) };
     filters?: { [key: string]: (Function | FilterOption) };
@@ -55,11 +64,9 @@ export interface ComponentOption {
     partials?: { [key: string]: string };
     parent?: any;
     events?: { [key: string]: ((...args: any[]) => (boolean | void)) | string };
-    mixins?: ComponentOption[];
+    mixins?: any[];
     name?: string;
     [key: string]: any;
 }
 
-declare var decorator: (options: ComponentOption) => ClassDecorator;
-
-export default decorator;
+export default function(options: ComponentOption): ClassDecorator;
