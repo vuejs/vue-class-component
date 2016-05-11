@@ -1,5 +1,5 @@
 export interface PropOption {
-    type?: { new (...args: any[]): any; };
+    type?: { new (...args: any[]): any; } | { new (...args: any[]): any; }[];
     required?: boolean;
     default?: any;
     twoWay?: boolean;
