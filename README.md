@@ -63,3 +63,7 @@ class App {
 ``` bash
 $ npm install && npm run build
 ```
+
+### License
+
+[MIT](http://opensource.org/licenses/MIT)
