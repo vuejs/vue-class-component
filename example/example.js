@@ -3,16 +3,7 @@ import Component from '../'
 @Component({
   props: {
     propMessage: String
-  },
-  template: `
-    <div>
-      <input v-model="msg">
-      <p>prop: {{propMessage}}</p>
-      <p>msg: {{msg}}</p>
-      <p>computed msg: {{computedMsg}}</p>
-      <button @click="greet">Greet</button>
-    </div>
-  `
+  }
 })
 class App {
   // return initial data
@@ -23,7 +14,7 @@ class App {
   }
 
   // lifecycle hook
-  ready () {
+  mounted () {
     this.greet()
   }
 
@@ -36,9 +27,29 @@ class App {
   greet () {
     alert('greeting: ' + this.msg)
   }
+
+  render (h) {
+    return (
+      h('div', [
+        h('input', {
+          domProps: { value: this.msg },
+          on: {
+            input: (event) => {
+              this.msg = event.target.value
+            }
+          }
+        }),
+        h('p', ['prop: ', this.propMessage]),
+        h('p', ['msg: ', this.msg]),
+        h('p', ['computed msg: ', this.computedMsg]),
+        h('button', { on: { click: this.greet }}, ['Greet'])
+      ])
+    )
+  }
 }
 
 // mount
 new App({
-  el: '#el'
+  el: '#el',
+  render: h => h(App, { props: { propMessage: 'Hello!' }})
 })
