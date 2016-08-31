@@ -12,7 +12,7 @@ Note:
 
 2. Computed properties can be declared as class property accessors.
 
-3. `data`, `el` and all Vue lifecycle hooks can be directly declared as class member methods as well, but you cannot invoke them on the instance itself. When declaring custom methods, you should avoid these reserved names.
+3. `data`, `render` and all Vue lifecycle hooks can be directly declared as class member methods as well, but you cannot invoke them on the instance itself. When declaring custom methods, you should avoid these reserved names.
 
 4. For all other options, pass them to the decorator function.
 
@@ -42,7 +42,7 @@ class App {
   }
 
   // lifecycle hook
-  ready () {
+  mounted () {
     this.greet()
   }
 
