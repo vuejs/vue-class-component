@@ -6,17 +6,17 @@ var Vue = require('vue')
 
 var internalHooks = [
   'data',
-  'el',
-  'init',
+  'beforeCreate',
   'created',
-  'ready',
-  'beforeCompile',
-  'compiled',
+  'beforeMount',
+  'mounted',
   'beforeDestroy',
   'destroyed',
-  'attached',
-  'detached',
-  'activate'
+  'beforeUpdate',
+  'updated',
+  'activated',
+  'deactivated',
+  'render'
 ]
 
 function componentFactory (Component, options) {
