@@ -15,13 +15,13 @@ const internalHooks = [
   'render'
 ]
 
-type VueClass = { new (): Vue } & typeof Vue
+export type VueClass = { new (): Vue } & typeof Vue
 
 function componentFactory (
-  Component: VueClass & { _componentTag: string }, 
+  Component: VueClass, 
   options: Vue.ComponentOptions<any> = {}
 ): VueClass {
-  options.name = options.name || Component._componentTag
+  options.name = options.name || (Component as any)._componentTag
   // prototype props.
   const proto = Component.prototype
   Object.getOwnPropertyNames(proto).forEach(function (key) {
@@ -53,10 +53,9 @@ function componentFactory (
   return Super.extend(options)
 }
 
-
-export default function decorator (options: Vue.ComponentOptions<any>): ClassDecorator
-export default function decorator <TFunction extends Function>(target: TFunction): void | TFunction
-export default function decorator (options: any): any {
+export default function decorator (options: Vue.ComponentOptions<any>): <V extends VueClass>(target: V) => V
+export default function decorator <V extends VueClass>(target: V): V
+export default function decorator <V extends VueClass>(options: Vue.ComponentOptions<any> | V): any {
   if (typeof options === 'function') {
     return componentFactory(options)
   }
