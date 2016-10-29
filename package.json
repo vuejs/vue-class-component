@@ -10,9 +10,10 @@
     "tsconfig.json"
   ],
   "scripts": {
-    "build": "webpack --config example/webpack.config.js",
+    "build": "tsc -p .",
+    "example": "webpack --config example/webpack.config.js",
     "dev": "webpack --config example/webpack.config.js --watch",
-    "test": "webpack --config test/webpack.config.js && mocha test/test.build.js"
+    "test": "npm run build && webpack --config test/webpack.config.js && mocha test/test.build.js"
   },
   "repository": {
     "type": "git",
@@ -36,7 +37,8 @@
     "chai": "^3.5.0",
     "mocha": "^2.4.5",
     "node-libs-browser": "^1.0.0",
-    "vue": "^2.0.0-rc.7",
+    "typescript": "^2.0.6",
+    "vue": "^2.0.3",
     "webpack": "^1.12.12"
   }
 }
