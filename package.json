@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "build": "tsc -p .",
-    "example": "webpack --config example/webpack.config.js",
+    "example": "npm run build && webpack --config example/webpack.config.js",
     "dev": "webpack --config example/webpack.config.js --watch",
     "test": "npm run build && webpack --config test/webpack.config.js && mocha test/test.build.js"
   },
