@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vuejs/vue-classy.git"
+    "url": "git+https://github.com/vuejs/vue-class-component.git"
   },
   "keywords": [
     "vue",
@@ -28,9 +28,9 @@
   "author": "Evan You",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/vuejs/vue-classy/issues"
+    "url": "https://github.com/vuejs/vue-class-component/issues"
   },
-  "homepage": "https://github.com/vuejs/vue-classy#readme",
+  "homepage": "https://github.com/vuejs/vue-class-component#readme",
   "devDependencies": {
     "@types/chai": "^3.4.34",
     "@types/mocha": "^2.2.32",
