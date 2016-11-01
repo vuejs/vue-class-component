@@ -1,5 +1,5 @@
 module.exports = {
-  entry: './example/example.js',
+  entry: './example/example.ts',
   output: {
     path: './example',
     filename: 'build.js'
@@ -7,9 +7,9 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.js$/,
+        test: /\.ts$/,
         exclude: /node_modules|vue\/src/,
-        loader: 'babel?stage=0'
+        loader: 'ts'
       }
     ]
   },

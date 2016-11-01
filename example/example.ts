@@ -1,11 +1,15 @@
-import Component from '../'
+import * as Vue from 'vue'
+import Component from '../index'
 
 @Component({
   props: {
     propMessage: String
   }
 })
-class App {
+class App extends Vue {
+  propMessage: string
+  msg: number
+
   // return initial data
   data () {
     return {
@@ -28,13 +32,13 @@ class App {
     alert('greeting: ' + this.msg)
   }
 
-  render (h) {
+  render (h: Vue.CreateElement) {
     return (
       h('div', [
         h('input', {
           domProps: { value: this.msg },
           on: {
-            input: (event) => {
+            input: (event: any) => {
               this.msg = event.target.value
             }
           }

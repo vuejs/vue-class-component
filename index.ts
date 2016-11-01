@@ -1,10 +1,6 @@
-Object.defineProperty(exports, '__esModule', {
-  value: true
-})
+import * as Vue from 'vue'
 
-var Vue = require('vue')
-
-var internalHooks = [
+const internalHooks = [
   'data',
   'beforeCreate',
   'created',
@@ -19,13 +15,15 @@ var internalHooks = [
   'render'
 ]
 
-function componentFactory (Component, options) {
-  if (!options) {
-    options = {}
-  }
-  options.name = options.name || Component.name
+export type VueClass = { new (): Vue } & typeof Vue
+
+function componentFactory (
+  Component: VueClass, 
+  options: Vue.ComponentOptions<any> = {}
+): VueClass {
+  options.name = options.name || (Component as any)._componentTag
   // prototype props.
-  var proto = Component.prototype
+  const proto = Component.prototype
   Object.getOwnPropertyNames(proto).forEach(function (key) {
     if (key === 'constructor') {
       return
@@ -35,7 +33,7 @@ function componentFactory (Component, options) {
       options[key] = proto[key]
       return
     }
-    var descriptor = Object.getOwnPropertyDescriptor(proto, key)
+    const descriptor = Object.getOwnPropertyDescriptor(proto, key)
     if (typeof descriptor.value === 'function') {
       // methods
       (options.methods || (options.methods = {}))[key] = descriptor.value
@@ -48,20 +46,21 @@ function componentFactory (Component, options) {
     }
   })
   // find super
-  var superProto = Object.getPrototypeOf(Component.prototype)
-  var Super = superProto instanceof Vue
-    ? superProto.constructor
+  const superProto = Object.getPrototypeOf(Component.prototype)
+  const Super: VueClass = superProto instanceof Vue
+    ? superProto.constructor as VueClass
     : Vue
   return Super.extend(options)
 }
 
-function decorator (options) {
+export default function decorator (options: Vue.ComponentOptions<any>): <V extends VueClass>(target: V) => V
+export default function decorator <V extends VueClass>(target: V): V
+export default function decorator <V extends VueClass>(options: Vue.ComponentOptions<any> | V): any {
   if (typeof options === 'function') {
     return componentFactory(options)
   }
-  return function (Component) {
+  return function (Component: any) {
     return componentFactory(Component, options)
   }
 }
 
-exports.default = decorator

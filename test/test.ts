@@ -1,6 +1,6 @@
 import Component from '../index'
 import { expect } from 'chai'
-import Vue from 'vue'
+import * as Vue from 'vue'
 
 describe('vue-class-component', () => {
 
@@ -9,7 +9,7 @@ describe('vue-class-component', () => {
     let destroyed = false
 
     @Component
-    class MyComp {
+    class MyComp extends Vue {
       created () {
         created = true
       }
@@ -26,10 +26,10 @@ describe('vue-class-component', () => {
   })
 
   it('methods', () => {
-    let msg
+    let msg: string = ''
 
     @Component
-    class MyComp {
+    class MyComp extends Vue {
       hello () {
         msg = 'hi'
       }
@@ -42,7 +42,8 @@ describe('vue-class-component', () => {
 
   it('computed', () => {
     @Component
-    class MyComp {
+    class MyComp extends Vue {
+      a: number
       data () {
         return {
           a: 1
@@ -61,14 +62,15 @@ describe('vue-class-component', () => {
   })
 
   it('other options', (done) => {
-    let v
+    let v: number
 
     @Component({
       watch: {
         a: val => v = val
       }
     })
-    class MyComp {
+    class MyComp extends Vue {
+      a: number
       data () {
         return { a: 1 }
       }
@@ -84,15 +86,17 @@ describe('vue-class-component', () => {
 
   it('extending', function () {
     @Component
-    class Base {
-      data () {
+    class Base extends Vue {
+      a: number
+      data (): any {
         return { a: 1 }
       }
     }
 
     @Component
     class A extends Base {
-      data () {
+      b: number
+      data (): any {
         return { b: 2 }
       }
     }
