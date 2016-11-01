@@ -4,9 +4,9 @@
 
 ### Usage
 
-**Required**: [ECMAScript stage 1 decorators](https://github.com/wycats/javascript-decorators/blob/master/README.md).  
-If you use Babel, [babel-plugin-transform-decorators-legacy](https://github.com/loganfsmyth/babel-plugin-transform-decorators-legacy) is needed.  
-If you use TypeScript, enable `--experimentalDecorators` flag.  
+**Required**: [ECMAScript stage 1 decorators](https://github.com/wycats/javascript-decorators/blob/master/README.md).
+If you use Babel, [babel-plugin-transform-decorators-legacy](https://github.com/loganfsmyth/babel-plugin-transform-decorators-legacy) is needed.
+If you use TypeScript, enable `--experimentalDecorators` flag.
 
 Note:
 
@@ -59,6 +59,8 @@ class App {
   }
 }
 ```
+
+You may also want to check out the `@prop` and `@watch` decorators provided by [vue-property-decorators](https://github.com/kaorun343/vue-property-decorator).
 
 ### Build the Example
 
