@@ -64,7 +64,7 @@ describe('vue-class-component', () => {
   it('other options', (done) => {
     let v: number
 
-    @Component({
+    @Component<MyComp>({
       watch: {
         a: val => v = val
       }
