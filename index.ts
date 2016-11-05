@@ -18,7 +18,7 @@ const internalHooks = [
 export type VueClass = { new (): Vue } & typeof Vue
 
 function componentFactory (
-  Component: VueClass, 
+  Component: VueClass,
   options: Vue.ComponentOptions<any> = {}
 ): VueClass {
   options.name = options.name || (Component as any)._componentTag
@@ -53,7 +53,7 @@ function componentFactory (
   return Super.extend(options)
 }
 
-export default function decorator (options: Vue.ComponentOptions<any>): <V extends VueClass>(target: V) => V
+export default function decorator <U extends Vue>(options: Vue.ComponentOptions<U>): <V extends VueClass>(target: V) => V
 export default function decorator <V extends VueClass>(target: V): V
 export default function decorator <V extends VueClass>(options: Vue.ComponentOptions<any> | V): any {
   if (typeof options === 'function') {
