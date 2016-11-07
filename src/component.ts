@@ -1,5 +1,6 @@
 import * as Vue from 'vue'
 import { VueClass } from './declarations'
+import { collectDataFromConstructor } from './data'
 
 const internalHooks = [
   'data',
@@ -44,6 +45,14 @@ export function componentFactory (
       }
     }
   })
+
+  // add data hook to collect class properties as Vue instance's data
+  ;(options.mixins || (options.mixins = [])).push({
+    data (this: Vue) {
+      return collectDataFromConstructor(this, Component)
+    }
+  })
+
   // find super
   const superProto = Object.getPrototypeOf(Component.prototype)
   const Super: VueClass = superProto instanceof Vue
