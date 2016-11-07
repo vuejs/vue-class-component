@@ -25,6 +25,25 @@ describe('vue-class-component', () => {
     expect(destroyed).to.be.true
   })
 
+  it('data', () => {
+    @Component({
+      props: ['foo']
+    })
+    class MyComp extends Vue {
+      foo: number
+      a: string = 'hello'
+      b: number = this.foo + 1
+    }
+
+    const c = new MyComp({
+      propsData: {
+        foo: 1
+      }
+    })
+    expect(c.a).to.equal('hello')
+    expect(c.b).to.equal(2)
+  })
+
   it('methods', () => {
     let msg: string = ''
 
