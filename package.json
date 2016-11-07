@@ -10,10 +10,11 @@
   ],
   "scripts": {
     "build": "tsc -p .",
+    "clean": "rm -rf lib",
     "example": "npm run build && webpack --config example/webpack.config.js",
     "dev": "webpack --config example/webpack.config.js --watch",
     "test": "npm run build && webpack --config test/webpack.config.js && mocha test/test.build.js",
-    "prepublish": "npm run build"
+    "prepublish": "npm run clean && npm run build"
   },
   "repository": {
     "type": "git",
