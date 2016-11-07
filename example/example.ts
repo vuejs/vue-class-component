@@ -8,14 +8,7 @@ import Component from '../lib/index'
 })
 class App extends Vue {
   propMessage: string
-  msg: number
-
-  // return initial data
-  data () {
-    return {
-      msg: 123
-    }
-  }
+  msg: number = 123
 
   // lifecycle hook
   mounted () {
