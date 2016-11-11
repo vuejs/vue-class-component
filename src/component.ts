@@ -17,6 +17,11 @@ const internalHooks = [
   'render'
 ]
 
+// Property, method and parameter decorators created by `createDecorator` helper
+// will enqueue functions that update component options for lazy processing.
+// They will be executed just before creating component constructor.
+export let $decoratorQueue: ((options: Vue.ComponentOptions<Vue>) => void)[] = []
+
 export function componentFactory (
   Component: VueClass,
   options: Vue.ComponentOptions<any> = {}
@@ -52,6 +57,11 @@ export function componentFactory (
       return collectDataFromConstructor(this, Component)
     }
   })
+
+  // decorate options
+  $decoratorQueue.forEach(fn => fn(options))
+  // reset for other component decoration
+  $decoratorQueue = []
 
   // find super
   const superProto = Object.getPrototypeOf(Component.prototype)
