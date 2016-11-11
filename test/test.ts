@@ -1,4 +1,4 @@
-import Component from '../lib/index'
+import Component, { createDecorator } from '../lib/index'
 import { expect } from 'chai'
 import * as Vue from 'vue'
 
@@ -123,5 +123,37 @@ describe('vue-class-component', () => {
     const a = new A()
     expect(a.a).to.equal(1)
     expect(a.b).to.equal(2)
+  })
+
+  it('createDecorator', function () {
+    const Prop = createDecorator((options, key) => {
+      // component options should be passed to the callback
+      // and update for the options affect the component
+      (options.props || (options.props = {}))[key] = true
+    })
+
+    const NoCache = createDecorator((options, key) => {
+      // options should have computed and methods etc.
+      // that specified by class property accessors and methods
+      const computedOption: Vue.ComputedOptions<Vue> = options.computed![key]
+      computedOption.cache = false
+    })
+
+    @Component
+    class MyComp extends Vue {
+      @Prop foo: string
+      @NoCache get bar (): string {
+        return 'world'
+      }
+    }
+
+    const c = new MyComp({
+      propsData: {
+        foo: 'hello'
+      }
+    })
+    expect(c.foo).to.equal('hello')
+    expect(c.bar).to.equal('world')
+    expect((MyComp as any).options.computed.bar.cache).to.be.false
   })
 })

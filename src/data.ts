@@ -1,7 +1,6 @@
 import * as Vue from 'vue'
 import { VueClass } from './declarations'
-
-const noop = () => {}
+import { noop } from './util'
 
 export function collectDataFromConstructor (vm: Vue, Component: VueClass) {
   // Create dummy Vue instance to collect
