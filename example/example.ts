@@ -1,5 +1,5 @@
 import * as Vue from 'vue'
-import Component from '../index'
+import Component from '../lib/index'
 
 @Component({
   props: {

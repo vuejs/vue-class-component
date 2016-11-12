@@ -2,19 +2,19 @@
   "name": "vue-class-component",
   "version": "4.2.0",
   "description": "ES201X/TypeScript class decorator for Vue components",
-  "main": "index.js",
-  "typings": "index.d.ts",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "files": [
-    "index.js",
-    "index.d.ts",
+    "lib",
     "tsconfig.json"
   ],
   "scripts": {
     "build": "tsc -p .",
+    "clean": "rm -rf lib",
     "example": "npm run build && webpack --config example/webpack.config.js",
     "dev": "webpack --config example/webpack.config.js --watch",
     "test": "npm run build && webpack --config test/webpack.config.js && mocha test/test.build.js",
-    "prepublish": "npm run build"
+    "prepublish": "npm run clean && npm run build"
   },
   "repository": {
     "type": "git",

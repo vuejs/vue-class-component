@@ -1,4 +1,5 @@
 import * as Vue from 'vue'
+import { VueClass } from './declarations'
 
 const internalHooks = [
   'data',
@@ -15,9 +16,7 @@ const internalHooks = [
   'render'
 ]
 
-export type VueClass = { new (): Vue } & typeof Vue
-
-function componentFactory (
+export function componentFactory (
   Component: VueClass,
   options: Vue.ComponentOptions<any> = {}
 ): VueClass {
@@ -52,15 +51,3 @@ function componentFactory (
     : Vue
   return Super.extend(options)
 }
-
-export default function decorator <U extends Vue>(options: Vue.ComponentOptions<U>): <V extends VueClass>(target: V) => V
-export default function decorator <V extends VueClass>(target: V): V
-export default function decorator <V extends VueClass>(options: Vue.ComponentOptions<any> | V): any {
-  if (typeof options === 'function') {
-    return componentFactory(options)
-  }
-  return function (Component: any) {
-    return componentFactory(Component, options)
-  }
-}
-
