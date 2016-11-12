@@ -64,6 +64,40 @@ class App {
 
 You may also want to check out the `@prop` and `@watch` decorators provided by [vue-property-decorators](https://github.com/kaorun343/vue-property-decorator).
 
+### Create Custom Decorators
+
+You can extend the functionality of this library by creating your own decorators. vue-class-component provides `createDecorator` helper to create custom decorators. `createDecorator` expects a callback function as the 1st argument and the callback will receive following arguments:
+
+- `options`: Vue component options object. Changes for this object will affect the provided component.
+- `key`: The property or method key that the decorator is applied.
+- `parameterIndex`: The index of a decorated argument if the custom decorator is used for an argument.
+
+Example of creating `NoCache` decorator:
+
+``` js
+// decorators.js
+import { createDecorator } from 'vue-class-component'
+
+export const NoCache = createDecorator((options, key) => {
+  // component options should be passed to the callback
+  // and update for the options object affect the component
+  options.computed[key].cache = false
+})
+```
+
+``` js
+import { NoCache } from './decorators'
+
+@Component
+class MyComp extends Vue {
+  // the computed property will not be cached
+  @NoCache
+  get random () {
+    return Math.random()
+  }
+}
+```
+
 ### Build the Example
 
 ``` bash
