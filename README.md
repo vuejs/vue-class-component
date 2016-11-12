@@ -32,6 +32,7 @@ import Component from 'vue-class-component'
       <input v-model="msg">
       <p>prop: {{propMessage}}</p>
       <p>msg: {{msg}}</p>
+      <p>helloMsg: {{helloMsg}}</p>
       <p>computed msg: {{computedMsg}}</p>
       <button @click="greet">Greet</button>
     </div>
@@ -40,6 +41,9 @@ import Component from 'vue-class-component'
 class App {
   // initial data
   msg = 123
+
+  // use prop values for initial data
+  helloMsg = 'Hello, ' + this.propMessage
 
   // lifecycle hook
   mounted () {
