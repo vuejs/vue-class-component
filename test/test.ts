@@ -25,6 +25,44 @@ describe('vue-class-component', () => {
     expect(destroyed).to.be.true
   })
 
+  it('data: should collect from class properties', () => {
+    @Component({
+      props: ['foo']
+    })
+    class MyComp extends Vue {
+      foo: number
+      a: string = 'hello'
+      b: number = this.foo + 1
+    }
+
+    const c = new MyComp({
+      propsData: {
+        foo: 1
+      }
+    })
+    expect(c.a).to.equal('hello')
+    expect(c.b).to.equal(2)
+  })
+
+  it('data: should collect custom property defined on beforeCreate', () => {
+    @Component
+    class MyComp extends Vue {
+      $store: any
+      foo: string = 'Hello, ' + this.$store.state.msg
+
+      beforeCreate () {
+        this.$store = {
+          state: {
+            msg: 'world'
+          }
+        }
+      }
+    }
+
+    const c = new MyComp()
+    expect(c.foo).to.equal('Hello, world')
+  })
+
   it('methods', () => {
     let msg: string = ''
 

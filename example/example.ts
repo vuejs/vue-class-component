@@ -8,14 +8,8 @@ import Component from '../lib/index'
 })
 class App extends Vue {
   propMessage: string
-  msg: number
-
-  // return initial data
-  data () {
-    return {
-      msg: 123
-    }
-  }
+  msg: number = 123
+  helloMsg: string = 'Hello, ' + this.propMessage
 
   // lifecycle hook
   mounted () {
@@ -45,6 +39,7 @@ class App extends Vue {
         }),
         h('p', ['prop: ', this.propMessage]),
         h('p', ['msg: ', this.msg]),
+        h('p', ['helloMsg: ', this.helloMsg]),
         h('p', ['computed msg: ', this.computedMsg]),
         h('button', { on: { click: this.greet }}, ['Greet'])
       ])
@@ -55,5 +50,5 @@ class App extends Vue {
 // mount
 new App({
   el: '#el',
-  render: h => h(App, { props: { propMessage: 'Hello!' }})
+  render: h => h(App, { props: { propMessage: 'World!' }})
 })

@@ -14,9 +14,11 @@ Note:
 
 2. Computed properties can be declared as class property accessors.
 
-3. `data`, `render` and all Vue lifecycle hooks can be directly declared as class member methods as well, but you cannot invoke them on the instance itself. When declaring custom methods, you should avoid these reserved names.
+3. Initial `data` can be declared as class properties ([babel-plugin-transform-class-properties](https://babeljs.io/docs/plugins/transform-class-properties/) is required if you use Babel).
 
-4. For all other options, pass them to the decorator function.
+4. `data`, `render` and all Vue lifecycle hooks can be directly declared as class member methods as well, but you cannot invoke them on the instance itself. When declaring custom methods, you should avoid these reserved names.
+
+5. For all other options, pass them to the decorator function.
 
 ``` js
 import Component from 'vue-class-component'
@@ -30,18 +32,18 @@ import Component from 'vue-class-component'
       <input v-model="msg">
       <p>prop: {{propMessage}}</p>
       <p>msg: {{msg}}</p>
+      <p>helloMsg: {{helloMsg}}</p>
       <p>computed msg: {{computedMsg}}</p>
       <button @click="greet">Greet</button>
     </div>
   `
 })
 class App {
-  // return initial data
-  data () {
-    return {
-      msg: 123
-    }
-  }
+  // initial data
+  msg = 123
+
+  // use prop values for initial data
+  helloMsg = 'Hello, ' + this.propMessage
 
   // lifecycle hook
   mounted () {
