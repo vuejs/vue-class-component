@@ -8,18 +8,10 @@ export function collectDataFromConstructor (vm: Vue, Component: VueClass) {
   // initial class properties from the component constructor.
   // To prevent to print warning,
   // the data object should inherit Vue.prototype.
-  const data = Object.create(Component.prototype, {
+  const data = Object.create(vm, {
     _init: {
       get: () => noop
     }
-  })
-
-  // proxy to each prop values
-  const propKeys = Object.keys(vm.$options.props || {})
-  propKeys.forEach(key => {
-    Object.defineProperty(data, key, {
-      get: () => vm[key]
-    })
   })
 
   // call constructor with passing dummy instance
