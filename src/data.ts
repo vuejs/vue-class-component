@@ -3,19 +3,19 @@ import { VueClass } from './declarations'
 import { noop } from './util'
 
 export function collectDataFromConstructor (vm: Vue, Component: VueClass) {
-  // Create dummy Vue instance to collect
-  // initial class properties from the component constructor.
-  // To prevent to print warning,
-  // the data object should inherit Vue.prototype.
-  const data = Object.create(vm, {
-    _init: {
-      get: () => noop
-    }
-  })
+  // override _init to prevent to init as Vue instance
+  Component.prototype._init = function (this: Vue) {
+    // proxy to actual vm
+    Object.getOwnPropertyNames(vm).forEach(key => {
+      Object.defineProperty(this, key, {
+        get: () => vm[key],
+        set: value => vm[key] = value
+      })
+    })
+  }
 
-  // call constructor with passing dummy instance
-  // `data` object will have initial data
-  Component.call(data)
+  // should be acquired class property values
+  const data = new Component()
 
   // create plain data object
   const plainData = {}

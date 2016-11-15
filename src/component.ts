@@ -65,12 +65,8 @@ export function componentFactory (
 
   // find super
   const superProto = Object.getPrototypeOf(Component.prototype)
-  if (!(superProto instanceof Vue)) {
-    Component.prototype = Object.create(Vue.prototype)
-    Component.prototype.constructor = Component
-    Object.keys(Vue).forEach(key => {
-      Component[key] = Vue[key]
-    })
-  }
-  return Component.extend(options)
+  const Super = superProto instanceof Vue
+    ? superProto.constructor as VueClass
+    : Vue
+  return Super.extend(options)
 }
