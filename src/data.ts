@@ -20,7 +20,9 @@ export function collectDataFromConstructor (vm: Vue, Component: VueClass) {
   // create plain data object
   const plainData = {}
   Object.keys(data).forEach(key => {
-    plainData[key] = data[key]
+    if (data[key] !== undefined) {
+      plainData[key] = data[key]
+    }
   })
 
   return plainData

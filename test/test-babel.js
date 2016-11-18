@@ -1,4 +1,4 @@
-import Component from '../lib/index'
+import Component, { createDecorator } from '../lib/index'
 import { expect } from 'chai'
 import Vue from 'vue'
 
@@ -16,5 +16,23 @@ describe('vue-class-component with Babel', () => {
     }
     const c = new MyComp()
     expect(c.foo).to.equal('hello')
+  })
+
+  it('should not collect uninitialized class properties', () => {
+    const Prop = createDecorator((options, key) => {
+      if (!options.props) {
+        options.props = {}
+      }
+      options.props[key] = true
+    })
+
+    @Component
+    class MyComp {
+      foo
+      @Prop bar
+    }
+    const c = new MyComp()
+    expect('foo' in c.$data).to.be.false
+    expect('bar' in c.$data).to.be.false
   })
 })
