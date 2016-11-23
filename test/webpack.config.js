@@ -12,12 +12,12 @@ module.exports = {
       {
         test: /\.ts$/,
         exclude: /node_modules|vue\/src/,
-        loader: 'ts'
+        loader: 'ts-loader'
       },
       {
         test: /\.js$/,
         exclude: /node_modules|vue\/src/,
-        loader: 'babel'
+        loader: 'babel-loader'
       }
     ]
   }

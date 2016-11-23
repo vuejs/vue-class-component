@@ -9,7 +9,7 @@ module.exports = {
       {
         test: /\.ts$/,
         exclude: /node_modules|vue\/src/,
-        loader: 'ts'
+        loader: 'ts-loader'
       }
     ]
   },

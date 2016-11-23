@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "build": "tsc -p .",
-    "clean": "rm -rf lib",
+    "clean": "rimraf ./lib",
     "example": "npm run build && webpack --config example/webpack.config.js",
     "dev": "webpack --config example/webpack.config.js --watch",
     "test": "npm run build && webpack --config test/webpack.config.js && mocha test/test.build.js",
@@ -43,9 +43,10 @@
     "chai": "^3.5.0",
     "mocha": "^3.1.2",
     "node-libs-browser": "^1.0.0",
+    "rimraf": "^2.5.4",
     "ts-loader": "^0.9.5",
     "typescript": "^2.0.6",
     "vue": "^2.0.3",
-    "webpack": "^2.1.0-beta.25"
+    "webpack": "^2.1.0-beta.27"
   }
 }

@@ -48,7 +48,7 @@ class App extends Vue {
 }
 
 // mount
-new App({
+new Vue({
   el: '#el',
   render: h => h(App, { props: { propMessage: 'World!' }})
 })
