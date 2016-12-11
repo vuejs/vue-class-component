@@ -1,6 +1,6 @@
 import * as Vue from 'vue'
 import { VueClass } from './declarations'
-import { noop } from './util'
+import { noop, warn } from './util'
 
 export function collectDataFromConstructor (vm: Vue, Component: VueClass) {
   // override _init to prevent to init as Vue instance
@@ -24,6 +24,15 @@ export function collectDataFromConstructor (vm: Vue, Component: VueClass) {
       plainData[key] = data[key]
     }
   })
+
+  if (process.env.NODE_ENV !== 'production') {
+    if (!(Component.prototype instanceof Vue) && Object.keys(plainData).length > 0) {
+      warn(
+        'Component class must inherit Vue or its descendant class ' +
+        'when class property is used.'
+      )
+    }
+  }
 
   return plainData
 }

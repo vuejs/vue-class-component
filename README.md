@@ -21,6 +21,7 @@ Note:
 5. For all other options, pass them to the decorator function.
 
 ``` js
+import Vue from 'vue'
 import Component from 'vue-class-component'
 
 @Component({
@@ -38,7 +39,7 @@ import Component from 'vue-class-component'
     </div>
   `
 })
-class App {
+class App extends Vue {
   // initial data
   msg = 123
 

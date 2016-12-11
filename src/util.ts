@@ -19,3 +19,9 @@ export function createDecorator (
     $decoratorQueue.push(options => factory(options, key, index))
   }
 }
+
+export function warn (message: string): void {
+  if (typeof console !== 'undefined') {
+    console.warn('[vue-class-component] ' + message)
+  }
+}
