@@ -47,7 +47,7 @@
     "rimraf": "^2.5.4",
     "ts-loader": "^0.9.5",
     "typescript": "^2.0.6",
-    "vue": "^2.0.3",
+    "vue": "^2.1.6",
     "webpack": "^2.1.0-beta.27"
   }
 }
