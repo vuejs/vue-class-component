@@ -1,14 +1,28 @@
-import * as Vue from 'vue'
+import Vue = require('vue')
 import Component from '../lib/index'
 
 @Component({
   props: {
     propMessage: String
-  }
+  },
+  template: `
+    <div>
+      <input v-model="msg">
+      <p>prop: {{propMessage}}</p>
+      <p>msg: {{msg}}</p>
+      <p>helloMsg: {{helloMsg}}</p>
+      <p>computed msg: {{computedMsg}}</p>
+      <button @click="greet">Greet</button>
+    </div>
+  `
 })
 class App extends Vue {
   propMessage: string
+
+  // inital data
   msg: number = 123
+
+  // use prop values for initial data
   helloMsg: string = 'Hello, ' + this.propMessage
 
   // lifecycle hook
@@ -25,30 +39,12 @@ class App extends Vue {
   greet () {
     alert('greeting: ' + this.msg)
   }
-
-  render (h: Vue.CreateElement) {
-    return (
-      h('div', [
-        h('input', {
-          domProps: { value: this.msg },
-          on: {
-            input: (event: any) => {
-              this.msg = event.target.value
-            }
-          }
-        }),
-        h('p', ['prop: ', this.propMessage]),
-        h('p', ['msg: ', this.msg]),
-        h('p', ['helloMsg: ', this.helloMsg]),
-        h('p', ['computed msg: ', this.computedMsg]),
-        h('button', { on: { click: this.greet }}, ['Greet'])
-      ])
-    )
-  }
 }
 
 // mount
 new Vue({
   el: '#el',
-  render: h => h(App, { props: { propMessage: 'World!' }})
+  components: {
+    App
+  }
 })

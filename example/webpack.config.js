@@ -4,8 +4,13 @@ module.exports = {
     path: './example',
     filename: 'build.js'
   },
+  resolve: {
+    alias: {
+      vue$: 'vue/dist/vue.common.js'
+    }
+  },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.ts$/,
         exclude: /node_modules|vue\/src/,
