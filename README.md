@@ -20,6 +20,10 @@ Note:
 
 5. For all other options, pass them to the decorator function.
 
+### Example
+
+Following is the example written in Babel. If you are looking for TypeScript version, [it's in the example directory](example/example.ts).
+
 ``` js
 import Vue from 'vue'
 import Component from 'vue-class-component'
