@@ -4,15 +4,10 @@ import { componentFactory, $internalHooks } from './component'
 
 export { createDecorator } from './util'
 
-export interface ComponentDecorator {
-  <U extends Vue>(options: Vue.ComponentOptions<U>): <V extends VueClass>(target: V) => V
-  <V extends VueClass>(target: V): V
-
-  registerHooks (key: string[]): void
-}
-
-const Component: ComponentDecorator = function <V extends VueClass>(
-  options: Vue.ComponentOptions<any> | V
+function Component <U extends Vue>(options: Vue.ComponentOptions<U>): <V extends VueClass>(target: V) => V
+function Component <V extends VueClass>(target: V): V
+function Component <V extends VueClass, U extends Vue>(
+ options: Vue.ComponentOptions<U> | V
 ): any {
   if (typeof options === 'function') {
     return componentFactory(options)
@@ -20,10 +15,12 @@ const Component: ComponentDecorator = function <V extends VueClass>(
   return function (Component: V) {
     return componentFactory(Component, options)
   }
-} as any
+}
 
-Component.registerHooks = function (keys) {
-  $internalHooks.push(...keys)
+namespace Component {
+  export function registerHooks (keys: string[]): void {
+    $internalHooks.push(...keys)
+  }
 }
 
 export default Component
