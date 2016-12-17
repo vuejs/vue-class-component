@@ -111,7 +111,7 @@ If you use some Vue plugins like Vue Router, you may want class components to re
 // class-component-hooks.js
 import Component from 'vue-class-component'
 
-// Register the router hooks with its names
+// Register the router hooks with thier names
 Component.registerHooks([
   'beforeRouteEnter',
   'beforeRouteLeave'
