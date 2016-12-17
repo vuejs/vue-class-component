@@ -103,6 +103,59 @@ class MyComp extends Vue {
 }
 ```
 
+### Adding Custom Hooks
+
+If you use some Vue plugins like Vue Router, you may want class components to resolve hooks that they provides. For that case, `Component.registerHooks` allows you to register such hooks:
+
+```js
+// class-component-hooks.js
+import Component from 'vue-class-component'
+
+// Register the router hooks with thier names
+Component.registerHooks([
+  'beforeRouteEnter',
+  'beforeRouteLeave'
+])
+```
+
+```js
+// MyComp.js
+import Vue from 'vue'
+import Component from 'vue-class-component'
+
+@Component
+class MyComp extends Vue {
+  // The class component now treats beforeRouteEnter
+  // and beforeRouteLeave as Vue Router hooks
+  beforeRouteEnter () {
+    console.log('beforeRouteEnter')
+  }
+
+  beforeRouteLeave () {
+    console.log('beforeRouteLeave')
+  }
+}
+```
+
+Note that you have to register the hooks before component definition.
+
+```js
+// main.js
+
+// Make sure to register before importing any components
+import './class-component-hooks'
+
+import Vue from 'vue'
+import MyComp from './MyComp'
+
+new Vue({
+  el: '#app',
+  components: {
+    MyComp
+  }
+})
+```
+
 ### Build the Example
 
 ``` bash
