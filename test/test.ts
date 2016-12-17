@@ -25,6 +25,21 @@ describe('vue-class-component', () => {
     expect(destroyed).to.be.true
   })
 
+  it('hooks: adding custom hooks', () => {
+    Component.registerHooks(['beforeRouteEnter'])
+
+    @Component
+    class MyComp extends Vue {
+      static options: any
+
+      beforeRouteEnter () {
+        return 'beforeRouteEnter'
+      }
+    }
+
+    expect(MyComp.options.beforeRouteEnter()).to.equal('beforeRouteEnter')
+  })
+
   it('data: should collect from class properties', () => {
     @Component({
       props: ['foo']

@@ -2,7 +2,7 @@ import * as Vue from 'vue'
 import { VueClass } from './declarations'
 import { collectDataFromConstructor } from './data'
 
-const internalHooks = [
+export const $internalHooks = [
   'data',
   'beforeCreate',
   'created',
@@ -34,7 +34,7 @@ export function componentFactory (
       return
     }
     // hooks
-    if (internalHooks.indexOf(key) > -1) {
+    if ($internalHooks.indexOf(key) > -1) {
       options[key] = proto[key]
       return
     }
