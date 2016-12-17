@@ -5,7 +5,7 @@
       "dom",
       "es2015"
     ],
-    "module": "commonjs",
+    "module": "es2015",
     "moduleResolution": "node",
     "outDir": "lib",
     "isolatedModules": false,
