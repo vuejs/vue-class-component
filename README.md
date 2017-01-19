@@ -22,28 +22,30 @@ Note:
 
 ### Example
 
-Following is the example written in Babel. If you are looking for TypeScript version, [it's in the example directory](example/example.ts).
+Following is the example written in Babel. If you are looking for TypeScript version, [it's in the example directory](example/App.vue).
 
-``` js
+``` vue
+<template>
+  <div>
+    <input v-model="msg">
+    <p>prop: {{propMessage}}</p>
+    <p>msg: {{msg}}</p>
+    <p>helloMsg: {{helloMsg}}</p>
+    <p>computed msg: {{computedMsg}}</p>
+    <button @click="greet">Greet</button>
+  </div>
+</template>
+
+<script>
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
 @Component({
   props: {
     propMessage: String
-  },
-  template: `
-    <div>
-      <input v-model="msg">
-      <p>prop: {{propMessage}}</p>
-      <p>msg: {{msg}}</p>
-      <p>helloMsg: {{helloMsg}}</p>
-      <p>computed msg: {{computedMsg}}</p>
-      <button @click="greet">Greet</button>
-    </div>
-  `
+  }
 })
-class App extends Vue {
+export default class App extends Vue {
   // initial data
   msg = 123
 
@@ -65,6 +67,7 @@ class App extends Vue {
     alert('greeting: ' + this.msg)
   }
 }
+</script>
 ```
 
 You may also want to check out the `@prop` and `@watch` decorators provided by [vue-property-decorators](https://github.com/kaorun343/vue-property-decorator).
