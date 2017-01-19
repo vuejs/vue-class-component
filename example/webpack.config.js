@@ -5,16 +5,24 @@ module.exports = {
     filename: 'build.js'
   },
   resolve: {
-    alias: {
-      vue$: 'vue/dist/vue.common.js'
-    }
+    extensions: ['.ts', '.js']
   },
   module: {
     rules: [
       {
         test: /\.ts$/,
         exclude: /node_modules|vue\/src/,
-        loader: 'ts-loader'
+        loader: 'ts-loader',
+        options: {
+          appendTsSuffixTo: [/\.vue$/]
+        }
+      },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: {
+          esModule: true
+        }
       }
     ]
   },
