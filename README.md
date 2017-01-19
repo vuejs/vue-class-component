@@ -22,7 +22,7 @@ Note:
 
 ### Example
 
-Following is the example written in Babel. If you are looking for TypeScript version, [it's in the example directory](example/example.ts).
+Following is the example written in Babel. If you are looking for TypeScript version, [it's in the example directory](example/App.vue).
 
 ``` vue
 <template>
