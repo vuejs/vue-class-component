@@ -1,8 +1,8 @@
 /**
  * Managing `meta data` of each component that includes
- * internalHooks and decoratorQueue. Since the property
+ * special method names and user defined decorator hooks. Since the property
  * decorators are called before creating component constructor,
- * we need to store decorator hooks globaly and call it
+ * we need to store decorator hooks in each prototype object and call it
  * in component's class decorator later.
  */
 
