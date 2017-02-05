@@ -190,4 +190,28 @@ describe('vue-class-component', () => {
     expect(c.bar).to.equal('world')
     expect((MyComp as any).options.computed.bar.cache).to.be.false
   })
+
+  it('createDecorator: hook initial property', function () {
+    const Prop = createDecorator((options, key, value) => {
+      (options.props || (options.props = {}))[key] = {
+        default: value + ' test'
+      }
+    }, {
+      hookInitialProperty: true
+    })
+
+    @Component
+    class MyComp extends Vue {
+      @Prop foo = 'default value'
+    }
+
+    const c1 = new MyComp()
+    const c2 = new MyComp({
+      propsData: {
+        foo: 'prop value'
+      }
+    })
+    expect(c1.foo).to.equal('default value test')
+    expect(c2.foo).to.equal('prop value')
+  })
 })

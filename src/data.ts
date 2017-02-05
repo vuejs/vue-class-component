@@ -1,15 +1,20 @@
 import * as Vue from 'vue'
 import { VueClass } from './declarations'
 import { noop, warn } from './util'
+import { Meta } from './meta'
 
-export function collectDataFromConstructor (vm: Vue, Component: VueClass) {
+export function collectDataFromConstructor (
+  vm: Vue,
+  Component: VueClass,
+  meta: Meta | undefined
+) {
   // override _init to prevent to init as Vue instance
   Component.prototype._init = function (this: Vue) {
     // proxy to actual vm
     Object.getOwnPropertyNames(vm).forEach(key => {
       Object.defineProperty(this, key, {
         get: () => vm[key],
-        set: value => vm[key] = value
+        set: noop,
       })
     })
   }
@@ -20,7 +25,10 @@ export function collectDataFromConstructor (vm: Vue, Component: VueClass) {
   // create plain data object
   const plainData = {}
   Object.keys(data).forEach(key => {
-    if (data[key] !== undefined) {
+    if (
+      data[key] !== undefined
+      && (!meta || !meta.propertyNameMap[key])
+    ) {
       plainData[key] = data[key]
     }
   })

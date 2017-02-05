@@ -1,6 +1,7 @@
 import * as Vue from 'vue'
 import { VueClass, VueInternal } from './declarations'
 import { collectDataFromConstructor } from './data'
+import { noop, forEachValues } from './util'
 import { Meta } from './meta'
 
 export function componentFactory (
@@ -41,13 +42,13 @@ export function componentFactory (
   // add data hook to collect class properties as Vue instance's data
   ;(options.mixins || (options.mixins = [])).push({
     data (this: Vue) {
-      return collectDataFromConstructor(this, Component)
+      return collectDataFromConstructor(this, Component, meta)
     }
   })
 
   // decorate options
   if (meta) {
-    meta.decoratorQueue.forEach(fn => fn(options))
+    applyDecorators(options, Component, meta)
   }
 
   // find super
@@ -56,4 +57,26 @@ export function componentFactory (
     ? superProto.constructor as VueClass
     : Vue
   return Super.extend(options)
+}
+
+function applyDecorators (
+  options: Vue.ComponentOptions<Vue>,
+  Component: VueClass,
+  meta: Meta
+): void {
+  if (!meta.shouldGetInitalProperty) {
+    forEachValues(meta.decoratorMap, fn => {
+      fn(options)
+    })
+    return
+  }
+
+  // Prevent to run _init function of Vue
+  // because we just want to get initial properties.
+  Component.prototype._init = noop
+  const data = new Component()
+
+  forEachValues(meta.decoratorMap, (fn, key) => {
+    fn(options, meta.propertyNameMap[key] && data[key])
+  })
 }
