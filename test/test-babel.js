@@ -76,7 +76,7 @@ describe('vue-class-component with Babel', () => {
         default: value + ' test'
       }
     }, {
-      hookInitialProperty: true
+      getInitialProperty: true
     })
 
     @Component

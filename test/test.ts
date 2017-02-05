@@ -197,7 +197,7 @@ describe('vue-class-component', () => {
         default: value + ' test'
       }
     }, {
-      hookInitialProperty: true
+      getInitialProperty: true
     })
 
     @Component
