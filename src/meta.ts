@@ -42,7 +42,7 @@ export class Meta {
 }
 
 export interface CreateDecoratorOptions {
-  hookInitialProperty?: boolean
+  getInitialProperty?: boolean
 }
 
 // Property or method decorators
@@ -70,7 +70,7 @@ export function createDecorator (
     }
 
     // Allow to process an initial property on userland
-    if (options.hookInitialProperty) {
+    if (options.getInitialProperty) {
       meta.propertyNameMap[key] = true
     }
 

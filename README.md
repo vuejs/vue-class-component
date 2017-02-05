@@ -108,7 +108,7 @@ class MyComp extends Vue {
 
 #### Process Initial Property on Custom Decorators
 
-If you pass the object that has `hookInitialProperty: true` option, `createDecorator`'s callback will receive initial value of each property as the 3rd argument. Note that the properties will no longer be collected as component data in that case.
+If you pass the object that has `getInitialProperty: true` option, `createDecorator`'s callback will receive initial value of each property as the 3rd argument. Note that the properties will no longer be collected as component data in that case.
 
 ### Adding Custom Hooks
 
