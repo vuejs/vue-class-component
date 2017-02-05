@@ -1,13 +1,14 @@
 import * as Vue from 'vue'
 import { VueClass } from './declarations'
-import { componentFactory, $internalHooks } from './component'
+import { componentFactory } from './component'
+import { Meta } from './meta'
 
-export { createDecorator } from './util'
+export { createDecorator } from './meta'
 
 function Component <U extends Vue>(options: Vue.ComponentOptions<U>): <V extends VueClass>(target: V) => V
 function Component <V extends VueClass>(target: V): V
 function Component <V extends VueClass, U extends Vue>(
- options: Vue.ComponentOptions<U> | V
+  options: Vue.ComponentOptions<U> | V
 ): any {
   if (typeof options === 'function') {
     return componentFactory(options)
@@ -19,7 +20,7 @@ function Component <V extends VueClass, U extends Vue>(
 
 namespace Component {
   export function registerHooks (keys: string[]): void {
-    $internalHooks.push(...keys)
+    Meta.internalHooks.push(...keys)
   }
 }
 

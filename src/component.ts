@@ -1,40 +1,28 @@
 import * as Vue from 'vue'
-import { VueClass } from './declarations'
+import { VueClass, VueInternal } from './declarations'
 import { collectDataFromConstructor } from './data'
-
-export const $internalHooks = [
-  'data',
-  'beforeCreate',
-  'created',
-  'beforeMount',
-  'mounted',
-  'beforeDestroy',
-  'destroyed',
-  'beforeUpdate',
-  'updated',
-  'activated',
-  'deactivated',
-  'render'
-]
-
-// Property, method and parameter decorators created by `createDecorator` helper
-// will enqueue functions that update component options for lazy processing.
-// They will be executed just before creating component constructor.
-export let $decoratorQueue: ((options: Vue.ComponentOptions<Vue>) => void)[] = []
+import { noop, forEachValues } from './util'
+import { Meta } from './meta'
 
 export function componentFactory (
   Component: VueClass,
   options: Vue.ComponentOptions<any> = {}
 ): VueClass {
-  options.name = options.name || (Component as any)._componentTag
   // prototype props.
-  const proto = Component.prototype
+  const proto = (Component.prototype as VueInternal)
+
+  // Get meta data and remove from prototype
+  const meta = proto.__vue_component_meta__
+  proto.__vue_component_meta__ = undefined
+
+  options.name = options.name || (Component as any)._componentTag
+
   Object.getOwnPropertyNames(proto).forEach(function (key) {
     if (key === 'constructor') {
       return
     }
     // hooks
-    if ($internalHooks.indexOf(key) > -1) {
+    if (Meta.internalHooks.indexOf(key) > -1) {
       options[key] = proto[key]
       return
     }
@@ -54,14 +42,14 @@ export function componentFactory (
   // add data hook to collect class properties as Vue instance's data
   ;(options.mixins || (options.mixins = [])).push({
     data (this: Vue) {
-      return collectDataFromConstructor(this, Component)
+      return collectDataFromConstructor(this, Component, meta)
     }
   })
 
   // decorate options
-  $decoratorQueue.forEach(fn => fn(options))
-  // reset for other component decoration
-  $decoratorQueue = []
+  if (meta) {
+    applyDecorators(options, Component, meta)
+  }
 
   // find super
   const superProto = Object.getPrototypeOf(Component.prototype)
@@ -69,4 +57,26 @@ export function componentFactory (
     ? superProto.constructor as VueClass
     : Vue
   return Super.extend(options)
+}
+
+function applyDecorators (
+  options: Vue.ComponentOptions<Vue>,
+  Component: VueClass,
+  meta: Meta
+): void {
+  if (!meta.shouldGetInitalProperty) {
+    forEachValues(meta.decoratorMap, fn => {
+      fn(options)
+    })
+    return
+  }
+
+  // Prevent to run _init function of Vue
+  // because we just want to get initial properties.
+  Component.prototype._init = noop
+  const data = new Component()
+
+  forEachValues(meta.decoratorMap, (fn, key) => {
+    fn(options, meta.decoratorAwaredKeys[key] && data[key])
+  })
 }
