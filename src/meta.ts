@@ -34,10 +34,10 @@ export class Meta {
    * Property names that indicates the initial property will be
    * processed on user-defined decorators. Also they will not collected in `data` hook.
    */
-  propertyNameMap: Dictionary<boolean> = {}
+  decoratorAwaredKeys: Dictionary<boolean> = {}
 
   get shouldGetInitalProperty () {
-    return Object.keys(this.propertyNameMap).length > 0
+    return Object.keys(this.decoratorAwaredKeys).length > 0
   }
 }
 
@@ -71,7 +71,7 @@ export function createDecorator (
 
     // Allow to process an initial property on userland
     if (options.getInitialProperty) {
-      meta.propertyNameMap[key] = true
+      meta.decoratorAwaredKeys[key] = true
     }
 
     meta.decoratorMap[key] = (options, value) => {

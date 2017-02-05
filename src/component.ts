@@ -77,6 +77,6 @@ function applyDecorators (
   const data = new Component()
 
   forEachValues(meta.decoratorMap, (fn, key) => {
-    fn(options, meta.propertyNameMap[key] && data[key])
+    fn(options, meta.decoratorAwaredKeys[key] && data[key])
   })
 }

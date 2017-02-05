@@ -28,7 +28,7 @@ export function collectDataFromConstructor (
   Object.keys(data).forEach(key => {
     if (
       data[key] !== undefined
-      && (!meta || !meta.propertyNameMap[key])
+      && (!meta || !meta.decoratorAwaredKeys[key])
     ) {
       plainData[key] = data[key]
     }
