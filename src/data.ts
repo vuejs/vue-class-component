@@ -15,6 +15,7 @@ export function collectDataFromConstructor (
       Object.defineProperty(this, key, {
         get: () => vm[key],
         set: noop,
+        configurable: true
       })
     })
   }

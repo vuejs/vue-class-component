@@ -69,4 +69,28 @@ describe('vue-class-component with Babel', () => {
 
     expect(spy).to.have.been.called.with(message)
   })
+
+  it('should hook initial property by a custom decorator', () => {
+    const Prop = createDecorator((options, key, value) => {
+      (options.props || (options.props = {}))[key] = {
+        default: value + ' test'
+      }
+    }, {
+      hookInitialProperty: true
+    })
+
+    @Component
+    class MyComp extends Vue {
+      @Prop foo = 'default value'
+    }
+
+    const c1 = new MyComp()
+    const c2 = new MyComp({
+      propsData: {
+        foo: 'prop value'
+      }
+    })
+    expect(c1.foo).to.equal('default value test')
+    expect(c2.foo).to.equal('prop value')
+  })
 })
