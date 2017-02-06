@@ -68,5 +68,12 @@ export function componentFactory (
   const Super = superProto instanceof Vue
     ? superProto.constructor as VueClass
     : Vue
-  return Super.extend(options)
+
+  const Sub = Super.extend(options)
+  if (options.name) {
+      Object.defineProperty(Sub, 'name', {
+        value: options.name
+      })
+  }
+  return Sub
 }
