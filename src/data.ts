@@ -6,11 +6,22 @@ export function collectDataFromConstructor (vm: Vue, Component: VueClass) {
   // override _init to prevent to init as Vue instance
   Component.prototype._init = function (this: Vue) {
     // proxy to actual vm
-    Object.getOwnPropertyNames(vm).forEach(key => {
-      Object.defineProperty(this, key, {
-        get: () => vm[key],
-        set: value => vm[key] = value
-      })
+    const keys = Object.getOwnPropertyNames(vm)
+    // 2.2.0 compat (props are no longer exposed as self properties)
+    if (vm.$options.props) {
+      for (const key in vm.$options.props) {
+        if (!vm.hasOwnProperty(key)) {
+          keys.push(key)
+        }
+      }
+    }
+    keys.forEach(key => {
+      if (key.charAt(0) !== '_') {
+        Object.defineProperty(this, key, {
+          get: () => vm[key],
+          set: value => vm[key] = value
+        })
+      }
     })
   }
 
