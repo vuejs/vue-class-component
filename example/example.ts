@@ -1,4 +1,4 @@
-import Vue = require('vue')
+import Vue from 'vue'
 import App from './App.vue'
 
 // mount
