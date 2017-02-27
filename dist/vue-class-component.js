@@ -1,6 +1,6 @@
 /**
-  * vue-class-component v4.4.0
-  * (c) 2015-2016 Evan You
+  * vue-class-component v5.0.0
+  * (c) 2015-2017 Evan You
   * @license MIT
   */
 (function (global, factory) {
@@ -8,6 +8,8 @@
     typeof define === 'function' && define.amd ? define(['exports', 'vue'], factory) :
     (factory((global.VueClassComponent = global.VueClassComponent || {}),global.Vue));
 }(this, (function (exports,Vue) { 'use strict';
+
+Vue = 'default' in Vue ? Vue['default'] : Vue;
 
 function createDecorator(factory) {
     return function (_, key, index) {
@@ -26,11 +28,21 @@ function warn(message) {
 function collectDataFromConstructor(vm, Component) {
     Component.prototype._init = function () {
         var _this = this;
-        Object.getOwnPropertyNames(vm).forEach(function (key) {
-            Object.defineProperty(_this, key, {
-                get: function () { return vm[key]; },
-                set: function (value) { return vm[key] = value; }
-            });
+        var keys = Object.getOwnPropertyNames(vm);
+        if (vm.$options.props) {
+            for (var key in vm.$options.props) {
+                if (!vm.hasOwnProperty(key)) {
+                    keys.push(key);
+                }
+            }
+        }
+        keys.forEach(function (key) {
+            if (key.charAt(0) !== '_') {
+                Object.defineProperty(_this, key, {
+                    get: function () { return vm[key]; },
+                    set: function (value) { return vm[key] = value; }
+                });
+            }
         });
     };
     var data = new Component();

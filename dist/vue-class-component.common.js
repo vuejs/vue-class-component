@@ -1,13 +1,15 @@
 /**
-  * vue-class-component v4.4.0
-  * (c) 2015-2016 Evan You
+  * vue-class-component v5.0.0
+  * (c) 2015-2017 Evan You
   * @license MIT
   */
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var Vue = require('vue');
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var Vue = _interopDefault(require('vue'));
 
 function createDecorator(factory) {
     return function (_, key, index) {
@@ -26,11 +28,21 @@ function warn(message) {
 function collectDataFromConstructor(vm, Component) {
     Component.prototype._init = function () {
         var _this = this;
-        Object.getOwnPropertyNames(vm).forEach(function (key) {
-            Object.defineProperty(_this, key, {
-                get: function () { return vm[key]; },
-                set: function (value) { return vm[key] = value; }
-            });
+        var keys = Object.getOwnPropertyNames(vm);
+        if (vm.$options.props) {
+            for (var key in vm.$options.props) {
+                if (!vm.hasOwnProperty(key)) {
+                    keys.push(key);
+                }
+            }
+        }
+        keys.forEach(function (key) {
+            if (key.charAt(0) !== '_') {
+                Object.defineProperty(_this, key, {
+                    get: function () { return vm[key]; },
+                    set: function (value) { return vm[key] = value; }
+                });
+            }
         });
     };
     var data = new Component();
