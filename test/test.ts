@@ -1,6 +1,6 @@
 import Component, { createDecorator } from '../'
 import { expect } from 'chai'
-import * as Vue from 'vue'
+import Vue from 'vue'
 
 describe('vue-class-component', () => {
 

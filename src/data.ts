@@ -1,4 +1,4 @@
-import * as Vue from 'vue'
+import Vue from 'vue'
 import { VueClass } from './declarations'
 import { noop, warn } from './util'
 

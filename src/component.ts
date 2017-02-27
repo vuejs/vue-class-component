@@ -1,4 +1,4 @@
-import * as Vue from 'vue'
+import Vue, { ComponentOptions } from 'vue'
 import { VueClass } from './declarations'
 import { collectDataFromConstructor } from './data'
 
@@ -20,11 +20,11 @@ export const $internalHooks = [
 // Property, method and parameter decorators created by `createDecorator` helper
 // will enqueue functions that update component options for lazy processing.
 // They will be executed just before creating component constructor.
-export let $decoratorQueue: ((options: Vue.ComponentOptions<Vue>) => void)[] = []
+export let $decoratorQueue: ((options: ComponentOptions<Vue>) => void)[] = []
 
 export function componentFactory (
   Component: VueClass,
-  options: Vue.ComponentOptions<any> = {}
+  options: ComponentOptions<any> = {}
 ): VueClass {
   options.name = options.name || (Component as any)._componentTag
   // prototype props.
