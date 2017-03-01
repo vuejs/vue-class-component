@@ -178,7 +178,7 @@ class MyComp extends Vue {
 }
 ```
 
-You can simply define a method instead of a class property in that case:
+You can simply define a method instead of a class property in that case because Vue will bind the instance automatically:
 
 ```js
 @Component
