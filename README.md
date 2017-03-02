@@ -159,6 +159,39 @@ new Vue({
 })
 ```
 
+### Caveats of Class Properties
+
+vue-class-component collects class properties as Vue instance data by instantiating the original constructor under the hood. While we can define instance data like native class manner, we sometimes need to know how it works.
+
+For example, if you define an arrow function as a class property and access `this` in it, it will not work. This is because `this` is just a proxy object to Vue instance when initializing class properties:
+
+```js
+@Component
+class MyComp extends Vue {
+  foo = 123
+
+  bar = () => {
+    // Does not update the expected property.
+    // `this` value is not a Vue instance in fact.
+    this.foo = 456
+  }
+}
+```
+
+You can simply define a method instead of a class property in that case because Vue will bind the instance automatically:
+
+```js
+@Component
+class MyComp extends Vue {
+  foo = 123
+
+  bar () {
+    // Correctly update the expected property.
+    this.foo = 456
+  }
+}
+```
+
 ### Build the Example
 
 ``` bash
