@@ -161,7 +161,7 @@ new Vue({
 
 ### Caveats of Class Properties
 
-vue-class-component corrects class properties as Vue instance data by instantiating the original constructor under the hood. While we can define instance data like native class manner, we sometimes need to know how it works.
+vue-class-component collects class properties as Vue instance data by instantiating the original constructor under the hood. While we can define instance data like native class manner, we sometimes need to know how it works.
 
 For example, if you define an arrow function as a class property and access `this` in it, it will not work. This is because `this` is just a proxy object to Vue instance when initializing class properties:
 
