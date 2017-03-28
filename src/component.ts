@@ -26,7 +26,7 @@ export function componentFactory (
   Component: VueClass,
   options: ComponentOptions<any> = {}
 ): VueClass {
-  options.name = options.name || (Component as any)._componentTag
+  options.name = options.name || (Component as any)._componentTag || (Component as any).name
   // prototype props.
   const proto = Component.prototype
   Object.getOwnPropertyNames(proto).forEach(function (key) {
