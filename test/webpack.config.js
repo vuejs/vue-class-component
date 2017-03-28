@@ -4,7 +4,7 @@ module.exports = {
     './test/test-babel.js'
   ],
   output: {
-    path: './test',
+    path: __dirname,
     filename: 'test.build.js'
   },
   module: {
