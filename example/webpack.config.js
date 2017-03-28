@@ -1,7 +1,7 @@
 module.exports = {
   entry: './example/example.ts',
   output: {
-    path: './example',
+    path: __dirname,
     filename: 'build.js'
   },
   resolve: {
