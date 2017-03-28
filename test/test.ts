@@ -114,6 +114,34 @@ describe('vue-class-component', () => {
     expect(c.b).to.equal(3)
   })
 
+  describe('name', () => {
+    it('via name option', () => {
+      @Component({ name: 'test' })
+      class MyComp extends Vue {}
+
+      const c = new MyComp()
+      expect(c.$options.name).to.equal('test')
+    })
+
+    it('via _componentTag', () => {
+      @Component
+      class MyComp extends Vue {
+        static _componentTag = 'test'
+      }
+
+      const c = new MyComp()
+      expect(c.$options.name).to.equal('test')
+    })
+
+    it('via class name', () => {
+      @Component
+      class MyComp extends Vue {}
+
+      const c = new MyComp()
+      expect(c.$options.name).to.equal('MyComp')
+    })
+  })
+
   it('other options', (done) => {
     let v: number
 
