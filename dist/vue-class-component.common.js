@@ -1,5 +1,5 @@
 /**
-  * vue-class-component v5.0.0
+  * vue-class-component v5.0.1
   * (c) 2015-2017 Evan You
   * @license MIT
   */
@@ -78,7 +78,7 @@ var $internalHooks = [
 var $decoratorQueue = [];
 function componentFactory(Component, options) {
     if (options === void 0) { options = {}; }
-    options.name = options.name || Component._componentTag;
+    options.name = options.name || Component._componentTag || Component.name;
     var proto = Component.prototype;
     Object.getOwnPropertyNames(proto).forEach(function (key) {
         if (key === 'constructor') {

@@ -1,12 +1,12 @@
 /**
-  * vue-class-component v5.0.0
+  * vue-class-component v5.0.1
   * (c) 2015-2017 Evan You
   * @license MIT
   */
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('vue')) :
-    typeof define === 'function' && define.amd ? define(['exports', 'vue'], factory) :
-    (factory((global.VueClassComponent = global.VueClassComponent || {}),global.Vue));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('vue')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'vue'], factory) :
+	(factory((global.VueClassComponent = global.VueClassComponent || {}),global.Vue));
 }(this, (function (exports,Vue) { 'use strict';
 
 Vue = 'default' in Vue ? Vue['default'] : Vue;
@@ -78,7 +78,7 @@ var $internalHooks = [
 var $decoratorQueue = [];
 function componentFactory(Component, options) {
     if (options === void 0) { options = {}; }
-    options.name = options.name || Component._componentTag;
+    options.name = options.name || Component._componentTag || Component.name;
     var proto = Component.prototype;
     Object.getOwnPropertyNames(proto).forEach(function (key) {
         if (key === 'constructor') {
