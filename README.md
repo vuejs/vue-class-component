@@ -163,7 +163,9 @@ new Vue({
 
 vue-class-component collects class properties as Vue instance data by instantiating the original constructor under the hood. While we can define instance data like native class manner, we sometimes need to know how it works.
 
-For example, if you define an arrow function as a class property and access `this` in it, it will not work. This is because `this` is just a proxy object to Vue instance when initializing class properties:
+#### `this` value in property
+
+If you define an arrow function as a class property and access `this` in it, it will not work. This is because `this` is just a proxy object to Vue instance when initializing class properties:
 
 ```js
 @Component
@@ -188,6 +190,28 @@ class MyComp extends Vue {
   bar () {
     // Correctly update the expected property.
     this.foo = 456
+  }
+}
+```
+
+#### `undefined` will not be reactive
+
+To take consistency between the decorator behavior of Babel and TypeScript, vue-class-component does not make a property reactive if it has `undefined` as initial value. You should use `null` as initial value or use `data` hook to initialize `undefined` property instead.
+
+```js
+@Component
+class MyComp extends Vue {
+  // Will not be reactive
+  foo = undefined
+
+  // Will be reactive
+  bar = null
+
+  data () {
+    return {
+      // Will be reactive
+      baz: undefined
+    }
   }
 }
 ```
