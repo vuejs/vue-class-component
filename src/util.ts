@@ -1,5 +1,5 @@
 import Vue, { ComponentOptions } from 'vue'
-import { $decoratorQueue } from './component'
+import { DecoratedClass } from './declarations'
 
 export const noop = () => {}
 
@@ -12,11 +12,15 @@ export function createDecorator (
 export function createDecorator (
   factory: (options: ComponentOptions<Vue>, key: string, index: number) => void
 ): (target: Vue, key: string, index: any) => void {
-  return (_, key, index) => {
+  return (target, key, index) => {
+    const Ctor = target.constructor as DecoratedClass
+    if (!Ctor.__decorators__) {
+      Ctor.__decorators__ = []
+    }
     if (typeof index !== 'number') {
       index = undefined
     }
-    $decoratorQueue.push(options => factory(options, key, index))
+    Ctor.__decorators__.push(options => factory(options, key, index))
   }
 }
 
