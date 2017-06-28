@@ -1,4 +1,4 @@
-import Component, { createDecorator } from '../'
+import Component, { createDecorator } from '../lib'
 import chai, { expect } from 'chai'
 import spies from 'chai-spies'
 import Vue from 'vue'

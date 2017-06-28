@@ -1,4 +1,4 @@
-import Component, { createDecorator } from '../'
+import Component, { createDecorator } from '../lib'
 import { expect } from 'chai'
 import Vue from 'vue'
 
@@ -217,5 +217,43 @@ describe('vue-class-component', () => {
     expect(c.foo).to.equal('hello')
     expect(c.bar).to.equal('world')
     expect((MyComp as any).options.computed.bar.cache).to.be.false
+  })
+
+  // #104
+  it('createDecorator: decorate correctly even if a component is created in another @Component decorator', () => {
+    // Just assigns the given value to the decorated property
+    const Value = (value: any) => createDecorator((options, key) => {
+      const data = options.data as Function || (() => ({}))
+      options.data = function () {
+        return {
+          ...data.call(this),
+          [key]: value
+        }
+      }
+    })
+
+    const createChild = () => {
+      @Component
+      class Child extends Vue {
+        @Value('child')
+        value: string
+      }
+      return Child
+    }
+
+    @Component({
+      components: {
+        Child: createChild()
+      }
+    })
+    class Parent extends Vue {
+      @Value('parent')
+      value: string
+    }
+
+    const parent = new Parent()
+    const child = new (parent as any).$options.components.Child()
+    expect(parent.value).to.equal('parent')
+    expect(child.value).to.equal('child')
   })
 })

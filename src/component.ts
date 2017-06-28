@@ -1,5 +1,5 @@
 import Vue, { ComponentOptions } from 'vue'
-import { VueClass } from './declarations'
+import { VueClass, DecoratedClass } from './declarations'
 import { collectDataFromConstructor } from './data'
 
 export const $internalHooks = [
@@ -16,11 +16,6 @@ export const $internalHooks = [
   'deactivated',
   'render'
 ]
-
-// Property, method and parameter decorators created by `createDecorator` helper
-// will enqueue functions that update component options for lazy processing.
-// They will be executed just before creating component constructor.
-export let $decoratorQueue: ((options: ComponentOptions<Vue>) => void)[] = []
 
 export function componentFactory (
   Component: VueClass,
@@ -59,9 +54,10 @@ export function componentFactory (
   })
 
   // decorate options
-  $decoratorQueue.forEach(fn => fn(options))
-  // reset for other component decoration
-  $decoratorQueue = []
+  const decorators = (Component as DecoratedClass).__decorators__
+  if (decorators) {
+    decorators.forEach(fn => fn(options))
+  }
 
   // find super
   const superProto = Object.getPrototypeOf(Component.prototype)
