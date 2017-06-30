@@ -79,10 +79,9 @@ function buildEntry (config) {
   return rollup.rollup(config).then(bundle => {
     const code = bundle.generate(config).code
     if (isProd) {
-      var minified = (config.banner ? config.banner + '\n' : '') + uglify.minify(code, {
-        fromString: true,
+      var minified = uglify.minify(code, {
         output: {
-          screw_ie8: true
+          preamble: config.banner
         }
       }).code
       return write(config.dest, minified, true)

@@ -1,9 +1,7 @@
 import Component, { createDecorator } from '../lib'
-import chai, { expect } from 'chai'
-import spies from 'chai-spies'
+import { expect } from 'chai'
+import * as td from 'testdouble'
 import Vue from 'vue'
-
-chai.use(spies)
 
 describe('vue-class-component with Babel', () => {
   it('should be instantiated without any errors', () => {
@@ -49,7 +47,8 @@ describe('vue-class-component with Babel', () => {
   })
 
   it('warn if class property is used without inheriting Vue class', () => {
-    const spy = chai.spy.on(console, 'warn')
+    const originalWarn = console.warn
+    console.warn = td.function('warn')
 
     @Component({
       foo: Number
@@ -67,6 +66,10 @@ describe('vue-class-component with Babel', () => {
       'Component class must inherit Vue or its descendant class ' +
       'when class property is used.'
 
-    expect(spy).to.have.been.called.with(message)
+    try {
+      td.verify(console.warn(message))
+    } finally {
+      console.warn = originalWarn
+    }
   })
 })
