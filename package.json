@@ -46,7 +46,6 @@
     "chai-spies": "^0.7.1",
     "css-loader": "^0.28.4",
     "mocha": "^3.4.2",
-    "node-libs-browser": "^2.0.0",
     "rimraf": "^2.6.1",
     "rollup": "^0.43.0",
     "rollup-plugin-replace": "^1.1.1",
