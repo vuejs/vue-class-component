@@ -2,6 +2,8 @@
 
 > ECMAScript / TypeScript decorator for class-style Vue components.
 
+[![npm](https://img.shields.io/npm/v/vue-class-component.svg)](https://www.npmjs.com/package/vue-class-component)
+
 ### Usage
 
 **Required**: [ECMAScript stage 1 decorators](https://github.com/wycats/javascript-decorators/blob/master/README.md).
