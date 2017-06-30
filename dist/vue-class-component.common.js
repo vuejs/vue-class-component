@@ -1,5 +1,5 @@
 /**
-  * vue-class-component v5.0.1
+  * vue-class-component v5.0.2
   * (c) 2015-2017 Evan You
   * @license MIT
   */
@@ -12,11 +12,15 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var Vue = _interopDefault(require('vue'));
 
 function createDecorator(factory) {
-    return function (_, key, index) {
+    return function (target, key, index) {
+        var Ctor = target.constructor;
+        if (!Ctor.__decorators__) {
+            Ctor.__decorators__ = [];
+        }
         if (typeof index !== 'number') {
             index = undefined;
         }
-        $decoratorQueue.push(function (options) { return factory(options, key, index); });
+        Ctor.__decorators__.push(function (options) { return factory(options, key, index); });
     };
 }
 function warn(message) {
@@ -75,7 +79,6 @@ var $internalHooks = [
     'deactivated',
     'render'
 ];
-var $decoratorQueue = [];
 function componentFactory(Component, options) {
     if (options === void 0) { options = {}; }
     options.name = options.name || Component._componentTag || Component.name;
@@ -104,8 +107,10 @@ function componentFactory(Component, options) {
             return collectDataFromConstructor(this, Component);
         }
     });
-    $decoratorQueue.forEach(function (fn) { return fn(options); });
-    $decoratorQueue = [];
+    var decorators = Component.__decorators__;
+    if (decorators) {
+        decorators.forEach(function (fn) { return fn(options); });
+    }
     var superProto = Object.getPrototypeOf(Component.prototype);
     var Super = superProto instanceof Vue
         ? superProto.constructor
