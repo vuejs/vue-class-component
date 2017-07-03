@@ -218,6 +218,53 @@ class MyComp extends Vue {
 }
 ```
 
+
+#### `static` methods won't work
+
+`static` methods in the Component will compile, but give run-time errors. Recommendation: move `static` methods to another (non-component) class.
+
+```js
+@Component
+class MyComp extends Vue {
+  
+  mounted () {
+    MyComp.test(); //runtime error here: MyComp is not defined
+  }
+  
+  static test()
+  {
+     console.log("test");
+  }
+}
+```
+
+See [fiddle](https://jsfiddle.net/dcnjo5gf/)
+
+#### `_` prefixed fields and methods won't work
+
+This is a limitation of Vue itself. 
+
+
+```js
+@Component({
+  template: `
+    <h1>{{ _message }}</h1>
+  `
+})
+class App extends Vue {
+  _message = 'message!'
+
+  mounted () {
+    this._message = "a"  
+  }
+  
+}
+```
+
+> Error in render function: "ReferenceError: _message is not defined"
+
+See [fiddle](https://jsfiddle.net/yzo6mco7/)
+
 ### Build the Example
 
 ``` bash
