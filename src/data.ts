@@ -2,7 +2,7 @@ import Vue from 'vue'
 import { VueClass } from './declarations'
 import { noop, warn } from './util'
 
-export function collectDataFromConstructor (vm: Vue, Component: VueClass) {
+export function collectDataFromConstructor (vm: Vue, Component: VueClass<Vue>) {
   // override _init to prevent to init as Vue instance
   Component.prototype._init = function (this: Vue) {
     // proxy to actual vm
