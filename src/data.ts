@@ -2,6 +2,15 @@ import Vue from 'vue'
 import { VueClass } from './declarations'
 import { noop, warn } from './util'
 
+function deepReplace(source: any, from: any, to: any, done: WeakSet<any> = new WeakSet) {
+	if(from === source) return to;
+	if(!source || 'object'!== typeof source || done.has(source))
+		return source;
+	done.add(source)
+	for(let i in source) source[i] = deepReplace(source[i], from, to, done);
+	return source;
+}
+
 export function collectDataFromConstructor (vm: Vue, Component: VueClass) {
   // override _init to prevent to init as Vue instance
   Component.prototype._init = function (this: Vue) {
@@ -32,7 +41,7 @@ export function collectDataFromConstructor (vm: Vue, Component: VueClass) {
   const plainData = {}
   Object.keys(data).forEach(key => {
     if (data[key] !== undefined) {
-      plainData[key] = data[key] === data ? vm : data[key]
+      plainData[key] = deepReplace(data[key], data, vm)
     }
   })
 
