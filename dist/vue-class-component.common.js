@@ -29,6 +29,17 @@ function warn(message) {
     }
 }
 
+function deepReplace(source, from, to, done) {
+    if (done === void 0) { done = new WeakSet; }
+    if (from === source)
+        return to;
+    if (!source || 'object' !== typeof source || done.has(source))
+        return source;
+    done.add(source);
+    for (var i in source)
+        source[i] = deepReplace(source[i], from, to, done);
+    return source;
+}
 function collectDataFromConstructor(vm, Component) {
     Component.prototype._init = function () {
         var _this = this;
@@ -53,7 +64,7 @@ function collectDataFromConstructor(vm, Component) {
     var plainData = {};
     Object.keys(data).forEach(function (key) {
         if (data[key] !== undefined) {
-            plainData[key] = data[key];
+            plainData[key] = deepReplace(data[key], data, vm);
         }
     });
     if (process.env.NODE_ENV !== 'production') {
