@@ -32,7 +32,7 @@ export function collectDataFromConstructor (vm: Vue, Component: VueClass) {
   const plainData = {}
   Object.keys(data).forEach(key => {
     if (data[key] !== undefined) {
-      plainData[key] = data[key]
+      plainData[key] = data[key] === data ? vm : data[key]
     }
   })
 
