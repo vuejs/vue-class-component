@@ -6,7 +6,7 @@
 
 ### Usage
 
-**Required**: [ECMAScript stage 1 decorators](https://github.com/wycats/javascript-decorators/blob/master/README.md).
+**Required**: [ECMAScript stage 2 decorators](https://github.com/tc39/proposal-decorators).
 If you use Babel, [babel-plugin-transform-decorators-legacy](https://github.com/loganfsmyth/babel-plugin-transform-decorators-legacy) is needed.
 If you use TypeScript, enable `--experimentalDecorators` and `--allowSyntheticDefaultImports` flag.
 
