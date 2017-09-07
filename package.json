@@ -50,7 +50,7 @@
     "rollup-plugin-replace": "^1.1.1",
     "testdouble": "^3.2.1",
     "ts-loader": "^2.2.1",
-    "typescript": "^2.4.1",
+    "typescript": "^2.5.2",
     "uglify-js": "^3.0.22",
     "vue": "^2.3.4",
     "vue-loader": "^13.0.0",
