@@ -3626,9 +3626,9 @@ vue-template-es2015-compiler@^1.5.3:
   version "1.5.3"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.5.3.tgz#22787de4e37ebd9339b74223bc467d1adee30545"
 
-vue@DanielRosenwasser/vue#e4a8545:
+"vue@github:HerringtonDarkholme/vue#8901752":
   version "2.4.2"
-  resolved "https://codeload.github.com/DanielRosenwasser/vue/tar.gz/e4a8545"
+  resolved "https://codeload.github.com/HerringtonDarkholme/vue/tar.gz/8901752"
 
 watchpack@^1.4.0:
   version "1.4.0"

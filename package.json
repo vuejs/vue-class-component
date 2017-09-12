@@ -52,7 +52,7 @@
     "ts-loader": "^2.2.1",
     "typescript": "^2.5.2",
     "uglify-js": "^3.0.22",
-    "vue": "DanielRosenwasser/vue#e4a8545",
+    "vue": "github:HerringtonDarkholme/vue#8901752",
     "vue-loader": "^13.0.0",
     "vue-template-compiler": "^2.4.2",
     "webpack": "^3.0.0"
