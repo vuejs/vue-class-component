@@ -116,10 +116,11 @@ If you use some Vue plugins like Vue Router, you may want class components to re
 // class-component-hooks.js
 import Component from 'vue-class-component'
 
-// Register the router hooks with thier names
+// Register the router hooks with their names
 Component.registerHooks([
   'beforeRouteEnter',
-  'beforeRouteLeave'
+  'beforeRouteLeave',
+  'beforeRouteUpdate' // for vue-router 2.2+
 ])
 ```
 
