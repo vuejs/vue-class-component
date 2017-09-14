@@ -57,7 +57,7 @@ export function componentFactory (
   const decorators = (Component as DecoratedClass).__decorators__
   if (decorators) {
     decorators.forEach(fn => fn(options))
-	}
+  }
 
   // find super
   const superProto = Object.getPrototypeOf(Component.prototype)
@@ -65,9 +65,9 @@ export function componentFactory (
     ? superProto.constructor as VueClass
     : Vue
   const rv = Super.extend(options);
-	
-	for(let sttc in Component)
-		if(!(sttc in function() {}) && Component.hasOwnProperty(sttc))
-			rv[sttc] = Component[sttc];
-	return rv;
+
+  for(let sttc in Component)
+    if(!(sttc in function() {}) && Component.hasOwnProperty(sttc))
+      rv[sttc] = Component[sttc];
+  return rv;
 }
