@@ -256,4 +256,14 @@ describe('vue-class-component', () => {
     expect(parent.value).to.equal('parent')
     expect(child.value).to.equal('child')
   })
+	
+	it('forwardStatics', function () {
+		debugger;
+		@Component
+		class MyComp extends Vue {
+			static myValue = 52
+		}
+		
+		expect(MyComp.myValue).to.equal(52);
+	})
 })
