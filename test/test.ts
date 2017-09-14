@@ -258,7 +258,6 @@ describe('vue-class-component', () => {
   })
 	
   it('forwardStatics', function () {
-    debugger;
     @Component
     class MyComp extends Vue {
       static myValue = 52
