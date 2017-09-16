@@ -67,7 +67,7 @@ export function componentFactory (
   const Extended = Super.extend(options);
 
   for(let staticKey in Component) {
-    if(!(staticKey in function() {}) && Component.hasOwnProperty(staticKey)) {
+    if(Component.hasOwnProperty(staticKey)) {
       Extended[staticKey] = Component[staticKey];
     }
   }
