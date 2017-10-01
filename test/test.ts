@@ -256,4 +256,22 @@ describe('vue-class-component', () => {
     expect(parent.value).to.equal('parent')
     expect(child.value).to.equal('child')
   })
+
+  // #155
+  it('createDecrator: create a class decorator', () => {
+    const DataMixin = createDecorator(options => {
+      options.data = function () {
+        return {
+          test: 'foo'
+        }
+      }
+    })
+
+    @Component
+    @DataMixin
+    class MyComp extends Vue {}
+
+    const vm: any = new MyComp()
+    expect(vm.test).to.equal('foo')
+  })
 })
