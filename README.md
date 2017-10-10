@@ -48,6 +48,9 @@ import Component from 'vue-class-component'
   }
 })
 export default class App extends Vue {
+  // props are had to declare again
+  propMessage: string
+
   // initial data
   msg = 123
 
@@ -67,6 +70,12 @@ export default class App extends Vue {
   // method
   greet () {
     alert('greeting: ' + this.msg)
+    this.$refs.helloComponent.sayHello()
+  }
+
+  // dynamic component
+  $refs: {
+    helloComponent: Hello
   }
 }
 </script>
