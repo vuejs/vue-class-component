@@ -3,17 +3,22 @@ import { DecoratedClass } from './declarations'
 
 export const noop = () => {}
 
-export function createDecorator (
-  factory: (options: ComponentOptions<any, any, any, any>, key: string) => void
-): (target: Vue, key: string) => void
-export function createDecorator (
-  factory: (options: ComponentOptions<any, any, any, any>, key: string, index: number) => void
-): (target: Vue, key: string, index: number) => void
-export function createDecorator (
-  factory: (options: ComponentOptions<any, any, any, any>, key: string, index: number) => void
-): (target: Vue, key: string, index: any) => void {
-  return (target, key, index) => {
-    const Ctor = target.constructor as DecoratedClass
+export interface VueDecorator {
+  // Class decorator
+  (Ctor: typeof Vue): void
+
+  // Property decorator
+  (target: Vue, key: string): void
+
+  // Parameter decorator
+  (target: Vue, key: string, index: number): void
+}
+
+export function createDecorator (factory: (options: ComponentOptions<any, any, any, any>, key: string, index: number) => void): VueDecorator {
+  return (target: Vue | typeof Vue, key?: any, index?: any) => {
+    const Ctor = typeof target === 'function'
+      ? target as DecoratedClass
+      : target.constructor as DecoratedClass
     if (!Ctor.__decorators__) {
       Ctor.__decorators__ = []
     }
