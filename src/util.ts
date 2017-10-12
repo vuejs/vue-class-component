@@ -4,13 +4,13 @@ import { DecoratedClass } from './declarations'
 export const noop = () => {}
 
 export function createDecorator (
-  factory: (options: ComponentOptions<Vue>, key: string) => void
+  factory: (options: ComponentOptions<any, any, any, any>, key: string) => void
 ): (target: Vue, key: string) => void
 export function createDecorator (
-  factory: (options: ComponentOptions<Vue>, key: string, index: number) => void
+  factory: (options: ComponentOptions<any, any, any, any>, key: string, index: number) => void
 ): (target: Vue, key: string, index: number) => void
 export function createDecorator (
-  factory: (options: ComponentOptions<Vue>, key: string, index: number) => void
+  factory: (options: ComponentOptions<any, any, any, any>, key: string, index: number) => void
 ): (target: Vue, key: string, index: any) => void {
   return (target, key, index) => {
     const Ctor = target.constructor as DecoratedClass

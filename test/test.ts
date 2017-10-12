@@ -1,6 +1,6 @@
 import Component, { createDecorator } from '../lib'
 import { expect } from 'chai'
-import Vue from 'vue'
+import Vue, { ComputedOptions } from 'vue'
 
 describe('vue-class-component', () => {
 
@@ -197,7 +197,7 @@ describe('vue-class-component', () => {
     const NoCache = createDecorator((options, key) => {
       // options should have computed and methods etc.
       // that specified by class property accessors and methods
-      const computedOption = options.computed![key] as Vue.ComputedOptions<Vue>
+      const computedOption = options.computed![key] as ComputedOptions<Vue>
       computedOption.cache = false
     })
 

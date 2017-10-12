@@ -8,15 +8,11 @@
     "module": "es2015",
     "moduleResolution": "node",
     "outDir": "lib",
-    "isolatedModules": false,
     "experimentalDecorators": true,
     "declaration": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "strictNullChecks": true,
-    "removeComments": true,
+    "strict": true,
     "suppressImplicitAnyIndexErrors": true,
-    "allowSyntheticDefaultImports": true
+    "removeComments": true
   },
   "include": [
     "src/**/*.ts"

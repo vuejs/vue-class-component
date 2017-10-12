@@ -18,9 +18,9 @@ export const $internalHooks = [
 ]
 
 export function componentFactory (
-  Component: VueClass,
-  options: ComponentOptions<any> = {}
-): VueClass {
+  Component: VueClass<Vue>,
+  options: ComponentOptions<any, any, any, any> = {}
+): VueClass<Vue> {
   options.name = options.name || (Component as any)._componentTag || (Component as any).name
   // prototype props.
   const proto = Component.prototype
@@ -62,7 +62,7 @@ export function componentFactory (
   // find super
   const superProto = Object.getPrototypeOf(Component.prototype)
   const Super = superProto instanceof Vue
-    ? superProto.constructor as VueClass
+    ? superProto.constructor as VueClass<Vue>
     : Vue
   return Super.extend(options)
 }
