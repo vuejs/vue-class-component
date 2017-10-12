@@ -20,20 +20,48 @@ const resolve = _path => path.resolve(__dirname, '../', _path)
 
 build([
   {
-    dest: resolve('dist/vue-class-component.js'),
+    file: resolve('dist/vue-class-component.js'),
     format: 'umd',
     env: 'development'
   },
   {
-    dest: resolve('dist/vue-class-component.min.js'),
+    file: resolve('dist/vue-class-component.min.js'),
     format: 'umd',
     env: 'production'
   },
   {
-    dest: resolve('dist/vue-class-component.common.js'),
+    file: resolve('dist/vue-class-component.common.js'),
     format: 'cjs'
   }
 ].map(genConfig))
+
+function genConfig (opts) {
+  const config = {
+    input: {
+      input: resolve('lib/index.js'),
+      external: ['vue'],
+      plugins: []
+    },
+    output: {
+      file: opts.file,
+      format: opts.format,
+      banner,
+      name: 'VueClassComponent',
+      exports: 'named',
+      globals: {
+        vue: 'Vue'
+      }
+    }
+  }
+
+  if (opts.env) {
+    config.input.plugins.unshift(replace({
+      'process.env.NODE_ENV': JSON.stringify(opts.env)
+    }))
+  }
+
+  return config
+}
 
 function build (builds) {
   let built = 0
@@ -50,45 +78,23 @@ function build (builds) {
   next()
 }
 
-function genConfig (opts) {
-  const config = {
-    entry: resolve('lib/index.js'),
-    dest: opts.dest,
-    format: opts.format,
-    banner,
-    moduleName: 'VueClassComponent',
-    exports: 'named',
-    external: ['vue'],
-    globals: {
-      vue: 'Vue'
-    },
-    plugins: []
-  }
-
-  if (opts.env) {
-    config.plugins.unshift(replace({
-      'process.env.NODE_ENV': JSON.stringify(opts.env)
-    }))
-  }
-
-  return config
-}
-
-function buildEntry (config) {
-  const isProd = /min\.js$/.test(config.dest)
-  return rollup.rollup(config).then(bundle => {
-    const code = bundle.generate(config).code
-    if (isProd) {
-      var minified = uglify.minify(code, {
-        output: {
-          preamble: config.banner
-        }
-      }).code
-      return write(config.dest, minified, true)
-    } else {
-      return write(config.dest, code)
-    }
-  })
+function buildEntry ({ input, output }) {
+  const isProd = /min\.js$/.test(output.file)
+  return rollup.rollup(input)
+    .then(bundle => bundle.generate(output))
+    .then(({ code }) => {
+      if (isProd) {
+        var minified = uglify.minify(code, {
+          output: {
+            preamble: output.banner,
+            ascii_only: true
+          }
+        }).code
+        return write(output.file, minified, true)
+      } else {
+        return write(output.file, code)
+      }
+    })
 }
 
 function write (dest, code, zip) {
