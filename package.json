@@ -54,7 +54,7 @@
     "uglify-js": "^3.0.22",
     "vue": "github:vuejs/vue#dev",
     "vue-loader": "^13.0.0",
-    "vue-template-compiler": "^2.4.2",
+    "vue-template-compiler": "^2.4.4",
     "webpack": "^3.0.0"
   }
 }
