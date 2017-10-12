@@ -16,7 +16,8 @@
     "example": "npm run build && webpack --config example/webpack.config.js",
     "dev": "webpack --config example/webpack.config.js --watch",
     "dev:test": "node build/dev-test.js",
-    "test": "npm run build && webpack --config test/webpack.config.js && mocha test/test.build.js"
+    "test": "npm run build && webpack --config test/webpack.config.js && mocha test/test.build.js",
+    "release": "bash build/release.sh"
   },
   "repository": {
     "type": "git",
