@@ -6,7 +6,7 @@
     <p>helloMsg: {{helloMsg}}</p>
     <p>computed msg: {{computedMsg}}</p>
     <button @click="greet">Greet</button>
-    <hello ref="helloComponent">
+    <hello ref="helloComponent"></hello>
   </div>
 </template>
 
