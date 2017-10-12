@@ -6,19 +6,25 @@
     <p>helloMsg: {{helloMsg}}</p>
     <p>computed msg: {{computedMsg}}</p>
     <button @click="greet">Greet</button>
+    <hello ref="helloComponent"></hello>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import Component from '../lib/index'
+import Hello from './Hello.vue';
 
 @Component({
   props: {
     propMessage: String
+  },
+  components: {
+    Hello
   }
 })
 export default class App extends Vue {
+  // props have to be declared for typescript
   propMessage: string
 
   // inital data
@@ -40,6 +46,12 @@ export default class App extends Vue {
   // method
   greet () {
     alert('greeting: ' + this.msg)
+    this.$refs.helloComponent.sayHello()
+  }
+
+  // dynamic component
+  $refs: {
+    helloComponent: Hello
   }
 }
 </script>
