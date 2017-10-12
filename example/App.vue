@@ -24,7 +24,7 @@ import Hello from './Hello.vue';
   }
 })
 export default class App extends Vue {
-  // props are had to declare again
+  // props have to be declared for typescript
   propMessage: string
 
   // inital data
