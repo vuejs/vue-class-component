@@ -53,9 +53,9 @@
     "ts-loader": "^2.2.1",
     "typescript": "^2.5.2",
     "uglify-js": "^3.0.22",
-    "vue": "github:vuejs/vue#dev",
+    "vue": "^2.5.0",
     "vue-loader": "^13.0.0",
-    "vue-template-compiler": "^2.4.4",
+    "vue-template-compiler": "^2.5.0",
     "webpack": "^3.0.0"
   }
 }
