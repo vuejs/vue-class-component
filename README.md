@@ -10,6 +10,8 @@
 If you use Babel, [babel-plugin-transform-decorators-legacy](https://github.com/loganfsmyth/babel-plugin-transform-decorators-legacy) is needed.
 If you use TypeScript, enable `--experimentalDecorators` and `--allowSyntheticDefaultImports` flag.
 
+> It does not support the stage 2 decorators yet since mainstream transpilers still tranpile to the old decorators.
+
 Note:
 
 1. `methods` can be declared directly as class member methods.
