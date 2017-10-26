@@ -65,5 +65,12 @@ export function componentFactory (
   const Super = superProto instanceof Vue
     ? superProto.constructor as VueClass<Vue>
     : Vue
-  return Super.extend(options)
+  const Extended = Super.extend(options);
+
+  for(let staticKey in Component) {
+    if(Component.hasOwnProperty(staticKey)) {
+      Extended[staticKey] = Component[staticKey];
+    }
+  }
+  return Extended;
 }
