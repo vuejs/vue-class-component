@@ -1,6 +1,6 @@
 import Component, { createDecorator } from '../lib'
 import { expect } from 'chai'
-import Vue from 'vue'
+import Vue, { ComputedOptions } from 'vue'
 
 describe('vue-class-component', () => {
 
@@ -197,7 +197,7 @@ describe('vue-class-component', () => {
     const NoCache = createDecorator((options, key) => {
       // options should have computed and methods etc.
       // that specified by class property accessors and methods
-      const computedOption = options.computed![key] as Vue.ComputedOptions<Vue>
+      const computedOption = options.computed![key] as ComputedOptions<Vue>
       computedOption.cache = false
     })
 
@@ -256,7 +256,25 @@ describe('vue-class-component', () => {
     expect(parent.value).to.equal('parent')
     expect(child.value).to.equal('child')
   })
-	
+
+  // #155
+  it('createDecrator: create a class decorator', () => {
+    const DataMixin = createDecorator(options => {
+      options.data = function () {
+        return {
+          test: 'foo'
+        }
+      }
+    })
+
+    @Component
+    @DataMixin
+    class MyComp extends Vue {}
+
+    const vm: any = new MyComp()
+    expect(vm.test).to.equal('foo')
+  })
+  	
   it('forwardStatics', function () {
     @Component
     class MyComp extends Vue {

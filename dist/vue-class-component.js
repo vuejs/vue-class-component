@@ -1,19 +1,21 @@
 /**
-  * vue-class-component v5.0.2
+  * vue-class-component v6.0.0
   * (c) 2015-2017 Evan You
   * @license MIT
   */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('vue')) :
 	typeof define === 'function' && define.amd ? define(['exports', 'vue'], factory) :
-	(factory((global.VueClassComponent = global.VueClassComponent || {}),global.Vue));
+	(factory((global.VueClassComponent = {}),global.Vue));
 }(this, (function (exports,Vue) { 'use strict';
 
-Vue = Vue && 'default' in Vue ? Vue['default'] : Vue;
+Vue = Vue && Vue.hasOwnProperty('default') ? Vue['default'] : Vue;
 
 function createDecorator(factory) {
     return function (target, key, index) {
-        var Ctor = target.constructor;
+        var Ctor = typeof target === 'function'
+            ? target
+            : target.constructor;
         if (!Ctor.__decorators__) {
             Ctor.__decorators__ = [];
         }
@@ -77,7 +79,8 @@ var $internalHooks = [
     'updated',
     'activated',
     'deactivated',
-    'render'
+    'render',
+    'errorCaptured'
 ];
 function componentFactory(Component, options) {
     if (options === void 0) { options = {}; }

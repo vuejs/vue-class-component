@@ -7,14 +7,10 @@
     ],
     "module": "commonjs",
     "moduleResolution": "node",
-    "isolatedModules": false,
     "experimentalDecorators": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "strictNullChecks": true,
-    "removeComments": true,
+    "strict": true,
     "suppressImplicitAnyIndexErrors": true,
-    "allowSyntheticDefaultImports": true
+    "removeComments": true
   },
   "include": [
     "./**/*.ts"

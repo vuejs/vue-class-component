@@ -1,5 +1,5 @@
 /**
-  * vue-class-component v5.0.2
+  * vue-class-component v6.0.0
   * (c) 2015-2017 Evan You
   * @license MIT
   */
@@ -13,7 +13,9 @@ var Vue = _interopDefault(require('vue'));
 
 function createDecorator(factory) {
     return function (target, key, index) {
-        var Ctor = target.constructor;
+        var Ctor = typeof target === 'function'
+            ? target
+            : target.constructor;
         if (!Ctor.__decorators__) {
             Ctor.__decorators__ = [];
         }
@@ -77,7 +79,8 @@ var $internalHooks = [
     'updated',
     'activated',
     'deactivated',
-    'render'
+    'render',
+    'errorCaptured'
 ];
 function componentFactory(Component, options) {
     if (options === void 0) { options = {}; }

@@ -72,4 +72,22 @@ describe('vue-class-component with Babel', () => {
       console.warn = originalWarn
     }
   })
+
+  // #155
+  it('createDecrator: create a class decorator', () => {
+    const DataMixin = createDecorator(options => {
+      options.data = function () {
+        return {
+          test: 'foo'
+        }
+      }
+    })
+
+    @Component
+    @DataMixin
+    class MyComp extends Vue {}
+
+    const vm = new MyComp()
+    expect(vm.test).to.equal('foo')
+  })
 })
