@@ -227,6 +227,10 @@ class MyComp extends Vue {
 $ npm install && npm run example
 ```
 
+## Questions
+
+For questions and support please use the [the official forum](http://forum.vuejs.org) or [community chat](https://chat.vuejs.org/). The issue list of this repo is **exclusively** for bug reports and feature requests.
+
 ### License
 
 [MIT](http://opensource.org/licenses/MIT)
