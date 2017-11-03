@@ -90,4 +90,21 @@ describe('vue-class-component with Babel', () => {
     const vm = new MyComp()
     expect(vm.test).to.equal('foo')
   })
+
+  it('should not throw if property decorator declare some methods', () => {
+    const Test = createDecorator((options, key) => {
+      if (!options.methods) {
+        options.methods = {}
+      }
+      options.methods[key] = () => 'test'
+    })
+
+    @Component
+    class MyComp extends Vue {
+      @Test test
+    }
+
+    const vm = new MyComp()
+    expect(vm.test()).to.equal('test')
+  })
 })
