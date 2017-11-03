@@ -1,5 +1,5 @@
 /**
-  * vue-class-component v6.0.0
+  * vue-class-component v6.1.0
   * (c) 2015-2017 Evan You
   * @license MIT
   */
@@ -46,7 +46,8 @@ function collectDataFromConstructor(vm, Component) {
             if (key.charAt(0) !== '_') {
                 Object.defineProperty(_this, key, {
                     get: function () { return vm[key]; },
-                    set: function (value) { return vm[key] = value; }
+                    set: function (value) { return vm[key] = value; },
+                    configurable: true
                 });
             }
         });
@@ -118,7 +119,13 @@ function componentFactory(Component, options) {
     var Super = superProto instanceof Vue
         ? superProto.constructor
         : Vue;
-    return Super.extend(options);
+    var Extended = Super.extend(options);
+    for (var staticKey in Component) {
+        if (Component.hasOwnProperty(staticKey)) {
+            Extended[staticKey] = Component[staticKey];
+        }
+    }
+    return Extended;
 }
 
 function Component(options) {
