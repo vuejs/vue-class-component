@@ -14,7 +14,7 @@ export interface VueDecorator {
   (target: Vue, key: string, index: number): void
 }
 
-export function createDecorator (factory: (options: ComponentOptions<any, any, any, any>, key: string, index: number) => void): VueDecorator {
+export function createDecorator (factory: (options: ComponentOptions<Vue>, key: string, index: number) => void): VueDecorator {
   return (target: Vue | typeof Vue, key?: any, index?: any) => {
     const Ctor = typeof target === 'function'
       ? target as DecoratedClass

@@ -20,7 +20,7 @@ export const $internalHooks = [
 
 export function componentFactory (
   Component: VueClass<Vue>,
-  options: ComponentOptions<any, any, any, any> = {}
+  options: ComponentOptions<Vue> = {}
 ): VueClass<Vue> {
   options.name = options.name || (Component as any)._componentTag || (Component as any).name
   // prototype props.
