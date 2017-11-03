@@ -19,7 +19,8 @@ export function collectDataFromConstructor (vm: Vue, Component: VueClass<Vue>) {
       if (key.charAt(0) !== '_') {
         Object.defineProperty(this, key, {
           get: () => vm[key],
-          set: value => vm[key] = value
+          set: value => vm[key] = value,
+          configurable: true
         })
       }
     })
