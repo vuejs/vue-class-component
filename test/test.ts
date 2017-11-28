@@ -312,8 +312,13 @@ describe('vue-class-component', () => {
     @Component
     class MyComp extends Vue {
       static myValue = 52
+
+      static myFunc() {
+        return 42
+      }
     }
 
-    expect(MyComp.myValue).to.equal(52);
+    expect(MyComp.myValue).to.equal(52)
+    expect(MyComp.myFunc()).to.equal(42)
   })
 })

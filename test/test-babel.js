@@ -107,4 +107,18 @@ describe('vue-class-component with Babel', () => {
     const vm = new MyComp()
     expect(vm.test()).to.equal('test')
   })
+
+  it('should forward static members', () => {
+    @Component
+    class MyComp extends Vue {
+      static foo = 'foo'
+
+      static bar () {
+        return 'bar'
+      }
+    }
+
+    expect(MyComp.foo).to.equal('foo')
+    expect(MyComp.bar()).to.equal('bar')
+  })
 })
