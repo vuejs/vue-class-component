@@ -3,6 +3,8 @@ import { DecoratedClass } from './declarations'
 
 export const noop = () => {}
 
+export const hasProto = { __proto__: [] } instanceof Array
+
 export interface VueDecorator {
   // Class decorator
   (Ctor: typeof Vue): void
@@ -27,6 +29,11 @@ export function createDecorator (factory: (options: ComponentOptions<Vue>, key: 
     }
     Ctor.__decorators__.push(options => factory(options, key, index))
   }
+}
+
+export function isPrimitive (value: any): boolean {
+  const type = typeof value
+  return value == null || (type !== "object" && type !== "function")
 }
 
 export function warn (message: string): void {
