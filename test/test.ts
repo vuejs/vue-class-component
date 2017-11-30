@@ -1,5 +1,6 @@
 import Component, { createDecorator } from '../lib'
 import { expect } from 'chai'
+import * as td from 'testdouble'
 import Vue, { ComputedOptions } from 'vue'
 
 describe('vue-class-component', () => {
@@ -185,6 +186,38 @@ describe('vue-class-component', () => {
     const a = new A()
     expect(a.a).to.equal(1)
     expect(a.b).to.equal(2)
+  })
+
+  // #199
+  it('should not re-execute super class decortors', function (done) {
+    const Watch = (valueKey: string) => createDecorator((options, key) => {
+      if (!options.watch) {
+        options.watch = {}
+      }
+      options.watch[valueKey] = key
+    })
+
+    const spy = td.function()
+
+    @Component
+    class Base extends Vue {
+      count = 0
+
+      @Watch('count')
+      notify () {
+        spy()
+      }
+    }
+
+    @Component
+    class A extends Base {}
+
+    const vm = new A()
+    vm.count++
+    vm.$nextTick(() => {
+      td.verify(spy(), { times: 1 })
+      done()
+    })
   })
 
   it('createDecorator', function () {

@@ -58,6 +58,7 @@ export function componentFactory (
   const decorators = (Component as DecoratedClass).__decorators__
   if (decorators) {
     decorators.forEach(fn => fn(options))
+    delete (Component as DecoratedClass).__decorators__
   }
 
   // find super
