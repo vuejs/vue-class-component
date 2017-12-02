@@ -101,6 +101,12 @@ function forwardStaticMembers (Extended: typeof Vue, Original: typeof Vue, Super
       return
     }
 
+    // Some browsers does not allow reconfigure built-in properties
+    const extendedDescriptor = Object.getOwnPropertyDescriptor(Extended, key)
+    if (extendedDescriptor && !extendedDescriptor.configurable) {
+      return
+    }
+
     const descriptor = Object.getOwnPropertyDescriptor(Original, key)!
 
     // If the user agent does not support `__proto__` or its family (IE <= 10),
