@@ -1,5 +1,5 @@
 /**
-  * vue-class-component v6.1.0
+  * vue-class-component v6.1.1
   * (c) 2015-2017 Evan You
   * @license MIT
   */
@@ -11,6 +11,7 @@
 
 Vue = Vue && Vue.hasOwnProperty('default') ? Vue['default'] : Vue;
 
+var hasProto = { __proto__: [] } instanceof Array;
 function createDecorator(factory) {
     return function (target, key, index) {
         var Ctor = typeof target === 'function'
@@ -24,6 +25,10 @@ function createDecorator(factory) {
         }
         Ctor.__decorators__.push(function (options) { return factory(options, key, index); });
     };
+}
+function isPrimitive(value) {
+    var type = typeof value;
+    return value == null || (type !== "object" && type !== "function");
 }
 function warn(message) {
     if (typeof console !== 'undefined') {
@@ -114,18 +119,56 @@ function componentFactory(Component, options) {
     var decorators = Component.__decorators__;
     if (decorators) {
         decorators.forEach(function (fn) { return fn(options); });
+        delete Component.__decorators__;
     }
     var superProto = Object.getPrototypeOf(Component.prototype);
     var Super = superProto instanceof Vue
         ? superProto.constructor
         : Vue;
     var Extended = Super.extend(options);
-    for (var staticKey in Component) {
-        if (Component.hasOwnProperty(staticKey)) {
-            Extended[staticKey] = Component[staticKey];
-        }
-    }
+    forwardStaticMembers(Extended, Component, Super);
     return Extended;
+}
+var reservedPropertyNames = [
+    'cid',
+    'super',
+    'options',
+    'superOptions',
+    'extendOptions',
+    'sealedOptions',
+    'component',
+    'directive',
+    'filter'
+];
+function forwardStaticMembers(Extended, Original, Super) {
+    Object.getOwnPropertyNames(Original).forEach(function (key) {
+        if (key === 'prototype') {
+            return;
+        }
+        var extendedDescriptor = Object.getOwnPropertyDescriptor(Extended, key);
+        if (extendedDescriptor && !extendedDescriptor.configurable) {
+            return;
+        }
+        var descriptor = Object.getOwnPropertyDescriptor(Original, key);
+        if (!hasProto) {
+            if (key === 'cid') {
+                return;
+            }
+            var superDescriptor = Object.getOwnPropertyDescriptor(Super, key);
+            if (!isPrimitive(descriptor.value)
+                && superDescriptor
+                && superDescriptor.value === descriptor.value) {
+                return;
+            }
+        }
+        if ("development" !== 'production'
+            && reservedPropertyNames.indexOf(key) >= 0) {
+            warn("Static property name '" + key + "' declared on class '" + Original.name + "' " +
+                'conflicts with reserved property name of Vue internal. ' +
+                'It may cause unexpected behavior of the component. Consider renaming the property.');
+        }
+        Object.defineProperty(Extended, key, descriptor);
+    });
 }
 
 function Component(options) {
