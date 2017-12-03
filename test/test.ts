@@ -321,4 +321,25 @@ describe('vue-class-component', () => {
     expect(MyComp.myValue).to.equal(52)
     expect(MyComp.myFunc()).to.equal(42)
   })
+
+  it('should warn if declared static property uses a reserved name but not prevent forwarding', function () {
+    const originalWarn = console.warn
+    console.warn = td.function('warn') as any
+
+    @Component
+    class MyComp extends Vue {
+      static options = 'test'
+    }
+
+    const message = '[vue-class-component] ' +
+      'Static property name \'options\' declared on class \'MyComp\' conflicts with ' +
+      'reserved property name of Vue internal. It may cause unexpected behavior of the component. Consider renaming the property.'
+
+    expect(MyComp.options).to.equal('test')
+    try {
+      td.verify(console.warn(message))
+    } finally {
+      console.warn = originalWarn
+    }
+  })
 })
