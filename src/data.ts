@@ -4,6 +4,7 @@ import { noop, warn } from './util'
 
 export function collectDataFromConstructor (vm: Vue, Component: VueClass<Vue>) {
   // override _init to prevent to init as Vue instance
+  const originalInit = Component.prototype._init
   Component.prototype._init = function (this: Vue) {
     // proxy to actual vm
     const keys = Object.getOwnPropertyNames(vm)
@@ -28,6 +29,9 @@ export function collectDataFromConstructor (vm: Vue, Component: VueClass<Vue>) {
 
   // should be acquired class property values
   const data = new Component()
+
+  // restore original _init to avoid memory leak (#209)
+  Component.prototype._init = originalInit
 
   // create plain data object
   const plainData = {}
