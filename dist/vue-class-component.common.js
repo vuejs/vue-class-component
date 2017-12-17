@@ -1,5 +1,5 @@
 /**
-  * vue-class-component v6.1.1
+  * vue-class-component v6.1.2
   * (c) 2015-2017 Evan You
   * @license MIT
   */
@@ -37,6 +37,7 @@ function warn(message) {
 }
 
 function collectDataFromConstructor(vm, Component) {
+    var originalInit = Component.prototype._init;
     Component.prototype._init = function () {
         var _this = this;
         var keys = Object.getOwnPropertyNames(vm);
@@ -58,6 +59,7 @@ function collectDataFromConstructor(vm, Component) {
         });
     };
     var data = new Component();
+    Component.prototype._init = originalInit;
     var plainData = {};
     Object.keys(data).forEach(function (key) {
         if (data[key] !== undefined) {
