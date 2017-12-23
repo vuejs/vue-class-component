@@ -5,7 +5,7 @@ module.exports = {
     filename: 'build.js'
   },
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js','tsx']
   },
   module: {
     rules: [
@@ -16,6 +16,18 @@ module.exports = {
         options: {
           appendTsSuffixTo: [/\.vue$/]
         }
+      },
+      {
+        test: /\.tsx$/,
+        exclude: /node_modules|vue\/src/,
+        loader:[
+          {
+            loader: "babel-loader"
+          },
+          {
+            loader: "ts-loader",
+          }
+        ]
       },
       {
         test: /\.vue$/,
