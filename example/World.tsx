@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import Vue ,{ CreateElement } from 'vue'
 import Component from '../lib/index'
 
 @Component({
@@ -19,7 +19,7 @@ export default class World extends Vue {
   clearContent() {
     this.content = ''
   }
-  render(h) {
+  render(h: CreateElement) {
     return <div >
       <h1>{this.title}</h1>
       <input type="text" value={this.content} onInput={ (evt:Event)=> this.content = (evt.target as HTMLInputElement).value} />
