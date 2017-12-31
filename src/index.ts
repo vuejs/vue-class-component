@@ -3,6 +3,7 @@ import { VueClass } from './declarations'
 import { componentFactory, $internalHooks } from './component'
 
 export { createDecorator, VueDecorator } from './util'
+export { Watch } from './watch'
 
 function Component <V extends Vue>(options: ComponentOptions<V> & ThisType<V>): <VC extends VueClass<V>>(target: VC) => VC
 function Component <VC extends VueClass<Vue>>(target: VC): VC

@@ -1,4 +1,4 @@
-import Component, { createDecorator } from '../lib'
+import Component, { createDecorator, Watch } from '../lib'
 import { expect } from 'chai'
 import * as td from 'testdouble'
 import Vue, { ComputedOptions } from 'vue'
@@ -341,5 +341,24 @@ describe('vue-class-component', () => {
     } finally {
       console.warn = originalWarn
     }
+  })
+
+  it('Watch decorator', () => {
+    let changed = false
+
+    @Component
+    class MyComp extends Vue {
+      expression = false
+
+      @Watch('expression', { immediate: true })
+      watcher () {
+        changed = true
+      }
+    }
+
+    const comp = new MyComp()
+    comp.expression = true
+
+    expect(changed).to.equal(true)
   })
 })
