@@ -5,12 +5,12 @@
       "dom",
       "es2015"
     ],
-    "module": "commonjs",
+    "module": "es2015",
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "strict": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "removeComments": true
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
   "include": [
     "./**/*.ts"
