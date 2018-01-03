@@ -8,11 +8,11 @@
     "module": "es2015",
     "moduleResolution": "node",
     "outDir": "lib",
-    "experimentalDecorators": true,
     "declaration": true,
     "strict": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "removeComments": true
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "suppressImplicitAnyIndexErrors": true
   },
   "include": [
     "src/**/*.ts"
