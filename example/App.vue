@@ -7,7 +7,7 @@
     <p>computed msg: {{computedMsg}}</p>
     <button @click="greet">Greet</button>
     <hello ref="helloComponent"></hello>
-    <World  :title="title"/>
+    <World  />
   </div>
 </template>
 
@@ -36,7 +36,6 @@ export default class App extends Vue {
   // use prop values for initial data
   helloMsg: string = 'Hello, ' + this.propMessage
 
-  title: string = 'tsx render function'
 
   // lifecycle hook
   mounted () {
