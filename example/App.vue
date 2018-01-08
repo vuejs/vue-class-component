@@ -7,6 +7,7 @@
     <p>computed msg: {{computedMsg}}</p>
     <button @click="greet">Greet</button>
     <hello ref="helloComponent"></hello>
+    <World  />
   </div>
 </template>
 
@@ -14,13 +15,15 @@
 import Vue from 'vue'
 import Component from '../lib/index'
 import Hello from './Hello.vue';
+import World from './World.tsx'
 
 @Component({
   props: {
     propMessage: String
   },
   components: {
-    Hello
+    Hello,
+    World
   }
 })
 export default class App extends Vue {
@@ -32,6 +35,7 @@ export default class App extends Vue {
 
   // use prop values for initial data
   helloMsg: string = 'Hello, ' + this.propMessage
+
 
   // lifecycle hook
   mounted () {

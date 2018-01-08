@@ -10,7 +10,9 @@
     "experimentalDecorators": true,
     "strict": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "jsx": "react",
+    "jsxFactory": "h"
   },
   "include": [
     "./**/*.ts"
