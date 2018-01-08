@@ -5,36 +5,34 @@ module.exports = {
     filename: 'build.js'
   },
   resolve: {
-    extensions: ['.ts', '.js','tsx']
+    alias: {
+      vue$: 'vue/dist/vue.esm.js'
+    },
+    extensions: ['.ts', '.tsx', '.js']
   },
   module: {
     rules: [
       {
         test: /\.ts$/,
-        exclude: /node_modules|vue\/src/,
-        loader: 'ts-loader',
-        options: {
-          appendTsSuffixTo: [/\.vue$/]
+        exclude: /node_modules/,
+        use: {
+          loader: 'ts-loader',
+          options: {
+            appendTsSuffixTo: [/\.vue$/]
+          }
         }
       },
       {
         test: /\.tsx$/,
-        exclude: /node_modules|vue\/src/,
-        loader:[
-          {
-            loader: "babel-loader"
-          },
-          {
-            loader: "ts-loader",
-          }
+        exclude: /node_modules/,
+        use: [
+          'babel-loader',
+          'ts-loader'
         ]
       },
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          esModule: true
-        }
+        use: ['vue-loader']
       }
     ]
   },
