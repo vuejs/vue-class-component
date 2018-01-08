@@ -1,21 +1,21 @@
 <template>
   <div>
     <input v-model="msg">
-    <p>prop: {{propMessage}}</p>
-    <p>msg: {{msg}}</p>
-    <p>helloMsg: {{helloMsg}}</p>
-    <p>computed msg: {{computedMsg}}</p>
+    <p>prop: {{ propMessage }}</p>
+    <p>msg: {{ msg }}</p>
+    <p>helloMsg: {{ helloMsg }}</p>
+    <p>computed msg: {{ computedMsg }}</p>
+    <Hello ref="helloComponent" />
+    <World />
     <button @click="greet">Greet</button>
-    <hello ref="helloComponent"></hello>
-    <World  />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import Component from '../lib/index'
-import Hello from './Hello.vue';
-import World from './World.tsx'
+import Hello from './Hello.vue'
+import World from './World'
 
 @Component({
   props: {
@@ -35,7 +35,6 @@ export default class App extends Vue {
 
   // use prop values for initial data
   helloMsg: string = 'Hello, ' + this.propMessage
-
 
   // lifecycle hook
   mounted () {
