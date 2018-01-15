@@ -11,7 +11,7 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "jsx": "react",
+    "jsx": "preserve",
     "jsxFactory": "h"
   },
   "include": [
