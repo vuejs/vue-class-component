@@ -1,4 +1,4 @@
-import Component, { createDecorator, Inject, Watch } from '../lib'
+import Component, { createDecorator, Inject, Provide, Watch } from '../lib'
 import { expect } from 'chai'
 import * as td from 'testdouble'
 import Vue, { ComputedOptions } from 'vue'
@@ -378,6 +378,25 @@ describe('vue-class-component', () => {
     const grandChild = new GrandChild({ parent: child })
     expect(grandChild.foo).equal('one')
     expect(grandChild.bar).equal('two')
+  })
+
+  it('Provide decorator', () => {
+    @Component
+    class Parent extends Vue {
+      @Provide() one = 'one'
+      @Provide('two') two_ = 'two'
+    }
+
+    @Component
+    class Child extends Vue {
+      @Inject() one: string
+      @Inject() two: string
+    }
+
+    const parent = new Parent()
+    const child = new Child({ parent })
+    expect(child.one).equal('one')
+    expect(child.two).equal('two')
   })
 
   it('Watch decorator', () => {

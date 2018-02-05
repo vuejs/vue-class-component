@@ -5,6 +5,7 @@ import { componentFactory, $internalHooks } from './component'
 export { createDecorator, VueDecorator } from './util'
 
 export { Inject } from './inject'
+export { Provide } from './provide'
 export { Watch } from './watch'
 
 function Component <V extends Vue>(options: ComponentOptions<V> & ThisType<V>): <VC extends VueClass<V>>(target: VC) => VC
