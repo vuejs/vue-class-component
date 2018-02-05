@@ -343,78 +343,80 @@ describe('vue-class-component', () => {
     }
   })
 
-  it('Inject decorator', () => {
-    const s = Symbol()
+  describe('property decorators', () => {
+    it('Inject decorator', () => {
+      const s = Symbol()
 
-    @Component({
-      provide() {
-        return {
-          [s]: 'one',
-          bar: 'two'
+      @Component({
+        provide() {
+          return {
+            [s]: 'one',
+            bar: 'two'
+          }
+        }
+      })
+      class Parent extends Vue {
+      }
+
+      const parent = new Parent()
+
+      @Component
+      class Child extends Vue {
+        @Inject(s) foo: string
+        @Inject() bar: string
+      }
+
+      const child = new Child({ parent })
+      expect(child.foo).equal('one')
+      expect(child.bar).equal('two')
+
+      @Component
+      class GrandChild extends Vue {
+        @Inject(s) foo: string
+        @Inject() bar: string
+      }
+
+      const grandChild = new GrandChild({ parent: child })
+      expect(grandChild.foo).equal('one')
+      expect(grandChild.bar).equal('two')
+    })
+
+    it('Provide decorator', () => {
+      @Component
+      class Parent extends Vue {
+        @Provide() one = 'one'
+        @Provide('two') two_ = 'two'
+      }
+
+      @Component
+      class Child extends Vue {
+        @Inject() one: string
+        @Inject() two: string
+      }
+
+      const parent = new Parent()
+      const child = new Child({ parent })
+      expect(child.one).equal('one')
+      expect(child.two).equal('two')
+    })
+
+    it('Watch decorator', () => {
+      let changed = false
+
+      @Component
+      class MyComp extends Vue {
+        expression = false
+
+        @Watch('expression', { immediate: true })
+        watcher() {
+          changed = true
         }
       }
+
+      const comp = new MyComp()
+      comp.expression = true
+
+      expect(changed).to.equal(true)
     })
-    class Parent extends Vue {
-    }
-
-    const parent = new Parent()
-
-    @Component
-    class Child extends Vue {
-      @Inject(s) foo: string
-      @Inject() bar: string
-    }
-
-    const child = new Child({ parent })
-    expect(child.foo).equal('one')
-    expect(child.bar).equal('two')
-
-    @Component
-    class GrandChild extends Vue {
-      @Inject(s) foo: string
-      @Inject() bar: string
-    }
-
-    const grandChild = new GrandChild({ parent: child })
-    expect(grandChild.foo).equal('one')
-    expect(grandChild.bar).equal('two')
-  })
-
-  it('Provide decorator', () => {
-    @Component
-    class Parent extends Vue {
-      @Provide() one = 'one'
-      @Provide('two') two_ = 'two'
-    }
-
-    @Component
-    class Child extends Vue {
-      @Inject() one: string
-      @Inject() two: string
-    }
-
-    const parent = new Parent()
-    const child = new Child({ parent })
-    expect(child.one).equal('one')
-    expect(child.two).equal('two')
-  })
-
-  it('Watch decorator', () => {
-    let changed = false
-
-    @Component
-    class MyComp extends Vue {
-      expression = false
-
-      @Watch('expression', { immediate: true })
-      watcher () {
-        changed = true
-      }
-    }
-
-    const comp = new MyComp()
-    comp.expression = true
-
-    expect(changed).to.equal(true)
   })
 })
