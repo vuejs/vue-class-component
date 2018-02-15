@@ -46,7 +46,7 @@ describe('vue-class-component', () => {
       props: ['foo']
     })
     class MyComp extends Vue {
-      foo: number
+      foo!: number
       a: string = 'hello'
       b: number = this.foo + 1
     }
@@ -97,7 +97,7 @@ describe('vue-class-component', () => {
   it('computed', () => {
     @Component
     class MyComp extends Vue {
-      a: number
+      a!: number
       data () {
         return {
           a: 1
@@ -152,7 +152,7 @@ describe('vue-class-component', () => {
       }
     })
     class MyComp extends Vue {
-      a: number
+      a!: number
       data () {
         return { a: 1 }
       }
@@ -169,7 +169,7 @@ describe('vue-class-component', () => {
   it('extending', function () {
     @Component
     class Base extends Vue {
-      a: number
+      a!: number
       data (): any {
         return { a: 1 }
       }
@@ -177,7 +177,7 @@ describe('vue-class-component', () => {
 
     @Component
     class A extends Base {
-      b: number
+      b!: number
       data (): any {
         return { b: 2 }
       }
@@ -236,7 +236,7 @@ describe('vue-class-component', () => {
 
     @Component
     class MyComp extends Vue {
-      @Prop foo: string
+      @Prop foo!: string
       @NoCache get bar (): string {
         return 'world'
       }
@@ -269,7 +269,7 @@ describe('vue-class-component', () => {
       @Component
       class Child extends Vue {
         @Value('child')
-        value: string
+        value!: string
       }
       return Child
     }
@@ -281,7 +281,7 @@ describe('vue-class-component', () => {
     })
     class Parent extends Vue {
       @Value('parent')
-      value: string
+      value!: string
     }
 
     const parent = new Parent()
