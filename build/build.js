@@ -8,7 +8,7 @@ const version = process.env.VERSION || require('../package.json').version
 const banner =
 `/**
   * vue-class-component v${version}
-  * (c) 2015-${new Date().getFullYear()} Evan You
+  * (c) 2015-present Evan You
   * @license MIT
   */`
 
