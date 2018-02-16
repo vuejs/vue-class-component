@@ -78,7 +78,7 @@ You may also want to check out the `@prop` and `@watch` decorators provided by [
 
 ### Using Mixins
 
-vue-class-component provides `mixin` helper function to use [mixin](https://vuejs.org/v2/guide/mixins.html) in class style manner. By using `mixin` helper, TypeScript can infer mixin type and inherit the type on the component type.
+vue-class-component provides `mixins` helper function to use [mixins](https://vuejs.org/v2/guide/mixins.html) in class style manner. By using `mixins` helper, TypeScript can infer mixin types and inherit them on the component type.
 
 Example of declaring a mixin:
 
@@ -97,13 +97,13 @@ export class MyMixin extends Vue {
 Example of using a mixin:
 
 ``` js
-import Component, { mixin } from 'vue-class-component'
+import Component, { mixins } from 'vue-class-component'
 import MyMixin from './mixin.js'
 
-// Use `mixin` helper function instead of `Vue`.
-// `mixin` can receive any number of arguments.
+// Use `mixins` helper function instead of `Vue`.
+// `mixins` can receive any number of arguments.
 @Component
-export class MyComp extends mixin(MyMixin) {
+export class MyComp extends mixins(MyMixin) {
   created () {
     console.log(this.mixinValue) // -> Hello
   }
