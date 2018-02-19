@@ -1,4 +1,6 @@
+import 'reflect-metadata'
 import Vue, { ComponentOptions } from 'vue'
+import { copyReflectionMetadata, ReflectionMap } from './reflect'
 import { VueClass, DecoratedClass } from './declarations'
 import { collectDataFromConstructor } from './data'
 import { hasProto, isPrimitive, warn } from './util'
@@ -23,6 +25,11 @@ export function componentFactory (
   Component: VueClass<Vue>,
   options: ComponentOptions<Vue> = {}
 ): VueClass<Vue> {
+  const reflectionMap: ReflectionMap = {
+      instance: {},
+      static: {}
+  };
+
   options.name = options.name || (Component as any)._componentTag || (Component as any).name
   // prototype props.
   const proto = Component.prototype
@@ -30,6 +37,7 @@ export function componentFactory (
     if (key === 'constructor') {
       return
     }
+    reflectionMap.instance[key] = Reflect.getOwnMetadataKeys(proto, key);
     // hooks
     if ($internalHooks.indexOf(key) > -1) {
       options[key] = proto[key]
@@ -69,7 +77,8 @@ export function componentFactory (
     : Vue
   const Extended = Super.extend(options)
 
-  forwardStaticMembers(Extended, Component, Super)
+  forwardStaticMembersAndCollectReflection(Extended, Component, Super, reflectionMap)
+  copyReflectionMetadata(Component, Extended, reflectionMap)
 
   return Extended
 }
@@ -93,13 +102,20 @@ const reservedPropertyNames = [
   'filter'
 ]
 
-function forwardStaticMembers (Extended: typeof Vue, Original: typeof Vue, Super: typeof Vue): void {
+function forwardStaticMembersAndCollectReflection (
+    Extended: typeof Vue,
+    Original: typeof Vue,
+    Super: typeof Vue,
+    reflectionMap: ReflectionMap
+): void {
   // We have to use getOwnPropertyNames since Babel registers methods as non-enumerable
   Object.getOwnPropertyNames(Original).forEach(key => {
     // `prototype` should not be overwritten
     if (key === 'prototype') {
       return
     }
+
+    reflectionMap.static[key] = Reflect.getOwnMetadataKeys(Original, key);
 
     // Some browsers does not allow reconfigure built-in properties
     const extendedDescriptor = Object.getOwnPropertyDescriptor(Extended, key)
