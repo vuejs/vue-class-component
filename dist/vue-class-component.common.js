@@ -9,24 +9,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-require('reflect-metadata');
 var Vue = _interopDefault(require('vue'));
-
-function copyReflectionMetadata(from, to, reflectionMap) {
-    shallowCopy(from.prototype, to.prototype, reflectionMap.instance);
-    shallowCopy(from, to, reflectionMap.static);
-}
-function shallowCopy(from, to, propertyKeys) {
-    var _loop_1 = function (propertyKey) {
-        propertyKeys[propertyKey].forEach(function (metadataKey) {
-            var metadata = Reflect.getOwnMetadata(metadataKey, from, propertyKey);
-            Reflect.defineMetadata(metadataKey, metadata, to, propertyKey);
-        });
-    };
-    for (var propertyKey in propertyKeys) {
-        _loop_1(propertyKey);
-    }
-}
 
 var hasProto = { __proto__: [] } instanceof Array;
 function createDecorator(factory) {
@@ -122,10 +105,6 @@ var $internalHooks = [
 ];
 function componentFactory(Component, options) {
     if (options === void 0) { options = {}; }
-    var reflectionMap = {
-        instance: {},
-        static: {}
-    };
     options.name = options.name || Component._componentTag || Component.name;
     // prototype props.
     var proto = Component.prototype;
@@ -133,7 +112,6 @@ function componentFactory(Component, options) {
         if (key === 'constructor') {
             return;
         }
-        reflectionMap.instance[key] = Reflect.getOwnMetadataKeys(proto, key);
         // hooks
         if ($internalHooks.indexOf(key) > -1) {
             options[key] = proto[key];
@@ -169,8 +147,7 @@ function componentFactory(Component, options) {
         ? superProto.constructor
         : Vue;
     var Extended = Super.extend(options);
-    forwardStaticMembersAndCollectReflection(Extended, Component, Super, reflectionMap);
-    copyReflectionMetadata(Component, Extended, reflectionMap);
+    forwardStaticMembers(Extended, Component, Super);
     return Extended;
 }
 var reservedPropertyNames = [
@@ -188,14 +165,13 @@ var reservedPropertyNames = [
     'directive',
     'filter'
 ];
-function forwardStaticMembersAndCollectReflection(Extended, Original, Super, reflectionMap) {
+function forwardStaticMembers(Extended, Original, Super) {
     // We have to use getOwnPropertyNames since Babel registers methods as non-enumerable
     Object.getOwnPropertyNames(Original).forEach(function (key) {
         // `prototype` should not be overwritten
         if (key === 'prototype') {
             return;
         }
-        reflectionMap.static[key] = Reflect.getOwnMetadataKeys(Original, key);
         // Some browsers does not allow reconfigure built-in properties
         var extendedDescriptor = Object.getOwnPropertyDescriptor(Extended, key);
         if (extendedDescriptor && !extendedDescriptor.configurable) {

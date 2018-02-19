@@ -1,6 +1,5 @@
-import 'reflect-metadata'
 import Vue, { ComponentOptions } from 'vue'
-import { copyReflectionMetadata, ReflectionMap } from './reflect'
+import { copyReflectionMetadata, reflectionIsSupported, ReflectionMap } from './reflect'
 import { VueClass, DecoratedClass } from './declarations'
 import { collectDataFromConstructor } from './data'
 import { hasProto, isPrimitive, warn } from './util'
@@ -28,7 +27,7 @@ export function componentFactory (
   const reflectionMap: ReflectionMap = {
       instance: {},
       static: {}
-  };
+  }
 
   options.name = options.name || (Component as any)._componentTag || (Component as any).name
   // prototype props.
@@ -37,7 +36,11 @@ export function componentFactory (
     if (key === 'constructor') {
       return
     }
-    reflectionMap.instance[key] = Reflect.getOwnMetadataKeys(proto, key);
+
+    if (reflectionIsSupported()) {
+      reflectionMap.instance[key] = Reflect.getOwnMetadataKeys(proto, key)
+    }
+
     // hooks
     if ($internalHooks.indexOf(key) > -1) {
       options[key] = proto[key]
@@ -78,7 +81,10 @@ export function componentFactory (
   const Extended = Super.extend(options)
 
   forwardStaticMembersAndCollectReflection(Extended, Component, Super, reflectionMap)
-  copyReflectionMetadata(Component, Extended, reflectionMap)
+
+  if (reflectionIsSupported()) {
+    copyReflectionMetadata(Component, Extended, reflectionMap)
+  }
 
   return Extended
 }
@@ -115,7 +121,9 @@ function forwardStaticMembersAndCollectReflection (
       return
     }
 
-    reflectionMap.static[key] = Reflect.getOwnMetadataKeys(Original, key);
+    if (reflectionIsSupported()) {
+      reflectionMap.static[key] = Reflect.getOwnMetadataKeys(Original, key)
+    }
 
     // Some browsers does not allow reconfigure built-in properties
     const extendedDescriptor = Object.getOwnPropertyDescriptor(Extended, key)

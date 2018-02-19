@@ -372,21 +372,21 @@ describe('vue-class-component', () => {
   })
 
   it('copies reflection metadata', function () {
-      @Component
-      class Test extends Vue {
-          @Reflect.metadata('worksStatic', true)
-          static staticValue: string = 'staticValue';
+    @Component
+    class Test extends Vue {
+      @Reflect.metadata('worksStatic', true)
+      static staticValue: string = 'staticValue'
 
-          @Reflect.metadata('worksMethod', true)
-          test(): void { }
+      @Reflect.metadata('worksMethod', true)
+      test(): void { }
 
-          @Reflect.metadata('worksAccessor', true)
-          get testAccessor(): boolean { return true; }
-          set testAccessor(value: boolean) { void(value) }
-      }
+      @Reflect.metadata('worksAccessor', true)
+      get testAccessor(): boolean { return true }
+      set testAccessor(value: boolean) { void(value) }
+    }
 
-      expect(Reflect.getOwnMetadata('worksStatic', Test, 'staticValue')).to.equal(true);
-      expect(Reflect.getOwnMetadata('worksMethod', Test.prototype, 'test')).to.equal(true);
-      expect(Reflect.getOwnMetadata('worksAccessor', Test.prototype, 'testAccessor')).to.equal(true);
+    expect(Reflect.getOwnMetadata('worksStatic', Test, 'staticValue')).to.equal(true)
+    expect(Reflect.getOwnMetadata('worksMethod', Test.prototype, 'test')).to.equal(true)
+    expect(Reflect.getOwnMetadata('worksAccessor', Test.prototype, 'testAccessor')).to.equal(true)
   })
 })
