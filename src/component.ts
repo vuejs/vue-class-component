@@ -109,10 +109,10 @@ const reservedPropertyNames = [
 ]
 
 function forwardStaticMembersAndCollectReflection (
-    Extended: typeof Vue,
-    Original: typeof Vue,
-    Super: typeof Vue,
-    reflectionMap: ReflectionMap
+  Extended: typeof Vue,
+  Original: typeof Vue,
+  Super: typeof Vue,
+  reflectionMap: ReflectionMap
 ): void {
   // We have to use getOwnPropertyNames since Babel registers methods as non-enumerable
   Object.getOwnPropertyNames(Original).forEach(key => {
