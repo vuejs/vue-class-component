@@ -26,9 +26,13 @@ export function componentFactory (
 ): VueClass<Vue> {
   const reflectionMap: ReflectionMap = {
       instance: {},
-      static: {}
+      static: {},
+      constructor: []
   }
 
+  if (reflectionIsSupported()) {
+    reflectionMap.constructor = Reflect.getOwnMetadataKeys(Component)
+  }
   options.name = options.name || (Component as any)._componentTag || (Component as any).name
   // prototype props.
   const proto = Component.prototype
