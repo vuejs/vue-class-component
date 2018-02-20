@@ -373,7 +373,7 @@ describe('vue-class-component', () => {
 
   it('copies reflection metadata', function () {
     const trickyDecorator = (proto: Vue, _: string) =>
-        Reflect.defineMetadata('worksConstructor', true, proto.constructor);
+      Reflect.defineMetadata('worksConstructor', true, proto.constructor)
 
     @Component
     class Test extends Vue {

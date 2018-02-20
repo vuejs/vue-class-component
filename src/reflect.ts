@@ -28,11 +28,11 @@ function shallowCopy(from: VueConstructor, to: VueConstructor, propertyKeys: Str
   for (const propertyKey in propertyKeys) {
     propertyKeys[propertyKey].forEach((metadataKey) => {
       if (propertyKey == 'constructor') {
-          const metadata = Reflect.getOwnMetadata(metadataKey, from)
-          Reflect.defineMetadata(metadataKey, metadata, to)
+        const metadata = Reflect.getOwnMetadata(metadataKey, from)
+        Reflect.defineMetadata(metadataKey, metadata, to)
       } else {
-          const metadata = Reflect.getOwnMetadata(metadataKey, from, propertyKey)
-          Reflect.defineMetadata(metadataKey, metadata, to, propertyKey)
+        const metadata = Reflect.getOwnMetadata(metadataKey, from, propertyKey)
+        Reflect.defineMetadata(metadataKey, metadata, to, propertyKey)
       }
     })
   }
