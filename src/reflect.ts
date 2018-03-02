@@ -10,11 +10,11 @@ export type ReflectionMap = {
   static: StringToArrayMap
 }
 
-export function reflectionIsSupported() {
+export function reflectionIsSupported () {
   return (Reflect && Reflect.defineMetadata) !== undefined
 }
 
-export function copyReflectionMetadata(
+export function copyReflectionMetadata (
   from: VueConstructor,
   to: VueConstructor,
   reflectionMap: ReflectionMap
@@ -24,7 +24,7 @@ export function copyReflectionMetadata(
   shallowCopy(from, to, {'constructor': reflectionMap.constructor})
 }
 
-function shallowCopy(from: VueConstructor, to: VueConstructor, propertyKeys: StringToArrayMap) {
+function shallowCopy (from: VueConstructor, to: VueConstructor, propertyKeys: StringToArrayMap) {
   for (const propertyKey in propertyKeys) {
     propertyKeys[propertyKey].forEach((metadataKey) => {
       if (propertyKey == 'constructor') {

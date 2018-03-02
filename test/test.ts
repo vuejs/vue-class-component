@@ -372,23 +372,27 @@ describe('vue-class-component', () => {
   })
 
   it('copies reflection metadata', function () {
-    const trickyDecorator = (proto: Vue, _: string) =>
-      Reflect.defineMetadata('worksConstructor', true, proto.constructor)
-
     @Component
+    @Reflect.metadata('worksConstructor', true)
     class Test extends Vue {
-      @trickyDecorator
-      trickyCase: string = 'trickyCase'
-
       @Reflect.metadata('worksStatic', true)
       static staticValue: string = 'staticValue'
 
+      private _test: boolean = false;
+
       @Reflect.metadata('worksMethod', true)
-      test(): void { }
+      test (): void {
+        void 0
+      }
 
       @Reflect.metadata('worksAccessor', true)
-      get testAccessor(): boolean { return true }
-      set testAccessor(value: boolean) { void(value) }
+      get testAccessor (): boolean {
+        return this._test
+      }
+
+      set testAccessor (value: boolean) {
+        this._test = value
+      }
     }
 
     expect(Reflect.getOwnMetadata('worksConstructor', Test)).to.equal(true)
