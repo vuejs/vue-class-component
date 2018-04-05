@@ -1,4 +1,4 @@
-import Vue, { PropOptions, WatchOptions } from 'vue'
+import { WatchOptions } from 'vue'
 import { createDecorator, VueDecorator } from './util'
 
 /**
@@ -7,7 +7,7 @@ import { createDecorator, VueDecorator } from './util'
  * @param  WatchOption
  * @return VueDecorator
  */
-export function Watch(path: string, options: WatchOptions = {}) {
+export function Watch(path: string, options: WatchOptions = {}): VueDecorator {
   const { deep = false, immediate = false } = options
 
   return createDecorator((componentOptions, handler) => {

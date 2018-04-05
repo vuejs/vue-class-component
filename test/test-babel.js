@@ -1,4 +1,4 @@
-import Component, { createDecorator } from '../lib'
+import Component, { createDecorator, mixins } from '../lib'
 import { expect } from 'chai'
 import * as td from 'testdouble'
 import Vue from 'vue'
@@ -120,5 +120,32 @@ describe('vue-class-component with Babel', () => {
 
     expect(MyComp.foo).to.equal('foo')
     expect(MyComp.bar()).to.equal('bar')
+  })
+
+  it('mixin helper', function () {
+    @Component
+    class MixinA extends Vue {
+      valueA = 'hello'
+    }
+
+    @Component
+    class MixinB extends Vue {
+      valueB = 123
+    }
+
+    @Component
+    class MyComp extends mixins(MixinA, MixinB) {
+      test () {
+        this.valueA = 'hi'
+        this.valueB = 456
+      }
+    }
+
+    const vm = new MyComp()
+    expect(vm.valueA).to.equal('hello')
+    expect(vm.valueB).to.equal(123)
+    vm.test()
+    expect(vm.valueA).to.equal('hi')
+    expect(vm.valueB).to.equal(456)
   })
 })

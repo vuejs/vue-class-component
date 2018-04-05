@@ -2,7 +2,7 @@ import Vue, { ComponentOptions } from 'vue'
 import { VueClass } from './declarations'
 import { componentFactory, $internalHooks } from './component'
 
-export { createDecorator, VueDecorator } from './util'
+export { createDecorator, VueDecorator, mixins } from './util'
 
 export { Inject } from './inject'
 export { Provide } from './provide'

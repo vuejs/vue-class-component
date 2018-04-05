@@ -1,4 +1,4 @@
-import Vue, { PropOptions, WatchOptions } from 'vue'
+import Vue from 'vue'
 import { createDecorator, VueDecorator } from './util'
 
 /**
@@ -6,7 +6,7 @@ import { createDecorator, VueDecorator } from './util'
  * @param key key
  * @return VueDecorator
  */
-export function Provide(key?: string | symbol) {
+export function Provide(key?: string | symbol): VueDecorator {
   return createDecorator((componentOptions, k) => {
     let provide: any = componentOptions.provide
 

@@ -1,4 +1,4 @@
-import Component, { createDecorator, Inject, Provide, Watch } from '../lib'
+import Component, { createDecorator, mixins, Inject, Provide, Watch } from '../lib'
 import { expect } from 'chai'
 import * as td from 'testdouble'
 import Vue, { ComputedOptions } from 'vue'
@@ -46,7 +46,7 @@ describe('vue-class-component', () => {
       props: ['foo']
     })
     class MyComp extends Vue {
-      foo: number
+      foo!: number
       a: string = 'hello'
       b: number = this.foo + 1
     }
@@ -97,7 +97,7 @@ describe('vue-class-component', () => {
   it('computed', () => {
     @Component
     class MyComp extends Vue {
-      a: number
+      a!: number
       data () {
         return {
           a: 1
@@ -152,7 +152,7 @@ describe('vue-class-component', () => {
       }
     })
     class MyComp extends Vue {
-      a: number
+      a!: number
       data () {
         return { a: 1 }
       }
@@ -169,7 +169,7 @@ describe('vue-class-component', () => {
   it('extending', function () {
     @Component
     class Base extends Vue {
-      a: number
+      a!: number
       data (): any {
         return { a: 1 }
       }
@@ -177,7 +177,7 @@ describe('vue-class-component', () => {
 
     @Component
     class A extends Base {
-      b: number
+      b!: number
       data (): any {
         return { b: 2 }
       }
@@ -236,7 +236,7 @@ describe('vue-class-component', () => {
 
     @Component
     class MyComp extends Vue {
-      @Prop foo: string
+      @Prop foo!: string
       @NoCache get bar (): string {
         return 'world'
       }
@@ -269,7 +269,7 @@ describe('vue-class-component', () => {
       @Component
       class Child extends Vue {
         @Value('child')
-        value: string
+        value!: string
       }
       return Child
     }
@@ -281,7 +281,7 @@ describe('vue-class-component', () => {
     })
     class Parent extends Vue {
       @Value('parent')
-      value: string
+      value!: string
     }
 
     const parent = new Parent()
@@ -343,6 +343,33 @@ describe('vue-class-component', () => {
     }
   })
 
+  it('mixin helper', function () {
+    @Component
+    class MixinA extends Vue {
+      valueA = 'hello'
+    }
+
+    @Component
+    class MixinB extends Vue {
+      valueB = 123
+    }
+
+    @Component
+    class MyComp extends mixins(MixinA, MixinB) {
+      test () {
+        this.valueA = 'hi'
+        this.valueB = 456
+      }
+    }
+
+    const vm = new MyComp()
+    expect(vm.valueA).to.equal('hello')
+    expect(vm.valueB).to.equal(123)
+    vm.test()
+    expect(vm.valueA).to.equal('hi')
+    expect(vm.valueB).to.equal(456)
+  })
+
   describe('property decorators', () => {
     it('Inject decorator', () => {
       const s = Symbol()
@@ -362,8 +389,8 @@ describe('vue-class-component', () => {
 
       @Component
       class Child extends Vue {
-        @Inject(s) foo: string
-        @Inject() bar: string
+        @Inject(s) foo!: string
+        @Inject() bar!: string
       }
 
       const child = new Child({ parent })
@@ -372,8 +399,8 @@ describe('vue-class-component', () => {
 
       @Component
       class GrandChild extends Vue {
-        @Inject(s) foo: string
-        @Inject() bar: string
+        @Inject(s) foo!: string
+        @Inject() bar!: string
       }
 
       const grandChild = new GrandChild({ parent: child })
@@ -390,8 +417,8 @@ describe('vue-class-component', () => {
 
       @Component
       class Child extends Vue {
-        @Inject() one: string
-        @Inject() two: string
+        @Inject() one!: string
+        @Inject() two!: string
       }
 
       const parent = new Parent()

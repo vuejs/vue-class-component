@@ -1,31 +1,34 @@
 <template>
   <div>
     <input v-model="msg">
-    <p>prop: {{propMessage}}</p>
-    <p>msg: {{msg}}</p>
-    <p>helloMsg: {{helloMsg}}</p>
-    <p>computed msg: {{computedMsg}}</p>
+    <p>prop: {{ propMessage }}</p>
+    <p>msg: {{ msg }}</p>
+    <p>helloMsg: {{ helloMsg }}</p>
+    <p>computed msg: {{ computedMsg }}</p>
+    <Hello ref="helloComponent" />
+    <World />
     <button @click="greet">Greet</button>
-    <hello ref="helloComponent"></hello>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import Component from '../lib/index'
-import Hello from './Hello.vue';
+import Hello from './Hello.vue'
+import World from './World'
 
 @Component({
   props: {
     propMessage: String
   },
   components: {
-    Hello
+    Hello,
+    World
   }
 })
 export default class App extends Vue {
   // props have to be declared for typescript
-  propMessage: string
+  propMessage!: string
 
   // inital data
   msg: number = 123
@@ -50,7 +53,7 @@ export default class App extends Vue {
   }
 
   // dynamic component
-  $refs: {
+  $refs!: {
     helloComponent: Hello
   }
 }

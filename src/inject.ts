@@ -1,4 +1,3 @@
-import Vue, { PropOptions, WatchOptions } from 'vue'
 import { createDecorator, VueDecorator } from './util'
 
 /**
@@ -6,7 +5,7 @@ import { createDecorator, VueDecorator } from './util'
  * @param key key
  * @return VueDecorator
  */
-export function Inject(key?: string | symbol) {
+export function Inject(key?: string | symbol): VueDecorator {
   return createDecorator((componentOptions, k) => {
     if (typeof componentOptions.inject === 'undefined') {
       componentOptions.inject = {}

@@ -1,7 +1,5 @@
 <template>
-  <div class="hello">
-    <h1>Hello Times: {{ helloTimes }}</h1>
-  </div>
+  <p>hello times: {{ helloTimes }}</p>
 </template>
 
 <script lang="ts">
@@ -11,8 +9,9 @@
   @Component
   export default class Hello extends Vue {
     helloTimes: number = 0
-    sayHello() {
-      this.helloTimes++;
+
+    sayHello () {
+      this.helloTimes++
     }
   }
 </script>

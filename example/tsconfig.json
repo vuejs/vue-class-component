@@ -5,12 +5,14 @@
       "dom",
       "es2015"
     ],
-    "module": "commonjs",
+    "module": "es2015",
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "strict": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "removeComments": true
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "jsx": "preserve",
+    "jsxFactory": "h"
   },
   "include": [
     "./**/*.ts"
