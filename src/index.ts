@@ -6,6 +6,7 @@ export { createDecorator, VueDecorator, mixins } from './util'
 
 export { Emit } from './emit'
 export { Inject } from './inject'
+export { Model } from './model'
 export { Constructor, Prop } from './prop'
 export { Provide } from './provide'
 export { Watch } from './watch'

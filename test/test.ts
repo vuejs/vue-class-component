@@ -1,5 +1,5 @@
 import Component, { createDecorator, mixins } from '../lib'
-import { Emit, Inject, Prop, Provide, Watch } from '../lib'
+import { Emit, Inject, Model, Prop, Provide, Watch } from '../lib'
 import { expect } from 'chai'
 import * as td from 'testdouble'
 import Vue, { ComputedOptions } from 'vue'
@@ -455,6 +455,20 @@ describe('vue-class-component', () => {
       const grandChild = new GrandChild({ parent: child })
       expect(grandChild.foo).equal('one')
       expect(grandChild.bar).equal('two')
+    })
+
+    it('Model decorator', () => {
+      @Component
+      class Test extends Vue {
+        @Model('change', { type: Boolean }) checked!: boolean
+      }
+
+      const { $options } = new Test()
+      expect($options.model).deep.equal({ prop: 'checked', event: 'change' })
+      const { props } = $options
+      if (!(props instanceof Array)) {
+        expect(props!['checked']).deep.equal({ type: Boolean })
+      }
     })
 
     it('Prop decorator', () => {
