@@ -1,4 +1,5 @@
-import Component, { createDecorator, mixins, Inject, Provide, Watch } from '../lib'
+import Component, { createDecorator, mixins } from '../lib'
+import { Inject, Prop, Provide, Watch } from '../lib'
 import { expect } from 'chai'
 import * as td from 'testdouble'
 import Vue, { ComputedOptions } from 'vue'
@@ -406,6 +407,28 @@ describe('vue-class-component', () => {
       const grandChild = new GrandChild({ parent: child })
       expect(grandChild.foo).equal('one')
       expect(grandChild.bar).equal('two')
+    })
+
+    it('Prop decorator', () => {
+      @Component
+      class Test extends Vue {
+
+        @Prop(Number) propA!: number
+        @Prop({ default: 'propB' }) propB!: string
+        @Prop([Boolean, String]) propC!: boolean | string
+      }
+
+      const { $options } = new Test()
+      const { props } = $options
+      if (!(props instanceof Array)) {
+        expect(props!['propA']).to.deep.equal({ type: Number })
+        expect(props!['propB']).to.deep.equal({ default: 'propB' })
+        expect(props!['propC']).to.deep.equal({ type: [Boolean, String] })
+      }
+
+      const test = new Test({ propsData: { propA: 10 } })
+      expect(test.propA).equal(10)
+      expect(test.propB).equal('propB')
     })
 
     it('Provide decorator', () => {
