@@ -1,5 +1,5 @@
 import Component, { createDecorator, mixins } from '../lib'
-import { Inject, Prop, Provide, Watch } from '../lib'
+import { Emit, Inject, Prop, Provide, Watch } from '../lib'
 import { expect } from 'chai'
 import * as td from 'testdouble'
 import Vue, { ComputedOptions } from 'vue'
@@ -372,6 +372,54 @@ describe('vue-class-component', () => {
   })
 
   describe('property decorators', () => {
+    it('Emit decorator', () => {
+      @Component
+      class Child extends Vue {
+        count = 0
+
+        @Emit('reset') resetCount() {
+          this.count = 0
+        }
+
+        @Emit() increment(n: number) {
+          this.count += n
+        }
+
+        @Emit() canceled() {
+          return false
+        }
+      }
+      const child = new Child()
+
+      let result = {
+        called: false,
+        event: '',
+        arg: 0
+      }
+
+      child.$emit = (event, ...args) => {
+        result.called = true
+        result.event = event
+        result.arg = args[0]
+
+        return child
+      }
+
+      child.resetCount()
+      expect(result.called).equal(true)
+      expect(result.event).equal('reset')
+      expect(result.arg).equal(undefined)
+
+      result.called = false
+      child.increment(30)
+      expect(result.event).equal('increment')
+      expect(result.arg).equal(30)
+
+      result.called = false
+      child.canceled()
+      expect(result.called).equal(false)
+    })
+
     it('Inject decorator', () => {
       const s = Symbol()
 

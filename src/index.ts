@@ -4,6 +4,7 @@ import { componentFactory, $internalHooks } from './component'
 
 export { createDecorator, VueDecorator, mixins } from './util'
 
+export { Emit } from './emit'
 export { Inject } from './inject'
 export { Constructor, Prop } from './prop'
 export { Provide } from './provide'
