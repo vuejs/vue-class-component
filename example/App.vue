@@ -17,19 +17,21 @@ import Component from '../lib/index'
 import Hello from './Hello.vue'
 import World from './World'
 
-@Component({
+// We declare the props separately
+// to make props types inferable.
+const AppProps = Vue.extend({
   props: {
     propMessage: String
-  },
+  }
+})
+
+@Component({
   components: {
     Hello,
     World
   }
 })
-export default class App extends Vue {
-  // props have to be declared for typescript
-  propMessage!: string
-
+export default class App extends AppProps {
   // inital data
   msg: number = 123
 
