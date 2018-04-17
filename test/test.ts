@@ -1,4 +1,5 @@
 import Component, { createDecorator, mixins } from '../lib'
+import { Emit, Inject, Model, Prop, Provide, Watch } from '../lib'
 import { expect } from 'chai'
 import * as td from 'testdouble'
 import Vue, { ComputedOptions } from 'vue'
@@ -368,5 +369,166 @@ describe('vue-class-component', () => {
     vm.test()
     expect(vm.valueA).to.equal('hi')
     expect(vm.valueB).to.equal(456)
+  })
+
+  describe('property decorators', () => {
+    it('Emit decorator', () => {
+      @Component
+      class Child extends Vue {
+        count = 0
+
+        @Emit('reset') resetCount() {
+          this.count = 0
+        }
+
+        @Emit() increment(n: number) {
+          this.count += n
+        }
+
+        @Emit() canceled() {
+          return false
+        }
+      }
+      const child = new Child()
+
+      let result = {
+        called: false,
+        event: '',
+        arg: 0
+      }
+
+      child.$emit = (event, ...args) => {
+        result.called = true
+        result.event = event
+        result.arg = args[0]
+
+        return child
+      }
+
+      child.resetCount()
+      expect(result.called).equal(true)
+      expect(result.event).equal('reset')
+      expect(result.arg).equal(undefined)
+
+      result.called = false
+      child.increment(30)
+      expect(result.event).equal('increment')
+      expect(result.arg).equal(30)
+
+      result.called = false
+      child.canceled()
+      expect(result.called).equal(false)
+    })
+
+    it('Inject decorator', () => {
+      const s = Symbol()
+
+      @Component({
+        provide() {
+          return {
+            [s]: 'one',
+            bar: 'two'
+          }
+        }
+      })
+      class Parent extends Vue {
+      }
+
+      const parent = new Parent()
+
+      @Component
+      class Child extends Vue {
+        @Inject(s) foo!: string
+        @Inject() bar!: string
+      }
+
+      const child = new Child({ parent })
+      expect(child.foo).equal('one')
+      expect(child.bar).equal('two')
+
+      @Component
+      class GrandChild extends Vue {
+        @Inject(s) foo!: string
+        @Inject() bar!: string
+      }
+
+      const grandChild = new GrandChild({ parent: child })
+      expect(grandChild.foo).equal('one')
+      expect(grandChild.bar).equal('two')
+    })
+
+    it('Model decorator', () => {
+      @Component
+      class Test extends Vue {
+        @Model('change', { type: Boolean }) checked!: boolean
+      }
+
+      const { $options } = new Test()
+      expect($options.model).deep.equal({ prop: 'checked', event: 'change' })
+      const { props } = $options
+      if (!(props instanceof Array)) {
+        expect(props!['checked']).deep.equal({ type: Boolean })
+      }
+    })
+
+    it('Prop decorator', () => {
+      @Component
+      class Test extends Vue {
+
+        @Prop(Number) propA!: number
+        @Prop({ default: 'propB' }) propB!: string
+        @Prop([Boolean, String]) propC!: boolean | string
+      }
+
+      const { $options } = new Test()
+      const { props } = $options
+      if (!(props instanceof Array)) {
+        expect(props!['propA']).to.deep.equal({ type: Number })
+        expect(props!['propB']).to.deep.equal({ default: 'propB' })
+        expect(props!['propC']).to.deep.equal({ type: [Boolean, String] })
+      }
+
+      const test = new Test({ propsData: { propA: 10 } })
+      expect(test.propA).equal(10)
+      expect(test.propB).equal('propB')
+    })
+
+    it('Provide decorator', () => {
+      @Component
+      class Parent extends Vue {
+        @Provide() one = 'one'
+        @Provide('two') two_ = 'two'
+      }
+
+      @Component
+      class Child extends Vue {
+        @Inject() one!: string
+        @Inject() two!: string
+      }
+
+      const parent = new Parent()
+      const child = new Child({ parent })
+      expect(child.one).equal('one')
+      expect(child.two).equal('two')
+    })
+
+    it('Watch decorator', () => {
+      let changed = false
+
+      @Component
+      class MyComp extends Vue {
+        expression = false
+
+        @Watch('expression', { immediate: true })
+        watcher() {
+          changed = true
+        }
+      }
+
+      const comp = new MyComp()
+      comp.expression = true
+
+      expect(changed).to.equal(true)
+    })
   })
 })

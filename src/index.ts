@@ -4,6 +4,13 @@ import { componentFactory, $internalHooks } from './component'
 
 export { createDecorator, VueDecorator, mixins } from './util'
 
+export { Emit } from './emit'
+export { Inject } from './inject'
+export { Model } from './model'
+export { Constructor, Prop } from './prop'
+export { Provide } from './provide'
+export { Watch } from './watch'
+
 function Component <V extends Vue>(options: ComponentOptions<V> & ThisType<V>): <VC extends VueClass<V>>(target: VC) => VC
 function Component <VC extends VueClass<Vue>>(target: VC): VC
 function Component (options: ComponentOptions<Vue> | VueClass<Vue>): any {
