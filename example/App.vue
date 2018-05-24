@@ -8,6 +8,12 @@
     <Hello ref="helloComponent" />
     <World />
     <button @click="greet">Greet</button>
+
+    Clicked: {{ $store.state.count }} times, count is {{ evenOrOdd }}.
+    <button @click="increment">+</button>
+    <button @click="decrement">-</button>
+    <button @click="incrementIfOdd">Increment if odd</button>
+    <button @click="incrementAsync">Increment async</button>
   </div>
 </template>
 
@@ -16,6 +22,7 @@ import Vue from 'vue'
 import Component from '../lib/index'
 import Hello from './Hello.vue'
 import World from './World'
+import { mapGetters, mapActions } from 'vuex'
 
 // We declare the props separately
 // to make props types inferable.
@@ -29,7 +36,16 @@ const AppProps = Vue.extend({
   components: {
     Hello,
     World
-  }
+  },
+  // mapGetters & mapActions example
+  computed: mapGetters([
+    'evenOrOdd'
+  ]),
+  methods: mapActions([
+    'increment',
+    'decrement',
+    'incrementAsync'
+  ])
 })
 export default class App extends AppProps {
   // inital data
@@ -52,6 +68,11 @@ export default class App extends AppProps {
   greet () {
     alert('greeting: ' + this.msg)
     this.$refs.helloComponent.sayHello()
+  }
+
+  // direct dispatch example
+  incrementIfOdd() {
+    this.$store.dispatch('incrementIfOdd')
   }
 
   // dynamic component
