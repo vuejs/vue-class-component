@@ -60,6 +60,48 @@ describe('vue-class-component', () => {
     expect(c.b).to.equal(2)
   })
 
+  it('data: should collect from decorated class properties', () => {
+
+    const decorator1 = (value: any) => (_: any, __:any ): any => {
+      return {
+        enumerable: true,
+        value
+      }
+    }
+
+    const decorator2 = (value: any) => (_: any, __:any ): any => {
+      return {
+        enumerable: true,
+        get() {
+          return value;
+        }
+      }
+	}
+
+    @Component({
+      props: ['foo']
+    })
+    class MyComp extends Vue {
+
+      @decorator1('field1')
+      field1!: string
+
+      @decorator2('field2')
+      field2!: string
+
+      foo!: number
+    }
+
+    const c = new MyComp({
+      propsData: {
+          foo: 1
+      }
+    })
+    expect(c.field1).to.equal('field1')
+    expect(c.field2).to.equal('field2')
+    expect(c.foo).to.equal(1)
+  })
+
   it('data: should collect custom property defined on beforeCreate', () => {
     @Component
     class MyComp extends Vue {

@@ -28,6 +28,48 @@ describe('vue-class-component with Babel', () => {
     expect(c.bar).to.equal(2)
   })
 
+  it('should collect decorated class properties', () => {
+
+    const decorator1 = (value) => () => {
+      return {
+        enumerable: true,
+        value: value
+      }
+    }
+
+    const decorator2 = (value) => () => {
+      return {
+        enumerable: true,
+        get() {
+          return value;
+        }
+      }
+    }
+
+    @Component({
+      props: ['foo']
+    })
+    class MyComp extends Vue {
+
+      @decorator1('field1')
+      field1
+
+      @decorator2('field2')
+      field2
+
+      foo
+    }
+
+    const c = new MyComp({
+      propsData: {
+        foo: 1
+      }
+    })
+    expect(c.field1).to.equal('field1')
+    expect(c.field2).to.equal('field2')
+    expect(c.foo).to.equal(1)
+  })
+
   it('should not collect uninitialized class properties', () => {
     const Prop = createDecorator((options, key) => {
       if (!options.props) {
