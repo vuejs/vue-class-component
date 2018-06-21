@@ -62,14 +62,14 @@ describe('vue-class-component', () => {
 
   it('data: should collect from decorated class properties', () => {
 
-    const decorator1 = (value: any) => (_: any, __:any ): any => {
+    const valueDecorator = (value: any) => (_: any, __: any): any => {
       return {
         enumerable: true,
         value
       }
     }
 
-    const decorator2 = (value: any) => (_: any, __:any ): any => {
+    const getterDecorator = (value: any) => (_: any, __: any): any => {
       return {
         enumerable: true,
         get() {
@@ -78,28 +78,20 @@ describe('vue-class-component', () => {
       }
 	}
 
-    @Component({
-      props: ['foo']
-    })
+    @Component
     class MyComp extends Vue {
 
-      @decorator1('field1')
+      @valueDecorator('field1')
       field1!: string
 
-      @decorator2('field2')
+      @getterDecorator('field2')
       field2!: string
 
-      foo!: number
     }
 
-    const c = new MyComp({
-      propsData: {
-          foo: 1
-      }
-    })
+    const c = new MyComp()
     expect(c.field1).to.equal('field1')
     expect(c.field2).to.equal('field2')
-    expect(c.foo).to.equal(1)
   })
 
   it('data: should collect custom property defined on beforeCreate', () => {
