@@ -169,12 +169,14 @@ import Component from 'vue-class-component'
 class MyComp extends Vue {
   // The class component now treats beforeRouteEnter
   // and beforeRouteLeave as Vue Router hooks
-  beforeRouteEnter () {
+  beforeRouteEnter (to: Route, from: Route, next: Function) {
     console.log('beforeRouteEnter')
+	next(); // needs to be called to confirm the navigation
   }
 
-  beforeRouteLeave () {
-    console.log('beforeRouteLeave')
+  beforeRouteLeave (to: Route, from: Route, next: Function) {
+    console.log('beforeRouteLeave');
+	next(); // needs to be called to confirm the navigation
   }
 }
 ```
