@@ -171,12 +171,12 @@ class MyComp extends Vue {
   // and beforeRouteLeave as Vue Router hooks
   beforeRouteEnter (to, from, next) {
     console.log('beforeRouteEnter')
-    next(); // needs to be called to confirm the navigation
+    next() // needs to be called to confirm the navigation
   }
 
   beforeRouteLeave (to, from, next) {
-    console.log('beforeRouteLeave');
-    next(); // needs to be called to confirm the navigation
+    console.log('beforeRouteLeave')
+    next() // needs to be called to confirm the navigation
   }
 }
 ```
