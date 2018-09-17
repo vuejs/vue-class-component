@@ -257,6 +257,25 @@ class MyComp extends Vue {
 }
 ```
 
+### @Prop and strictPropertyInitialization
+If you use the option `strictPropertyInitialization` in your tsconfig, you could get the error like these:
+
+> Property 'propMessage' has no initializer and is not definitely assigned in the constructor.
+
+You could fix this with the [definite assignment assertion](https://blogs.msdn.microsoft.com/typescript/2018/01/31/announcing-typescript-2-7/#definite-assignment-assertions) (the `!` after the propery name)
+
+Example:
+
+```ts
+@Component
+class App extends Vue {
+  @Prop()
+  propMessage! : string;
+  
+  ...
+}
+```
+
 ### Build the Example
 
 ``` bash
