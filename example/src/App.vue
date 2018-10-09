@@ -7,13 +7,15 @@
     <p>computed msg: {{ computedMsg }}</p>
     <Hello ref="helloComponent" />
     <World />
-    <button @click="greet">Greet</button>
 
-    Clicked: {{ $store.state.count }} times, count is {{ evenOrOdd }}.
-    <button @click="increment">+</button>
-    <button @click="decrement">-</button>
-    <button @click="incrementIfOdd">Increment if odd</button>
-    <button @click="incrementAsync">Increment async</button>
+    <p>
+      <button @click="greet">Greet</button>
+    </p>
+
+    <p>
+      Clicked: {{ count }} times
+      <button @click="increment">+</button>
+    </p>
   </div>
 </template>
 
@@ -22,7 +24,7 @@ import Vue from 'vue'
 import Component from '../../lib/index'
 import Hello from './components/Hello.vue'
 import World from './components/World'
-import { mapGetters, mapActions } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 // We declare the props separately
 // to make props types inferable.
@@ -37,14 +39,13 @@ const AppProps = Vue.extend({
     Hello,
     World
   },
-  // mapGetters & mapActions example
-  computed: mapGetters([
-    'evenOrOdd'
+
+  // Vuex's component binding helper can use here
+  computed: mapState([
+    'count'
   ]),
-  methods: mapActions([
-    'increment',
-    'decrement',
-    'incrementAsync'
+  methods: mapMutations([
+    'increment'
   ])
 })
 export default class App extends AppProps {
@@ -53,6 +54,16 @@ export default class App extends AppProps {
 
   // use prop values for initial data
   helloMsg: string = 'Hello, ' + this.propMessage
+
+  // annotate refs type
+  $refs!: {
+    helloComponent: Hello
+  }
+
+  // additional declaration is needed
+  // when you declare some properties in `Component` decorator
+  count!: number
+  increment!: () => void
 
   // lifecycle hook
   mounted () {
@@ -73,11 +84,6 @@ export default class App extends AppProps {
   // direct dispatch example
   incrementIfOdd() {
     this.$store.dispatch('incrementIfOdd')
-  }
-
-  // dynamic component
-  $refs!: {
-    helloComponent: Hello
   }
 }
 </script>
