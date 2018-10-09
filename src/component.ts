@@ -1,5 +1,5 @@
 import Vue, { ComponentOptions } from 'vue'
-import { copyReflectionMetadata, reflectionIsSupported, ReflectionMap } from './reflect'
+import { copyReflectionMetadata, reflectionIsSupported } from './reflect'
 import { VueClass, DecoratedClass } from './declarations'
 import { collectDataFromConstructor } from './data'
 import { hasProto, isPrimitive, warn } from './util'
@@ -24,25 +24,12 @@ export function componentFactory (
   Component: VueClass<Vue>,
   options: ComponentOptions<Vue> = {}
 ): VueClass<Vue> {
-  const reflectionMap: ReflectionMap = {
-      instance: {},
-      static: {},
-      constructor: []
-  }
-
-  if (reflectionIsSupported()) {
-    reflectionMap.constructor = Reflect.getOwnMetadataKeys(Component)
-  }
   options.name = options.name || (Component as any)._componentTag || (Component as any).name
   // prototype props.
   const proto = Component.prototype
   Object.getOwnPropertyNames(proto).forEach(function (key) {
     if (key === 'constructor') {
       return
-    }
-
-    if (reflectionIsSupported()) {
-      reflectionMap.instance[key] = Reflect.getOwnMetadataKeys(proto, key)
     }
 
     // hooks
@@ -84,10 +71,10 @@ export function componentFactory (
     : Vue
   const Extended = Super.extend(options)
 
-  forwardStaticMembersAndCollectReflection(Extended, Component, Super, reflectionMap)
+  forwardStaticMembers(Extended, Component, Super)
 
   if (reflectionIsSupported()) {
-    copyReflectionMetadata(Component, Extended, reflectionMap)
+    copyReflectionMetadata(Extended, Component)
   }
 
   return Extended
@@ -112,21 +99,16 @@ const reservedPropertyNames = [
   'filter'
 ]
 
-function forwardStaticMembersAndCollectReflection (
+function forwardStaticMembers (
   Extended: typeof Vue,
   Original: typeof Vue,
-  Super: typeof Vue,
-  reflectionMap: ReflectionMap
+  Super: typeof Vue
 ): void {
   // We have to use getOwnPropertyNames since Babel registers methods as non-enumerable
   Object.getOwnPropertyNames(Original).forEach(key => {
     // `prototype` should not be overwritten
     if (key === 'prototype') {
       return
-    }
-
-    if (reflectionIsSupported()) {
-      reflectionMap.static[key] = Reflect.getOwnMetadataKeys(Original, key)
     }
 
     // Some browsers does not allow reconfigure built-in properties

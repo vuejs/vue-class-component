@@ -1,39 +1,39 @@
-import { VueConstructor } from 'vue'
-
-export type StringToArrayMap = {
-  [key: string]: Array<string>
-}
-
-export type ReflectionMap = {
-  constructor: Array<string>,
-  instance: StringToArrayMap,
-  static: StringToArrayMap
-}
+import Vue, { VueConstructor } from 'vue'
+import { VueClass } from './declarations'
 
 export function reflectionIsSupported () {
   return (Reflect && Reflect.defineMetadata) !== undefined
 }
 
 export function copyReflectionMetadata (
-  from: VueConstructor,
   to: VueConstructor,
-  reflectionMap: ReflectionMap
+  from: VueClass<Vue>
 ) {
-  shallowCopy(from.prototype, to.prototype, reflectionMap.instance)
-  shallowCopy(from, to, reflectionMap.static)
-  shallowCopy(from, to, {'constructor': reflectionMap.constructor})
+  forwardMetadata(to, from)
+
+  Object.keys(from.prototype).forEach(key => {
+    forwardMetadata(to.prototype, from.prototype, key)
+  })
+
+  Object.keys(from).forEach(key => {
+    forwardMetadata(to, from, key)
+  })
 }
 
-function shallowCopy (from: VueConstructor, to: VueConstructor, propertyKeys: StringToArrayMap) {
-  for (const propertyKey in propertyKeys) {
-    propertyKeys[propertyKey].forEach((metadataKey) => {
-      if (propertyKey == 'constructor') {
-        const metadata = Reflect.getOwnMetadata(metadataKey, from)
-        Reflect.defineMetadata(metadataKey, metadata, to)
-      } else {
-        const metadata = Reflect.getOwnMetadata(metadataKey, from, propertyKey)
-        Reflect.defineMetadata(metadataKey, metadata, to, propertyKey)
-      }
-    })
-  }
+function forwardMetadata(to: object, from: object, propertyKey?: string): void {
+  const metaKeys = propertyKey
+    ? Reflect.getOwnMetadataKeys(from, propertyKey)
+    : Reflect.getOwnMetadataKeys(from)
+
+  metaKeys.forEach(metaKey => {
+    const metadata = propertyKey
+      ? Reflect.getOwnMetadata(metaKey, from, propertyKey)
+      : Reflect.getOwnMetadata(metaKey, from)
+
+    if (propertyKey) {
+      Reflect.defineMetadata(metaKey, metadata, to, propertyKey)
+    } else {
+      Reflect.defineMetadata(metaKey, metadata, to)
+    }
+  })
 }
