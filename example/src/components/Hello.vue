@@ -4,7 +4,7 @@
 
 <script lang="ts">
   import Vue from 'vue'
-  import Component from '../lib/index'
+  import Component from '../../../lib/index'
 
   @Component
   export default class Hello extends Vue {

@@ -1,5 +1,5 @@
 import Vue, { CreateElement } from 'vue'
-import Component from '../lib/index'
+import Component from '../../../lib/index'
 
 @Component
 export default class World extends Vue {

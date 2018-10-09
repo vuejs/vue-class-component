@@ -19,9 +19,9 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Component from '../lib/index'
-import Hello from './Hello.vue'
-import World from './World'
+import Component from '../../lib/index'
+import Hello from './components/Hello.vue'
+import World from './components/World'
 import { mapGetters, mapActions } from 'vuex'
 
 // We declare the props separately

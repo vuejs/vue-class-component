@@ -2,7 +2,8 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
   mode: 'development',
-  entry: './example/example.ts',
+  context: __dirname,
+  entry: './src/main.ts',
   output: {
     path: __dirname,
     filename: 'build.js'
