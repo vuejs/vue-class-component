@@ -11,11 +11,11 @@ export function copyReflectionMetadata (
 ) {
   forwardMetadata(to, from)
 
-  Object.keys(from.prototype).forEach(key => {
+  Object.getOwnPropertyNames(from.prototype).forEach(key => {
     forwardMetadata(to.prototype, from.prototype, key)
   })
 
-  Object.keys(from).forEach(key => {
+  Object.getOwnPropertyNames(from).forEach(key => {
     forwardMetadata(to, from, key)
   })
 }

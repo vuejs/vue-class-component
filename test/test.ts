@@ -378,7 +378,7 @@ describe('vue-class-component', () => {
       @Reflect.metadata('worksStatic', true)
       static staticValue: string = 'staticValue'
 
-      private _test: boolean = false;
+      private _test: boolean = false
 
       @Reflect.metadata('worksMethod', true)
       test (): void {
@@ -388,10 +388,6 @@ describe('vue-class-component', () => {
       @Reflect.metadata('worksAccessor', true)
       get testAccessor (): boolean {
         return this._test
-      }
-
-      set testAccessor (value: boolean) {
-        this._test = value
       }
     }
 
