@@ -36,9 +36,20 @@ export function componentFactory (
       return
     }
     const descriptor = Object.getOwnPropertyDescriptor(proto, key)!
-    if (typeof descriptor.value === 'function') {
+    if (descriptor.value !== void 0) {
+
       // methods
-      (options.methods || (options.methods = {}))[key] = descriptor.value
+      if(typeof descriptor.value === 'function') {
+		(options.methods || (options.methods = {}))[key] = descriptor.value
+      } else {
+        // typescript decorated data
+        (options.mixins || (options.mixins = [])).push({
+          data (this: Vue) {
+            return { [key]: descriptor.value }
+          }
+        })
+      }
+
     } else if (descriptor.get || descriptor.set) {
       // computed properties
       (options.computed || (options.computed = {}))[key] = {
