@@ -1,4 +1,5 @@
 module.exports = {
+  mode: 'development',
   entry: [
     './test/test.ts',
     './test/test-babel.js'
@@ -8,7 +9,7 @@ module.exports = {
     filename: 'test.build.js'
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.ts$/,
         exclude: /node_modules|vue\/src/,

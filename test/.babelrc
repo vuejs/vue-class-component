@@ -1,9 +1,9 @@
 {
   "presets": [
-    ["es2015", {"modules": false}]
+    ["@babel/env", { "modules": false }]
   ],
   "plugins": [
-    "transform-decorators-legacy",
-    "transform-class-properties"
+    ["@babel/proposal-decorators", { "legacy": true }],
+    ["@babel/proposal-class-properties", { "loose": true }]
   ]
 }
