@@ -61,7 +61,6 @@ describe('vue-class-component', () => {
   })
 
   it('data: should collect from decorated class properties', () => {
-
     const valueDecorator = (value: any) => (_: any, __: any): any => {
       return {
         enumerable: true,
@@ -76,7 +75,7 @@ describe('vue-class-component', () => {
           return value;
         }
       }
-	}
+    }
 
     @Component
     class MyComp extends Vue {

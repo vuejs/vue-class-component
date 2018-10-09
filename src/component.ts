@@ -39,8 +39,8 @@ export function componentFactory (
     if (descriptor.value !== void 0) {
 
       // methods
-      if(typeof descriptor.value === 'function') {
-		(options.methods || (options.methods = {}))[key] = descriptor.value
+      if (typeof descriptor.value === 'function') {
+        (options.methods || (options.methods = {}))[key] = descriptor.value
       } else {
         // typescript decorated data
         (options.mixins || (options.mixins = [])).push({

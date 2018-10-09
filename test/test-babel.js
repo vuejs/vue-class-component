@@ -29,7 +29,6 @@ describe('vue-class-component with Babel', () => {
   })
 
   it('should collect decorated class properties', () => {
-
     const valueDecorator = (value) => () => {
       return {
         enumerable: true,
@@ -48,13 +47,11 @@ describe('vue-class-component with Babel', () => {
 
     @Component
     class MyComp extends Vue {
-
       @valueDecorator('field1')
       field1
 
       @getterDecorator('field2')
       field2
-
     }
 
     const c = new MyComp()
