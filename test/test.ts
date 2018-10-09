@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import Component, { createDecorator, mixins } from '../lib'
 import { expect } from 'chai'
 import * as td from 'testdouble'
@@ -401,5 +402,31 @@ describe('vue-class-component', () => {
     vm.test()
     expect(vm.valueA).to.equal('hi')
     expect(vm.valueB).to.equal(456)
+  })
+
+  it('copies reflection metadata', function () {
+    @Component
+    @Reflect.metadata('worksConstructor', true)
+    class Test extends Vue {
+      @Reflect.metadata('worksStatic', true)
+      static staticValue: string = 'staticValue'
+
+      private _test: boolean = false
+
+      @Reflect.metadata('worksMethod', true)
+      test (): void {
+        void 0
+      }
+
+      @Reflect.metadata('worksAccessor', true)
+      get testAccessor (): boolean {
+        return this._test
+      }
+    }
+
+    expect(Reflect.getOwnMetadata('worksConstructor', Test)).to.equal(true)
+    expect(Reflect.getOwnMetadata('worksStatic', Test, 'staticValue')).to.equal(true)
+    expect(Reflect.getOwnMetadata('worksMethod', Test.prototype, 'test')).to.equal(true)
+    expect(Reflect.getOwnMetadata('worksAccessor', Test.prototype, 'testAccessor')).to.equal(true)
   })
 })
