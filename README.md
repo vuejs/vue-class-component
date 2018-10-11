@@ -26,7 +26,7 @@ Note:
 
 ### Example
 
-Following is the example written in Babel. If you are looking for TypeScript version, [it's in the example directory](example/App.vue).
+Following is the example written in Babel. If you are looking for TypeScript version, [it's in the example directory](example/src/App.vue).
 
 ``` vue
 <template>
