@@ -1,0 +1,62 @@
+version: 2
+
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:8-browsers
+
+jobs:
+  install:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-vue-class-component-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - v1-vue-class-component-{{ .Branch }}-
+            - v1-vue-class-component-
+      - run: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-vue-class-component-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - repo
+
+  build:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: yarn build
+
+  example-build:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: yarn example
+
+  test:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: yarn test
+
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - install
+      - build:
+          requires:
+            - install
+      - example-build:
+          requires:
+            - install
+      - test:
+          requires:
+            - install
