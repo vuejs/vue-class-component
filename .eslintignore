@@ -1,0 +1,11 @@
+/dist/
+/lib/
+node_modules/
+
+/test/test.build.js
+/example/build.js
+
+# TOOD: remove after fixed decorator indent issue
+# https://github.com/eslint/typescript-eslint-parser/issues/438
+/example
+/test

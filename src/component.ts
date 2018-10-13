@@ -39,7 +39,6 @@ export function componentFactory (
     }
     const descriptor = Object.getOwnPropertyDescriptor(proto, key)!
     if (descriptor.value !== void 0) {
-
       // methods
       if (typeof descriptor.value === 'function') {
         (options.methods || (options.methods = {}))[key] = descriptor.value
@@ -51,7 +50,6 @@ export function componentFactory (
           }
         })
       }
-
     } else if (descriptor.get || descriptor.set) {
       // computed properties
       (options.computed || (options.computed = {}))[key] = {
@@ -138,7 +136,6 @@ function forwardStaticMembers (
     // we can check equality of them and exclude it if they have the same reference.
     // If it is a primitive value, it will be forwarded for safety.
     if (!hasProto) {
-
       // Only `cid` is explicitly exluded from property forwarding
       // because we cannot detect whether it is a inherited property or not
       // on the no `__proto__` environment even though the property is reserved.
@@ -149,9 +146,9 @@ function forwardStaticMembers (
       const superDescriptor = Object.getOwnPropertyDescriptor(Super, key)
 
       if (
-        !isPrimitive(descriptor.value)
-        && superDescriptor
-        && superDescriptor.value === descriptor.value
+        !isPrimitive(descriptor.value) &&
+        superDescriptor &&
+        superDescriptor.value === descriptor.value
       ) {
         return
       }
@@ -159,8 +156,8 @@ function forwardStaticMembers (
 
     // Warn if the users manually declare reserved properties
     if (
-      process.env.NODE_ENV !== 'production'
-      && reservedPropertyNames.indexOf(key) >= 0
+      process.env.NODE_ENV !== 'production' &&
+      reservedPropertyNames.indexOf(key) >= 0
     ) {
       warn(
         `Static property name '${key}' declared on class '${Original.name}' ` +

@@ -3,16 +3,16 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import Component from '../../../lib/index'
+import Vue from 'vue'
+import Component from '../../../lib/index'
 
-  @Component
-  export default class Hello extends Vue {
-    helloTimes: number = 0
+@Component
+export default class Hello extends Vue {
+  helloTimes: number = 0
 
-    sayHello () {
-      this.helloTimes++
-    }
+  sayHello () {
+    this.helloTimes++
   }
+}
 </script>
 

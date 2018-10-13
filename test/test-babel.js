@@ -40,8 +40,8 @@ describe('vue-class-component with Babel', () => {
     const getterDecorator = (value) => () => {
       return {
         enumerable: true,
-        get() {
-          return value;
+        get () {
+          return value
         }
       }
     }

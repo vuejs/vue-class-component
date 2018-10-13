@@ -1,7 +1,7 @@
 import Vue from 'vue'
-import Vuex from "vuex"
+import Vuex from 'vuex'
 
-interface CounterState{
+interface CounterState {
   count: number
 }
 

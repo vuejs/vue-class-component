@@ -82,7 +82,7 @@ export default class App extends AppProps {
   }
 
   // direct dispatch example
-  incrementIfOdd() {
+  incrementIfOdd () {
     this.$store.dispatch('incrementIfOdd')
   }
 }

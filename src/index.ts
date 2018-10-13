@@ -15,10 +15,8 @@ function Component (options: ComponentOptions<Vue> | VueClass<Vue>): any {
   }
 }
 
-namespace Component {
-  export function registerHooks (keys: string[]): void {
-    $internalHooks.push(...keys)
-  }
+Component.registerHooks = function registerHooks (keys: string[]): void {
+  $internalHooks.push(...keys)
 }
 
 export default Component

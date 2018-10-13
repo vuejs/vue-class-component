@@ -3,7 +3,8 @@ import { VueClass, DecoratedClass } from './declarations'
 
 export const noop = () => {}
 
-export const hasProto = { __proto__: [] } instanceof Array
+const fakeArray = { __proto__: [] }
+export const hasProto = fakeArray instanceof Array
 
 export interface VueDecorator {
   // Class decorator
@@ -43,7 +44,7 @@ export function mixins (...Ctors: VueClass<Vue>[]): VueClass<Vue> {
 
 export function isPrimitive (value: any): boolean {
   const type = typeof value
-  return value == null || (type !== "object" && type !== "function")
+  return value == null || (type !== 'object' && type !== 'function')
 }
 
 export function warn (message: string): void {
