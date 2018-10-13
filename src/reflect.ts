@@ -20,7 +20,7 @@ export function copyReflectionMetadata (
   })
 }
 
-function forwardMetadata(to: object, from: object, propertyKey?: string): void {
+function forwardMetadata (to: object, from: object, propertyKey?: string): void {
   const metaKeys = propertyKey
     ? Reflect.getOwnMetadataKeys(from, propertyKey)
     : Reflect.getOwnMetadataKeys(from)

@@ -39,6 +39,13 @@ jobs:
           at: ~/
       - run: yarn example
 
+  lint:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: yarn lint
+
   test:
     <<: *defaults
     steps:
@@ -55,6 +62,9 @@ workflows:
           requires:
             - install
       - example-build:
+          requires:
+            - install
+      - lint:
           requires:
             - install
       - test:

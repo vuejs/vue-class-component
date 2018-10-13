@@ -1,11 +1,10 @@
-import 'reflect-metadata';
+import 'reflect-metadata'
 import Component, { createDecorator, mixins } from '../lib'
 import { expect } from 'chai'
 import * as td from 'testdouble'
 import Vue, { ComputedOptions } from 'vue'
 
 describe('vue-class-component', () => {
-
   it('hooks', () => {
     let created = false
     let destroyed = false
@@ -72,21 +71,19 @@ describe('vue-class-component', () => {
     const getterDecorator = (value: any) => (_: any, __: any): any => {
       return {
         enumerable: true,
-        get() {
-          return value;
+        get () {
+          return value
         }
       }
     }
 
     @Component
     class MyComp extends Vue {
-
       @valueDecorator('field1')
       field1!: string
 
       @getterDecorator('field2')
       field2!: string
-
     }
 
     const c = new MyComp()
@@ -347,7 +344,7 @@ describe('vue-class-component', () => {
     class MyComp extends Vue {
       static myValue = 52
 
-      static myFunc() {
+      static myFunc () {
         return 42
       }
     }
