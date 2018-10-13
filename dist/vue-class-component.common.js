@@ -1,5 +1,5 @@
 /**
-  * vue-class-component v6.2.0
+  * vue-class-component v6.3.0
   * (c) 2015-present Evan You
   * @license MIT
   */
@@ -11,7 +11,37 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var Vue = _interopDefault(require('vue'));
 
-var hasProto = { __proto__: [] } instanceof Array;
+function reflectionIsSupported() {
+    return (Reflect && Reflect.defineMetadata) !== undefined;
+}
+function copyReflectionMetadata(to, from) {
+    forwardMetadata(to, from);
+    Object.getOwnPropertyNames(from.prototype).forEach(function (key) {
+        forwardMetadata(to.prototype, from.prototype, key);
+    });
+    Object.getOwnPropertyNames(from).forEach(function (key) {
+        forwardMetadata(to, from, key);
+    });
+}
+function forwardMetadata(to, from, propertyKey) {
+    var metaKeys = propertyKey
+        ? Reflect.getOwnMetadataKeys(from, propertyKey)
+        : Reflect.getOwnMetadataKeys(from);
+    metaKeys.forEach(function (metaKey) {
+        var metadata = propertyKey
+            ? Reflect.getOwnMetadata(metaKey, from, propertyKey)
+            : Reflect.getOwnMetadata(metaKey, from);
+        if (propertyKey) {
+            Reflect.defineMetadata(metaKey, metadata, to, propertyKey);
+        }
+        else {
+            Reflect.defineMetadata(metaKey, metadata, to);
+        }
+    });
+}
+
+var fakeArray = { __proto__: [] };
+var hasProto = fakeArray instanceof Array;
 function createDecorator(factory) {
     return function (target, key, index) {
         var Ctor = typeof target === 'function'
@@ -35,7 +65,7 @@ function mixins() {
 }
 function isPrimitive(value) {
     var type = typeof value;
-    return value == null || (type !== "object" && type !== "function");
+    return value == null || (type !== 'object' && type !== 'function');
 }
 function warn(message) {
     if (typeof console !== 'undefined') {
@@ -62,7 +92,7 @@ function collectDataFromConstructor(vm, Component) {
             if (key.charAt(0) !== '_') {
                 Object.defineProperty(_this, key, {
                     get: function () { return vm[key]; },
-                    set: function (value) { return vm[key] = value; },
+                    set: function (value) { vm[key] = value; },
                     configurable: true
                 });
             }
@@ -118,9 +148,20 @@ function componentFactory(Component, options) {
             return;
         }
         var descriptor = Object.getOwnPropertyDescriptor(proto, key);
-        if (typeof descriptor.value === 'function') {
+        if (descriptor.value !== void 0) {
             // methods
-            (options.methods || (options.methods = {}))[key] = descriptor.value;
+            if (typeof descriptor.value === 'function') {
+                (options.methods || (options.methods = {}))[key] = descriptor.value;
+            }
+            else {
+                // typescript decorated data
+                (options.mixins || (options.mixins = [])).push({
+                    data: function () {
+                        var _a;
+                        return _a = {}, _a[key] = descriptor.value, _a;
+                    }
+                });
+            }
         }
         else if (descriptor.get || descriptor.set) {
             // computed properties
@@ -148,6 +189,9 @@ function componentFactory(Component, options) {
         : Vue;
     var Extended = Super.extend(options);
     forwardStaticMembers(Extended, Component, Super);
+    if (reflectionIsSupported()) {
+        copyReflectionMetadata(Extended, Component);
+    }
     return Extended;
 }
 var reservedPropertyNames = [
@@ -193,15 +237,15 @@ function forwardStaticMembers(Extended, Original, Super) {
                 return;
             }
             var superDescriptor = Object.getOwnPropertyDescriptor(Super, key);
-            if (!isPrimitive(descriptor.value)
-                && superDescriptor
-                && superDescriptor.value === descriptor.value) {
+            if (!isPrimitive(descriptor.value) &&
+                superDescriptor &&
+                superDescriptor.value === descriptor.value) {
                 return;
             }
         }
         // Warn if the users manually declare reserved properties
-        if (process.env.NODE_ENV !== 'production'
-            && reservedPropertyNames.indexOf(key) >= 0) {
+        if (process.env.NODE_ENV !== 'production' &&
+            reservedPropertyNames.indexOf(key) >= 0) {
             warn("Static property name '" + key + "' declared on class '" + Original.name + "' " +
                 'conflicts with reserved property name of Vue internal. ' +
                 'It may cause unexpected behavior of the component. Consider renaming the property.');
@@ -218,14 +262,10 @@ function Component(options) {
         return componentFactory(Component, options);
     };
 }
-(function (Component) {
-    function registerHooks(keys) {
-        $internalHooks.push.apply($internalHooks, keys);
-    }
-    Component.registerHooks = registerHooks;
-})(Component || (Component = {}));
-var Component$1 = Component;
+Component.registerHooks = function registerHooks(keys) {
+    $internalHooks.push.apply($internalHooks, keys);
+};
 
-exports.default = Component$1;
+exports.default = Component;
 exports.createDecorator = createDecorator;
 exports.mixins = mixins;
