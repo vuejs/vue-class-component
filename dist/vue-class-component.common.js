@@ -1,5 +1,5 @@
 /**
-  * vue-class-component v6.3.1
+  * vue-class-component v6.3.2
   * (c) 2015-present Evan You
   * @license MIT
   */
@@ -11,7 +11,7 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var Vue = _interopDefault(require('vue'));
 
-var reflectionIsSupported = typeof Reflect !== undefined && Reflect.defineMetadata;
+var reflectionIsSupported = typeof Reflect !== 'undefined' && Reflect.defineMetadata;
 function copyReflectionMetadata(to, from) {
     forwardMetadata(to, from);
     Object.getOwnPropertyNames(from.prototype).forEach(function (key) {
