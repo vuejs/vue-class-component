@@ -1,5 +1,5 @@
 /**
-  * vue-class-component v6.3.0
+  * vue-class-component v6.3.1
   * (c) 2015-present Evan You
   * @license MIT
   */
@@ -11,9 +11,7 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var Vue = _interopDefault(require('vue'));
 
-function reflectionIsSupported() {
-    return (Reflect && Reflect.defineMetadata) !== undefined;
-}
+var reflectionIsSupported = typeof Reflect !== undefined && Reflect.defineMetadata;
 function copyReflectionMetadata(to, from) {
     forwardMetadata(to, from);
     Object.getOwnPropertyNames(from.prototype).forEach(function (key) {
@@ -189,7 +187,7 @@ function componentFactory(Component, options) {
         : Vue;
     var Extended = Super.extend(options);
     forwardStaticMembers(Extended, Component, Super);
-    if (reflectionIsSupported()) {
+    if (reflectionIsSupported) {
         copyReflectionMetadata(Extended, Component);
     }
     return Extended;
