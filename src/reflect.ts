@@ -1,7 +1,7 @@
 import Vue, { VueConstructor } from 'vue'
 import { VueClass } from './declarations'
 
-export const reflectionIsSupported = typeof Reflect !== undefined && Reflect.defineMetadata
+export const reflectionIsSupported = typeof Reflect !== 'undefined' && Reflect.defineMetadata
 
 export function copyReflectionMetadata (
   to: VueConstructor,
