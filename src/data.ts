@@ -28,7 +28,7 @@ export function collectDataFromConstructor (vm: Vue, Component: VueClass<Vue>) {
   }
 
   // should be acquired class property values
-  const data = new Component()
+  const data = new Component(vm)
 
   // restore original _init to avoid memory leak (#209)
   Component.prototype._init = originalInit
