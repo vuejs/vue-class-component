@@ -257,6 +257,22 @@ class MyComp extends Vue {
 }
 ```
 
+#### `this` is not that
+
+When initializing properties using `this`, `this` refers to the original constructor's object. In order to access the `VM`, a constructor has to be written as it takes the `VM` as only argument.
+
+Instead of :
+```ts
+	selfValue = this
+```
+Use :
+```ts
+	selfValue: Vue
+	constructor(vm: Vue) {
+		this.selfValue = vm;
+	}
+```
+
 ### Build the Example
 
 ``` bash
