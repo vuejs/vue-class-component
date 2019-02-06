@@ -1,5 +1,5 @@
 /**
-  * vue-class-component v6.3.2
+  * vue-class-component v6.3.2a
   * (c) 2015-present Evan You
   * @license MIT
   */
@@ -11,7 +11,10 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var Vue = _interopDefault(require('vue'));
 
-var reflectionIsSupported = typeof Reflect !== 'undefined' && Reflect.defineMetadata;
+// The rational behind the verbose Reflect-feature check below is the fact that there are polyfills
+// which add an implementation for Reflect.defineMetadata but not for Reflect.getOwnMetadataKeys.
+// Without this check consumers will encounter hard to track down runtime errors.
+var reflectionIsSupported = typeof Reflect !== 'undefined' && Reflect.defineMetadata && Reflect.getOwnMetadataKeys;
 function copyReflectionMetadata(to, from) {
     forwardMetadata(to, from);
     Object.getOwnPropertyNames(from.prototype).forEach(function (key) {
@@ -220,6 +223,9 @@ function forwardStaticMembers(Extended, Original, Super) {
             return;
         }
         var descriptor = Object.getOwnPropertyDescriptor(Original, key);
+        if (descriptor && !descriptor.configurable) {
+            return;
+        }
         // If the user agent does not support `__proto__` or its family (IE <= 10),
         // the sub class properties may be inherited properties from the super class in TypeScript.
         // We need to exclude such properties to prevent to overwrite
