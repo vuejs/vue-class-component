@@ -127,6 +127,9 @@ function forwardStaticMembers (
     }
 
     const descriptor = Object.getOwnPropertyDescriptor(Original, key)!
+    if (descriptor && !descriptor.configurable) {
+      return
+    }
 
     // If the user agent does not support `__proto__` or its family (IE <= 10),
     // the sub class properties may be inherited properties from the super class in TypeScript.
