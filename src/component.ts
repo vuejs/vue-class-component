@@ -17,7 +17,8 @@ export const $internalHooks = [
   'activated',
   'deactivated',
   'render',
-  'errorCaptured' // 2.5
+  'errorCaptured', // 2.5
+  'serverPrefetch' // 2.6
 ]
 
 export function componentFactory (
