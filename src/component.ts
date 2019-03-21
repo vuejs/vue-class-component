@@ -109,6 +109,13 @@ const reservedPropertyNames = [
   'filter'
 ]
 
+const shouldIgnore = {
+  'prototype': true,
+  'arguments': true,
+  'callee': true,
+  'caller': true
+}
+
 function forwardStaticMembers (
   Extended: typeof Vue,
   Original: typeof Vue,
@@ -117,7 +124,7 @@ function forwardStaticMembers (
   // We have to use getOwnPropertyNames since Babel registers methods as non-enumerable
   Object.getOwnPropertyNames(Original).forEach(key => {
     // `prototype` should not be overwritten
-    if (key === 'prototype') {
+    if (shouldIgnore[key]) {
       return
     }
 
