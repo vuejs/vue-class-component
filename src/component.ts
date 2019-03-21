@@ -123,7 +123,7 @@ function forwardStaticMembers (
 ): void {
   // We have to use getOwnPropertyNames since Babel registers methods as non-enumerable
   Object.getOwnPropertyNames(Original).forEach(key => {
-    // `prototype` should not be overwritten
+    // Skip the properties that should not be overwritten
     if (shouldIgnore[key]) {
       return
     }
