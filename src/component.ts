@@ -110,10 +110,10 @@ const reservedPropertyNames = [
 ]
 
 const shouldIgnore = {
-  'prototype': true,
-  'arguments': true,
-  'callee': true,
-  'caller': true
+  prototype: true,
+  arguments: true,
+  callee: true,
+  caller: true
 }
 
 function forwardStaticMembers (
