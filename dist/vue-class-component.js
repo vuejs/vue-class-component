@@ -1,5 +1,5 @@
 /**
-  * vue-class-component v7.0.1
+  * vue-class-component v7.0.2
   * (c) 2015-present Evan You
   * @license MIT
   */
@@ -211,11 +211,17 @@
         'directive',
         'filter'
     ];
+    var shouldIgnore = {
+        prototype: true,
+        arguments: true,
+        callee: true,
+        caller: true
+    };
     function forwardStaticMembers(Extended, Original, Super) {
         // We have to use getOwnPropertyNames since Babel registers methods as non-enumerable
         Object.getOwnPropertyNames(Original).forEach(function (key) {
-            // `prototype` should not be overwritten
-            if (key === 'prototype') {
+            // Skip the properties that should not be overwritten
+            if (shouldIgnore[key]) {
                 return;
             }
             // Some browsers does not allow reconfigure built-in properties
