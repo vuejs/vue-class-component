@@ -6,13 +6,13 @@
   "typings": "lib/index.d.ts",
   "files": [
     "dist",
-    "lib"
+    "src"
   ],
   "scripts": {
     "build": "npm run build:ts && npm run build:main",
     "build:ts": "tsc -p .",
     "build:main": "node build/build.js",
-    "clean": "rimraf ./lib",
+    "clean": "rimraf ./src",
     "example": "npm run build && webpack --config example/webpack.config.js",
     "dev": "webpack --config example/webpack.config.js --watch",
     "dev:test": "node build/dev-test.js",
