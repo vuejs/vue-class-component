@@ -32,6 +32,10 @@ build([
   {
     file: resolve('dist/vue-class-component.common.js'),
     format: 'cjs'
+  },
+  {
+    file: resolve('dist/vue-class-component.esm.js'),
+    format: 'esm'
   }
 ].map(genConfig))
 

@@ -3,6 +3,7 @@
   "version": "7.0.2",
   "description": "ES201X/TypeScript class decorator for Vue components",
   "main": "dist/vue-class-component.common.js",
+  "module": "dist/vue-class-component.esm.js",
   "typings": "lib/index.d.ts",
   "files": [
     "dist",
