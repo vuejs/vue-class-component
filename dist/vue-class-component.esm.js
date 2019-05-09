@@ -3,13 +3,7 @@
   * (c) 2015-present Evan You
   * @license MIT
   */
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var Vue = _interopDefault(require('vue'));
+import Vue from 'vue';
 
 // The rational behind the verbose Reflect-feature check below is the fact that there are polyfills
 // which add an implementation for Reflect.defineMetadata but not for Reflect.getOwnMetadataKeys.
@@ -274,6 +268,5 @@ Component.registerHooks = function registerHooks(keys) {
     $internalHooks.push.apply($internalHooks, keys);
 };
 
-exports.default = Component;
-exports.createDecorator = createDecorator;
-exports.mixins = mixins;
+export default Component;
+export { createDecorator, mixins };
