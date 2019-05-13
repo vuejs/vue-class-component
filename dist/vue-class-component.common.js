@@ -133,7 +133,10 @@ var $internalHooks = [
     'deactivated',
     'render',
     'errorCaptured',
-    'serverPrefetch' // 2.6
+    'serverPrefetch',
+    'beforeRouteEnter',
+    'beforeRouteUpdate',
+    'beforeRouteLeave',
 ];
 function componentFactory(Component, options) {
     if (options === void 0) { options = {}; }
