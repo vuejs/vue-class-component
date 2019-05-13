@@ -21,7 +21,7 @@ export const $internalHooks = [
   'serverPrefetch', // 2.6
   'beforeRouteEnter', // vue-router
   'beforeRouteUpdate', // vue-router
-  'beforeRouteLeave', // vue-router
+  'beforeRouteLeave' // vue-router
 ]
 
 export function componentFactory (
