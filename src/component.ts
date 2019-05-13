@@ -19,11 +19,11 @@ export const $internalHooks = [
   'render',
   'errorCaptured', // 2.5
   'serverPrefetch', // 2.6
-  //--- start vue-router`s navigation-guards --
+  // --- start vue-router`s navigation-guards --
   'beforeRouteEnter', // vue-router
   'beforeRouteUpdate', // vue-router
   'beforeRouteLeave', // vue-router
-  //--- end vue-router`s navigation-guards --
+  // --- end vue-router`s navigation-guards --
 ]
 
 export function componentFactory (
