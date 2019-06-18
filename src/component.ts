@@ -17,6 +17,9 @@ export const $internalHooks = [
   'activated',
   'deactivated',
   'render',
+  'beforeRouteEnter',
+  'beforeRouteUpdate', // 2.2
+  'beforeRouteLeave',
   'errorCaptured', // 2.5
   'serverPrefetch' // 2.6
 ]
