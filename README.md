@@ -74,7 +74,7 @@ export default class App extends Vue {
 </script>
 ```
 
-You may also want to check out the `@prop` and `@watch` decorators provided by [vue-property-decorators](https://github.com/kaorun343/vue-property-decorator).
+You may also want to check out the `@prop` and `@watch` decorators provided by [vue-property-decorator](https://github.com/kaorun343/vue-property-decorator).
 
 ### Using Mixins
 
