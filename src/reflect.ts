@@ -5,7 +5,7 @@ import { VueClass } from './declarations'
 // which add an implementation for Reflect.defineMetadata but not for Reflect.getOwnMetadataKeys.
 // Without this check consumers will encounter hard to track down runtime errors.
 export function reflectionIsSupported () {
-  return typeof Reflect !== 'undefined' && Reflect.defineMetadata && Reflect.getOwnMetadataKeys;
+  return typeof Reflect !== 'undefined' && Reflect.defineMetadata && Reflect.getOwnMetadataKeys
 }
 
 export function copyReflectionMetadata (
