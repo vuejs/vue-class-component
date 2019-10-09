@@ -146,7 +146,7 @@ class MyComp extends Vue {
 
 ### Adding Custom Hooks
 
-If you use some Vue plugins like Vue Router, you may want class components to resolve hooks that they provides. For that case, `Component.registerHooks` allows you to register such hooks:
+If you use some Vue plugins like Vue Router, you may want class components to resolve hooks that they provide. For that case, `Component.registerHooks` allows you to register such hooks:
 
 ```js
 // class-component-hooks.js
