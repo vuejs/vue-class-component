@@ -200,6 +200,37 @@ new Vue({
 })
 ```
 
+In TypeScript, all built-in lifecycle hools and special methods are declared in the component instance type to enable auto-complete in editors.
+If you want to make it work with custom hooks, you can manually add it by yourself:
+
+```ts
+import Vue from 'vue'
+import { Route, RawLocation } from 'vue-router'
+
+declare module 'vue/types/vue' {
+  // Augment component instance type
+  interface Vue {
+    beforeRouteEnter?(
+      to: Route,
+      from: Route,
+      next: (to?: RawLocation | false | ((vm: V) => any) | void) => void
+    ): void
+
+    beforeRouteLeave?(
+      to: Route,
+      from: Route,
+      next: (to?: RawLocation | false | ((vm: V) => any) | void) => void
+    ): void
+
+    beforeRouteUpdate?(
+      to: Route,
+      from: Route,
+      next: (to?: RawLocation | false | ((vm: V) => any) | void) => void
+    ): void
+  }
+}
+```
+
 ### Caveats of Class Properties
 
 vue-class-component collects class properties as Vue instance data by instantiating the original constructor under the hood. While we can define instance data like native class manner, we sometimes need to know how it works.
