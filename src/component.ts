@@ -83,7 +83,7 @@ export function componentFactory (
 
   forwardStaticMembers(Extended, Component, Super)
 
-  if (reflectionIsSupported) {
+  if (reflectionIsSupported()) {
     copyReflectionMetadata(Extended, Component)
   }
 
