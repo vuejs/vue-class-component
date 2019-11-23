@@ -1,5 +1,5 @@
 /**
-  * vue-class-component v7.1.1-pi.2
+  * vue-class-component v7.1.1-pi.3
   * (c) 2015-present Evan You
   * @license MIT
   */
@@ -140,7 +140,7 @@ function componentFactory(Component, options) {
     if (proto instanceof Vue) {
         var curCmp_1 = proto;
         var vueProto = Vue.prototype;
-        while (curCmp_1 && curCmp_1 !== vueProto) {
+        while (curCmp_1 && curCmp_1.__proto__ !== vueProto) {
             Object.getOwnPropertyNames(curCmp_1).forEach(function (key) {
                 if (key === 'constructor') {
                     return;

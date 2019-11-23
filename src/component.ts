@@ -33,7 +33,7 @@ export function componentFactory (
   if (proto instanceof Vue) {
     let curCmp = proto;
     const vueProto = Vue.prototype;
-    while (curCmp && curCmp !== vueProto){
+    while (curCmp && curCmp.__proto__ !== vueProto){
       Object.getOwnPropertyNames(curCmp).forEach(function (key) {
         if (key === 'constructor') {
           return
