@@ -1,5 +1,5 @@
 /**
-  * vue-class-component v7.1.0
+  * vue-class-component v7.1.1-pi.2
   * (c) 2015-present Evan You
   * @license MIT
   */
@@ -145,7 +145,8 @@
         // Fix the problem that inherited class cannot be used
         if (proto instanceof Vue) {
             var curCmp_1 = proto;
-            while (curCmp_1 !== Vue) {
+            var vueProto = Vue.prototype;
+            while (curCmp_1 && curCmp_1 !== vueProto) {
                 Object.getOwnPropertyNames(curCmp_1).forEach(function (key) {
                     if (key === 'constructor') {
                         return;
@@ -181,7 +182,7 @@
                         };
                     }
                 });
-                curCmp_1 = curCmp_1.prototype;
+                curCmp_1 = curCmp_1.__proto__;
             }
         }
         (options.mixins || (options.mixins = [])).push({

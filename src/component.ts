@@ -32,7 +32,8 @@ export function componentFactory (
   // Fix the problem that inherited class cannot be used
   if (proto instanceof Vue) {
     let curCmp = proto;
-    while (curCmp !== Vue){
+    const vueProto = Vue.prototype;
+    while (curCmp && curCmp !== vueProto){
       Object.getOwnPropertyNames(curCmp).forEach(function (key) {
         if (key === 'constructor') {
           return
@@ -66,7 +67,7 @@ export function componentFactory (
           }
         }
       })
-      curCmp = curCmp.prototype;
+      curCmp = curCmp.__proto__;
     }
   }
 
