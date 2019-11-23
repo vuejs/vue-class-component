@@ -28,37 +28,48 @@ export function componentFactory (
   options.name = options.name || (Component as any)._componentTag || (Component as any).name
   // prototype props.
   const proto = Component.prototype
-  Object.getOwnPropertyNames(proto).forEach(function (key) {
-    if (key === 'constructor') {
-      return
-    }
+  
+  // Fix the problem that inherited class cannot be used
+  if (proto instanceof Vue) {
+    let curCmp = proto;
+    while (curCmp !== Vue){
+      Object.getOwnPropertyNames(curCmp).forEach(function (key) {
+        if (key === 'constructor') {
+          return
+        }
 
-    // hooks
-    if ($internalHooks.indexOf(key) > -1) {
-      options[key] = proto[key]
-      return
-    }
-    const descriptor = Object.getOwnPropertyDescriptor(proto, key)!
-    if (descriptor.value !== void 0) {
-      // methods
-      if (typeof descriptor.value === 'function') {
-        (options.methods || (options.methods = {}))[key] = descriptor.value
-      } else {
-        // typescript decorated data
-        (options.mixins || (options.mixins = [])).push({
-          data (this: Vue) {
-            return { [key]: descriptor.value }
+        // hooks
+        if ($internalHooks.indexOf(key) > -1) {
+          const items = options[key] || []
+          items.unshift(curCmp[key])
+          options[key] = items
+          return
+        }
+        const descriptor = Object.getOwnPropertyDescriptor(curCmp, key)!
+        if (descriptor.value !== void 0) {
+          // methods
+          if (typeof descriptor.value === 'function') {
+            (options.methods || (options.methods = {}))[key] = descriptor.value
+          } else {
+            // typescript decorated data
+            (options.mixins || (options.mixins = [])).push({
+              data (this: Vue) {
+                return { [key]: descriptor.value }
+              }
+            })
           }
-        })
-      }
-    } else if (descriptor.get || descriptor.set) {
-      // computed properties
-      (options.computed || (options.computed = {}))[key] = {
-        get: descriptor.get,
-        set: descriptor.set
-      }
+        } else if (descriptor.get || descriptor.set) {
+          // computed properties
+          (options.computed || (options.computed = {}))[key] = {
+            get: descriptor.get,
+            set: descriptor.set
+          }
+        }
+      })
+      curCmp = curCmp.prototype;
     }
-  })
+  }
+
 
   // add data hook to collect class properties as Vue instance's data
   ;(options.mixins || (options.mixins = [])).push({
