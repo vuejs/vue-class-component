@@ -14,7 +14,9 @@
     // The rational behind the verbose Reflect-feature check below is the fact that there are polyfills
     // which add an implementation for Reflect.defineMetadata but not for Reflect.getOwnMetadataKeys.
     // Without this check consumers will encounter hard to track down runtime errors.
-    var reflectionIsSupported = typeof Reflect !== 'undefined' && Reflect.defineMetadata && Reflect.getOwnMetadataKeys;
+    function reflectionIsSupported() {
+        return typeof Reflect !== 'undefined' && Reflect.defineMetadata && Reflect.getOwnMetadataKeys;
+    }
     function copyReflectionMetadata(to, from) {
         forwardMetadata(to, from);
         Object.getOwnPropertyNames(from.prototype).forEach(function (key) {
@@ -140,39 +142,48 @@
         options.name = options.name || Component._componentTag || Component.name;
         // prototype props.
         var proto = Component.prototype;
-        Object.getOwnPropertyNames(proto).forEach(function (key) {
-            if (key === 'constructor') {
-                return;
-            }
-            // hooks
-            if ($internalHooks.indexOf(key) > -1) {
-                options[key] = proto[key];
-                return;
-            }
-            var descriptor = Object.getOwnPropertyDescriptor(proto, key);
-            if (descriptor.value !== void 0) {
-                // methods
-                if (typeof descriptor.value === 'function') {
-                    (options.methods || (options.methods = {}))[key] = descriptor.value;
-                }
-                else {
-                    // typescript decorated data
-                    (options.mixins || (options.mixins = [])).push({
-                        data: function () {
-                            var _a;
-                            return _a = {}, _a[key] = descriptor.value, _a;
+        // Fix the problem that inherited class cannot be used
+        if (proto instanceof Vue) {
+            var curCmp_1 = proto;
+            while (curCmp_1 !== Vue) {
+                Object.getOwnPropertyNames(curCmp_1).forEach(function (key) {
+                    if (key === 'constructor') {
+                        return;
+                    }
+                    // hooks
+                    if ($internalHooks.indexOf(key) > -1) {
+                        var items = options[key] || [];
+                        items.unshift(curCmp_1[key]);
+                        options[key] = items;
+                        return;
+                    }
+                    var descriptor = Object.getOwnPropertyDescriptor(curCmp_1, key);
+                    if (descriptor.value !== void 0) {
+                        // methods
+                        if (typeof descriptor.value === 'function') {
+                            (options.methods || (options.methods = {}))[key] = descriptor.value;
                         }
-                    });
-                }
+                        else {
+                            // typescript decorated data
+                            (options.mixins || (options.mixins = [])).push({
+                                data: function () {
+                                    var _a;
+                                    return _a = {}, _a[key] = descriptor.value, _a;
+                                }
+                            });
+                        }
+                    }
+                    else if (descriptor.get || descriptor.set) {
+                        // computed properties
+                        (options.computed || (options.computed = {}))[key] = {
+                            get: descriptor.get,
+                            set: descriptor.set
+                        };
+                    }
+                });
+                curCmp_1 = curCmp_1.prototype;
             }
-            else if (descriptor.get || descriptor.set) {
-                // computed properties
-                (options.computed || (options.computed = {}))[key] = {
-                    get: descriptor.get,
-                    set: descriptor.set
-                };
-            }
-        });
+        }
         (options.mixins || (options.mixins = [])).push({
             data: function () {
                 return collectDataFromConstructor(this, Component);
@@ -191,7 +202,7 @@
             : Vue;
         var Extended = Super.extend(options);
         forwardStaticMembers(Extended, Component, Super);
-        if (reflectionIsSupported) {
+        if (reflectionIsSupported()) {
             copyReflectionMetadata(Extended, Component);
         }
         return Extended;
