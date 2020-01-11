@@ -1,9 +1,10 @@
 const fs = require('fs')
 const path = require('path')
 const zlib = require('zlib')
-const uglify = require('uglify-js')
+const uglify = require('uglify-es')
 const rollup = require('rollup')
 const replace = require('rollup-plugin-replace')
+const babel = require('rollup-plugin-babel')
 const version = process.env.VERSION || require('../package.json').version
 const banner =
 `/**
@@ -17,6 +18,31 @@ if (!fs.existsSync('dist')) {
 }
 
 const resolve = _path => path.resolve(__dirname, '../', _path)
+
+const babelConfigForModern = {
+  presets: [
+    [
+      '@babel/env',
+      {
+        modules: false,
+        targets: {
+          esmodules: true
+        }
+      }
+    ]
+  ]
+}
+
+const babelConfigForLegacy = {
+  presets: [
+    [
+      '@babel/env',
+      {
+        modules: false
+      }
+    ]
+  ]
+}
 
 build([
   {
@@ -36,6 +62,16 @@ build([
   {
     file: resolve('dist/vue-class-component.esm.js'),
     format: 'esm'
+  },
+  {
+    file: resolve('dist/vue-class-component.esm.browser.js'),
+    format: 'esm',
+    env: 'development'
+  },
+  {
+    file: resolve('dist/vue-class-component.esm.browser.min.js'),
+    format: 'esm',
+    env: 'production'
   }
 ].map(genConfig))
 
@@ -44,7 +80,13 @@ function genConfig (opts) {
     input: {
       input: resolve('lib/index.js'),
       external: ['vue'],
-      plugins: []
+      plugins: [
+        babel(
+          opts.format === 'esm' && typeof opts.env === 'string'
+            ? babelConfigForModern
+            : babelConfigForLegacy
+        )
+      ]
     },
     output: {
       file: opts.file,
@@ -88,7 +130,7 @@ function buildEntry ({ input, output }) {
     .then(bundle => bundle.generate(output))
     .then(({ code }) => {
       if (isProd) {
-        var minified = uglify.minify(code, {
+        const minified = uglify.minify(code, {
           output: {
             preamble: output.banner,
             ascii_only: true
