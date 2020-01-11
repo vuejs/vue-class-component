@@ -73,7 +73,7 @@ build([
     format: 'esm',
     env: 'production'
   }
-].map(genConfig)).catch(error => {
+].map(genConfig)).catch(() => {
   process.exit(1)
 })
 
