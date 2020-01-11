@@ -73,7 +73,9 @@ build([
     format: 'esm',
     env: 'production'
   }
-].map(genConfig))
+].map(genConfig)).catch(error => {
+  process.exit(1)
+})
 
 function genConfig (opts) {
   const config = {
@@ -113,15 +115,18 @@ function build (builds) {
   let built = 0
   const total = builds.length
   const next = () => {
-    buildEntry(builds[built]).then(() => {
+    return buildEntry(builds[built]).then(() => {
       built++
       if (built < total) {
-        next()
+        return next()
       }
-    }).catch(logError)
+    }).catch(error => {
+      logError(error)
+      throw error
+    })
   }
 
-  next()
+  return next()
 }
 
 function buildEntry ({ input, output }) {
