@@ -213,19 +213,19 @@ declare module 'vue/types/vue' {
     beforeRouteEnter?(
       to: Route,
       from: Route,
-      next: (to?: RawLocation | false | ((vm: V) => any) | void) => void
+      next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void
     ): void
 
     beforeRouteLeave?(
       to: Route,
       from: Route,
-      next: (to?: RawLocation | false | ((vm: V) => any) | void) => void
+      next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void
     ): void
 
     beforeRouteUpdate?(
       to: Route,
       from: Route,
-      next: (to?: RawLocation | false | ((vm: V) => any) | void) => void
+      next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void
     ): void
   }
 }
