@@ -1,4 +1,3 @@
-import './lifecycle'
 import Vue, { ComponentOptions } from 'vue'
 import { VueClass } from './declarations'
 import { componentFactory, $internalHooks } from './component'
