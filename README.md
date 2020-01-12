@@ -200,7 +200,21 @@ new Vue({
 })
 ```
 
-In TypeScript, all built-in lifecycle hools and special methods are declared in the component instance type to enable auto-complete in editors.
+### Enabling Custom Hooks Auto-complete in TypeScript
+
+vue-class-component provides a built-in hooks type, which enables auto-complete for `data`, `render` and other lifecycle hooks in class component declarations, for TypeScript. To enable it, you need to import hooks type located at `vue-class-component/hooks`.
+
+```ts
+// main.ts
+import 'vue-class-component/hooks' // import hooks type to enable auto-complete
+import Vue from 'vue'
+import App from './App.vue'
+
+new Vue({
+  render: h => h(App)
+}).$mount('#app')
+```
+
 If you want to make it work with custom hooks, you can manually add it by yourself:
 
 ```ts
