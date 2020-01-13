@@ -8,6 +8,7 @@
   "files": [
     "dist",
     "lib",
+    "hooks.js",
     "hooks.d.ts"
   ],
   "scripts": {
