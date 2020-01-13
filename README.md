@@ -53,8 +53,8 @@ export default class App extends Vue {
   // initial data
   msg = 123
 
-  // use prop values for initial data
-  helloMsg = 'Hello, ' + this.propMessage
+  // you can declare type and use prop values for initial data
+  helloMsg: string = 'Hello, ' + this.propMessage
 
   // lifecycle hook
   mounted () {
