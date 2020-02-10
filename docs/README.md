@@ -1,6 +1,6 @@
 # Overview
 
-Vue Class Component is a library that lets you make your Vue components in class-style syntax. For example, the below is a simple counter component written with Vue Class Component:
+Vue Class Component is a library that lets you make your Vue components in class-style syntax. For example, below is a simple counter component written with Vue Class Component:
 
 ```vue
 <template>
@@ -33,8 +33,8 @@ export default class Counter extends Vue {
 </script>
 ```
 
-As the example shows, you can define component data and methods in the intuitive and standerd class syntax by annotating the class with `@Component` decorator. You can simply replace your component definition with a class style component as it is equivalent with the ordinary component options object style component definition.
+As the example shows, you can define component data and methods in the intuitive and standard class syntax by annotating the class with the `@Component` decorator. You can simply replace your component definition with a class-style component as it is equivalent with the ordinary options object style of component definition.
 
-By defining your component in class-style, you not only change the syntax but also can utilize some ECMAScript language features such as class inheritance and decorators. Vue Class Component also provides [`mixins` helper](guide/extend-and-mixins.md#Mixins) for mixin inheritance, and [`createDecorator` function](guide/custom-decorators.md) to create your own decrators easily.
+By defining your component in class-style, you not only change the syntax but also can utilize some ECMAScript language features such as class inheritance and decorators. Vue Class Component also provides a [`mixins` helper](guide/extend-and-mixins.md#Mixins) for mixin inheritance, and a [`createDecorator` function](guide/custom-decorators.md) to create your own decrators easily.
 
 You may also want to check out the `@Prop` and `@Watch` decorators provided by [Vue Property Decorator](https://github.com/kaorun343/vue-property-decorator).
