@@ -2,7 +2,7 @@
 
 ## Extend
 
-You can extend an existing class compnent as native class inheritance. Imagine you have following super class component:
+You can extend an existing class component as native class inheritance. Imagine you have following super class component:
 
 ```js
 // super.js
