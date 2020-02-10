@@ -6,7 +6,7 @@ ECMAScript / TypeScript decorator for class-style Vue components.
 
 ## Document
 
-See [https://vuejs.github.io/vue-class-component](https://vuejs.github.io/vue-class-component)
+See [https://class-component.vuejs.org](https://class-component.vuejs.org)
 
 ## Questions
 
