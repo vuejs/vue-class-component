@@ -4,6 +4,7 @@
   "description": "ES201X/TypeScript class decorator for Vue components",
   "main": "dist/vue-class-component.common.js",
   "module": "dist/vue-class-component.esm.js",
+  "unpkg": "dist/vue-class-component.js",
   "typings": "lib/index.d.ts",
   "files": [
     "dist",
@@ -21,6 +22,8 @@
     "dev:test": "node build/dev-test.js",
     "lint": "eslint --ext js,jsx,ts,tsx,vue .",
     "test": "npm run build && webpack --config test/webpack.config.js && mocha test/test.build.js",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
     "release": "bash build/release.sh"
   },
   "repository": {
@@ -69,6 +72,7 @@
     "vue": "^2.6.11",
     "vue-loader": "^15.8.3",
     "vue-template-compiler": "^2.6.11",
+    "vuepress": "^1.2.0",
     "vuex": "^3.1.2",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
