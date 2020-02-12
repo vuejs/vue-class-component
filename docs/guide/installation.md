@@ -66,10 +66,10 @@ Create `tsconfig.json` on your project root and specify `experimentalDecorators`
 
 #### Babel
 
-Install `@babel/proposal-decorators` and `@babel/proposal-class-properties`:
+Install `@babel/plugin-proposal-decorators` and `@babel/plugin-proposal-class-properties`:
 
 ```sh
-$ npm install --save-dev @babel/proposal-decorators @babel/proposal-class-properties
+$ npm install --save-dev @babel/plugin-proposal-decorators @babel/plugin-proposal-class-properties
 ```
 
 Then configure `.babelrc` on your project root:
