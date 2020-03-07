@@ -11,7 +11,7 @@ Vue Class Component is a library that lets you make your Vue components in class
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
