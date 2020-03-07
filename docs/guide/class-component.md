@@ -20,7 +20,7 @@ Initial `data` can be declared as class properties:
   <div>{{ message }}</div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
@@ -77,7 +77,7 @@ Components `methods` can be declared directly as class prototype methods:
   <button v-on:click="hello">Click</button>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
@@ -100,7 +100,7 @@ Computed properties can be declared as class property getter / setter:
   <input v-model="name">
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
@@ -155,7 +155,7 @@ For all other options, pass them to the decorator function:
   <OtherComponent />
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import OtherComponent from './OtherComponent.vue'
