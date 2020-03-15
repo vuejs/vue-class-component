@@ -17,7 +17,7 @@ describe('vue-class-component', () => {
         unmounted = true
       }
 
-      render() {}
+      render () {}
     }
 
     const app = createApp(MyComp)
@@ -39,30 +39,32 @@ describe('vue-class-component', () => {
         return 'beforeRouteEnter'
       }
 
-      render() {}
+      render () {}
     }
 
     const app = createApp(MyComp).mount(root)
     expect((app.$options as any).beforeRouteEnter()).toBe('beforeRouteEnter')
   })
 
-  it('data: should collect from class properties', () => {
-    @Options({
-      props: ['foo']
+  if (!process.env.BABEL_TEST) {
+    it('data: should collect from class properties', () => {
+      @Options({
+        props: ['foo']
+      })
+      class MyComp extends Vue {
+        foo!: number
+        a: string = 'hello'
+        b: number = this.foo + 1
+
+        render () {}
+      }
+
+      const app = createApp(MyComp, { foo: 1 }).mount(root) as MyComp
+
+      expect(app.a).toBe('hello')
+      expect(app.b).toBe(2)
     })
-    class MyComp extends Vue {
-      foo!: number
-      a: string = 'hello'
-      b: number = this.foo + 1
-
-      render() {}
-    }
-
-    const app = createApp(MyComp, { foo: 1 }).mount(root) as MyComp
-
-    expect(app.a).toBe('hello')
-    expect(app.b).toBe(2)
-  })
+  }
 
   it('data: $props should be available', () => {
     interface Props {
@@ -72,11 +74,32 @@ describe('vue-class-component', () => {
     class MyComp extends Vue<Props> {
       message = 'answer is ' + this.$props.foo
 
-      render() {}
+      render () {}
     }
 
     const app = createApp(MyComp, { foo: 42 }).mount(root) as MyComp
     expect(app.message).toBe('answer is 42')
+  })
+
+  it('data: should not collect uninitialized class properties', () => {
+    const Prop = createDecorator((options, key) => {
+      if (!options.props) {
+        (options as any).props = {}
+      }
+      (options.props as any)[key] = {
+        type: null
+      }
+    })
+
+    class MyComp extends Vue {
+      foo: any
+      @Prop bar: any
+
+      render () {}
+    }
+    const c = createApp(MyComp).mount(root)
+    expect('foo' in c.$data).toBe(false)
+    expect('bar' in c.$data).toBe(false)
   })
 
   xit('data: should collect custom property defined on beforeCreate', () => {
@@ -92,7 +115,7 @@ describe('vue-class-component', () => {
         }
       }
 
-      render() {}
+      render () {}
     }
 
     const app = createApp(MyComp).mount(root) as MyComp
@@ -107,7 +130,7 @@ describe('vue-class-component', () => {
         msg = 'hi'
       }
 
-      render() {}
+      render () {}
     }
 
     const app = createApp(MyComp).mount(root) as MyComp
@@ -127,7 +150,7 @@ describe('vue-class-component', () => {
         return this.a + 1
       }
 
-      render() {}
+      render () {}
     }
 
     const app = createApp(MyComp).mount(root) as MyComp
@@ -141,7 +164,7 @@ describe('vue-class-component', () => {
     it('via name option', () => {
       @Options({ name: 'test' })
       class MyComp extends Vue {
-        render() {}
+        render () {}
       }
 
       const app = createApp(MyComp).mount(root)
@@ -150,7 +173,7 @@ describe('vue-class-component', () => {
 
     it('via class name', () => {
       class MyComp extends Vue {
-        render() {}
+        render () {}
       }
 
       const app = createApp(MyComp).mount(root)
@@ -163,7 +186,7 @@ describe('vue-class-component', () => {
 
     @Options<MyComp>({
       watch: {
-        a: val => v = val
+        a: val => { v = val }
       }
     })
     class MyComp extends Vue {
@@ -172,7 +195,7 @@ describe('vue-class-component', () => {
         return { a: 1 }
       }
 
-      render() {}
+      render () {}
     }
 
     const app = createApp(MyComp).mount(root) as MyComp
@@ -197,7 +220,7 @@ describe('vue-class-component', () => {
         return { b: 2 }
       }
 
-      render() {}
+      render () {}
     }
 
     const app = createApp(A).mount(root) as A
@@ -226,7 +249,7 @@ describe('vue-class-component', () => {
     }
 
     class A extends Base {
-      render() {}
+      render () {}
     }
 
     const app = createApp(A).mount(root) as A
@@ -254,7 +277,7 @@ describe('vue-class-component', () => {
       // that specified by class property accessors and methods
       const computedOption = (options.computed as any)[key]
       const originalGet = computedOption.get
-      computedOption.get = function() {
+      computedOption.get = function () {
         return '(' + originalGet() + ')'
       }
     })
@@ -265,7 +288,7 @@ describe('vue-class-component', () => {
         return 'world'
       }
 
-      render() {}
+      render () {}
     }
 
     const app = createApp(MyComp, { foo: 'hello' }).mount(root) as MyComp
@@ -291,7 +314,7 @@ describe('vue-class-component', () => {
         @Value('child')
         value!: string
 
-        render() {
+        render () {
           return h('div')
         }
       }
@@ -307,7 +330,7 @@ describe('vue-class-component', () => {
       @Value('parent')
       value!: string
 
-      render() {
+      render () {
         const child = resolveComponent('Child') as any
         return h(child, { ref: 'child' })
       }
@@ -331,14 +354,32 @@ describe('vue-class-component', () => {
 
     @DataMixin
     class MyComp extends Vue {
-      render() {}
+      render () {}
     }
 
     const app: any = createApp(MyComp).mount(root)
     expect(app.test).toBe('foo')
   })
 
-  it('forwardStatics', function () {
+  it('should not throw if property decorator declare some methods', () => {
+    const Test = createDecorator((options, key) => {
+      if (!options.methods) {
+        options.methods = {}
+      }
+      (options.methods as any)[key] = () => 'test'
+    })
+
+    class MyComp extends Vue {
+      @Test test!: () => string
+
+      render () {}
+    }
+
+    const vm = createApp(MyComp).mount(root) as MyComp
+    expect(vm.test()).toBe('test')
+  })
+
+  it('should keep static members available', function () {
     class MyComp extends Vue {
       static myValue = 52
 
@@ -366,7 +407,7 @@ describe('vue-class-component', () => {
         this.valueB = 456
       }
 
-      render() {}
+      render () {}
     }
 
     const app = createApp(MyComp).mount(root) as MyComp
@@ -377,7 +418,7 @@ describe('vue-class-component', () => {
     expect(app.valueB).toBe(456)
   })
 
-  it('copies reflection metadata', function () {
+  it('keeps reflection metadata available', function () {
     @Reflect.metadata('worksConstructor', true)
     class Test extends Vue {
       @Reflect.metadata('worksStatic', true)

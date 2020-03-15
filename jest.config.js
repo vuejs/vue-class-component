@@ -1,5 +1,22 @@
+const isBabel = !!process.env.BABEL_TEST
+
+const tsJestConfig = {
+  preset: 'ts-jest',
+  globals: {
+    'ts-jest': {
+      tsConfig: 'test/tsconfig.json'
+    }
+  }
+}
+
+const babelJestConfig = {
+  transform: {
+    '^.+\\.[t|j]sx?$': ['babel-jest', { configFile: './test/babel.config.js' }]
+  }
+}
+
 module.exports = {
-  preset: 'ts-jest/presets/js-with-babel',
+  ...(isBabel ? babelJestConfig : tsJestConfig),
 
   testMatch: [
     '**/test/**/?(*.)+(spec|test).[jt]s?(x)'
@@ -7,12 +24,5 @@ module.exports = {
 
   moduleNameMapper: {
     '^vue$': 'vue/dist/vue.cjs.prod.js'
-  },
-
-  globals: {
-    'ts-jest': {
-      tsConfig: 'test/tsconfig.json',
-      babelConfig: 'test/.babelrc'
-    }
   }
 }

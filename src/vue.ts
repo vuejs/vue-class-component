@@ -200,6 +200,8 @@ export class Vue<Props = unknown> implements ComponentPublicInstance<{}, {}, {},
     Object.keys(props).forEach(key => {
       Object.defineProperty(this, key, {
         enumerable: false,
+        configurable: true,
+        writable: true,
         value: (props as any)[key]
       })
     })

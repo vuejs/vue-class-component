@@ -20,7 +20,9 @@
     "example": "npm run build && webpack --config example/webpack.config.js",
     "dev": "webpack --config example/webpack.config.js --watch",
     "lint": "eslint --ext js,jsx,ts,tsx,vue .",
-    "test": "jest",
+    "test": "yarn test:ts && yarn test:babel",
+    "test:ts": "jest",
+    "test:babel": "BABEL_TEST=1 jest",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "release": "bash build/release.sh"
@@ -50,6 +52,7 @@
     "@babel/plugin-proposal-decorators": "^7.7.4",
     "@babel/plugin-syntax-jsx": "^7.7.4",
     "@babel/preset-env": "^7.7.7",
+    "@babel/preset-typescript": "^7.8.3",
     "@types/chai": "^4.2.7",
     "@types/jest": "^25.1.3",
     "@types/mocha": "^5.2.7",
