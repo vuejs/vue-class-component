@@ -1,5 +1,5 @@
 /**
-  * vue-class-component v7.2.3
+  * vue-class-component v8.0.0-alpha.1
   * (c) 2015-present Evan You
   * @license MIT
   */
@@ -7,22 +7,26 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var Vue = _interopDefault(require('vue'));
-
-function _typeof(obj) {
-  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-    _typeof = function (obj) {
-      return typeof obj;
-    };
-  } else {
-    _typeof = function (obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-    };
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
   }
+}
 
-  return _typeof(obj);
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
 }
 
 function _defineProperty(obj, key, value) {
@@ -38,6 +42,87 @@ function _defineProperty(obj, key, value) {
   }
 
   return obj;
+}
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) _setPrototypeOf(subClass, superClass);
+}
+
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+    return o.__proto__ || Object.getPrototypeOf(o);
+  };
+  return _getPrototypeOf(o);
+}
+
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+
+  return _setPrototypeOf(o, p);
+}
+
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (call && (typeof call === "object" || typeof call === "function")) {
+    return call;
+  }
+
+  return _assertThisInitialized(self);
 }
 
 function _toConsumableArray(arr) {
@@ -60,270 +145,190 @@ function _nonIterableSpread() {
   throw new TypeError("Invalid attempt to spread non-iterable instance");
 }
 
-// The rational behind the verbose Reflect-feature check below is the fact that there are polyfills
-// which add an implementation for Reflect.defineMetadata but not for Reflect.getOwnMetadataKeys.
-// Without this check consumers will encounter hard to track down runtime errors.
-function reflectionIsSupported() {
-  return typeof Reflect !== 'undefined' && Reflect.defineMetadata && Reflect.getOwnMetadataKeys;
-}
-function copyReflectionMetadata(to, from) {
-  forwardMetadata(to, from);
-  Object.getOwnPropertyNames(from.prototype).forEach(function (key) {
-    forwardMetadata(to.prototype, from.prototype, key);
-  });
-  Object.getOwnPropertyNames(from).forEach(function (key) {
-    forwardMetadata(to, from, key);
-  });
+function isFunction(value) {
+  return typeof value === 'function';
 }
 
-function forwardMetadata(to, from, propertyKey) {
-  var metaKeys = propertyKey ? Reflect.getOwnMetadataKeys(from, propertyKey) : Reflect.getOwnMetadataKeys(from);
-  metaKeys.forEach(function (metaKey) {
-    var metadata = propertyKey ? Reflect.getOwnMetadata(metaKey, from, propertyKey) : Reflect.getOwnMetadata(metaKey, from);
+function getSuperOptions(Ctor) {
+  var superProto = Object.getPrototypeOf(Ctor.prototype);
 
-    if (propertyKey) {
-      Reflect.defineMetadata(metaKey, metadata, to, propertyKey);
-    } else {
-      Reflect.defineMetadata(metaKey, metadata, to);
+  if (!superProto) {
+    return undefined;
+  }
+
+  var Super = superProto.constructor;
+  return Super.__vccOpts;
+}
+
+var Vue =
+/*#__PURE__*/
+function () {
+  function Vue(props) {
+    var _this = this;
+
+    _classCallCheck(this, Vue);
+
+    this.$props = props;
+    Object.keys(props).forEach(function (key) {
+      Object.defineProperty(_this, key, {
+        enumerable: false,
+        configurable: true,
+        writable: true,
+        value: props[key]
+      });
+    });
+  }
+  /** @internal */
+
+
+  _createClass(Vue, null, [{
+    key: "registerHooks",
+    value: function registerHooks(keys) {
+      var _this$__vccHooks;
+
+      (_this$__vccHooks = this.__vccHooks).push.apply(_this$__vccHooks, _toConsumableArray(keys));
     }
-  });
-}
+  }, {
+    key: "__vccOpts",
+    get: function get() {
+      // Early return if `this` is base class as it does not have any options
+      if (this === Vue) {
+        return {};
+      }
 
-var fakeArray = {
-  __proto__: []
-};
-var hasProto = fakeArray instanceof Array;
+      var cache = this.hasOwnProperty('__vccCache') && this.__vccCache;
+
+      if (cache) {
+        return cache;
+      }
+
+      var Ctor = this; // If the options are provided via decorator use it as a base
+
+      var options = this.__vccCache = this.hasOwnProperty('__vccBase') ? _objectSpread2({}, this.__vccBase) : {}; // Handle super class options
+
+      options["extends"] = getSuperOptions(Ctor); // Handle mixins
+
+      var mixins = this.hasOwnProperty('__vccMixins') && this.__vccMixins;
+
+      if (mixins) {
+        options.mixins = options.mixins ? options.mixins.concat(mixins) : mixins;
+      } // Class name -> component name
+
+
+      options.name = options.name || Ctor.name;
+      options.methods = _objectSpread2({}, options.methods);
+      options.computed = _objectSpread2({}, options.computed);
+      var proto = Ctor.prototype;
+      Object.getOwnPropertyNames(proto).forEach(function (key) {
+        if (key === 'constructor') {
+          return;
+        } // hooks
+
+
+        if (Ctor.__vccHooks.indexOf(key) > -1) {
+          options[key] = proto[key];
+          return;
+        }
+
+        var descriptor = Object.getOwnPropertyDescriptor(proto, key); // methods
+
+        if (typeof descriptor.value === 'function') {
+          options.methods[key] = descriptor.value;
+          return;
+        } // computed properties
+
+
+        if (descriptor.get || descriptor.set) {
+          options.computed[key] = {
+            get: descriptor.get,
+            set: descriptor.set
+          };
+          return;
+        }
+      }); // Class properties -> reactive data
+
+      var hookDataOption = options.data;
+
+      options.data = function () {
+        var hookData = isFunction(hookDataOption) ? hookDataOption.call(this, this) : hookDataOption; // should be acquired class property values
+
+        var data = new Ctor(this.$props); // create plain data object
+
+        var plainData = {};
+        Object.keys(data).forEach(function (key) {
+          if (data[key] !== undefined && key !== '$props') {
+            plainData[key] = data[key];
+          }
+        });
+        return _objectSpread2({}, hookData, {}, plainData);
+      };
+
+      var decorators = this.hasOwnProperty('__vccDecorators') && this.__vccDecorators;
+
+      if (decorators) {
+        decorators.forEach(function (fn) {
+          return fn(options);
+        });
+      }
+
+      return options;
+    }
+  }]);
+
+  return Vue;
+}();
+/** @internal */
+
+Vue.__vccHooks = ['data', 'beforeCreate', 'created', 'beforeMount', 'mounted', 'beforeUnmount', 'unmounted', 'beforeUpdate', 'updated', 'activated', 'deactivated', 'render', 'errorCaptured', 'serverPrefetch'];
+
+function Options(options) {
+  return function (Component) {
+    Component.__vccBase = options;
+    return Component;
+  };
+}
 function createDecorator(factory) {
   return function (target, key, index) {
     var Ctor = typeof target === 'function' ? target : target.constructor;
 
-    if (!Ctor.__decorators__) {
-      Ctor.__decorators__ = [];
+    if (!Ctor.__vccDecorators) {
+      Ctor.__vccDecorators = [];
     }
 
     if (typeof index !== 'number') {
       index = undefined;
     }
 
-    Ctor.__decorators__.push(function (options) {
+    Ctor.__vccDecorators.push(function (options) {
       return factory(options, key, index);
     });
   };
 }
 function mixins() {
+  var _a;
+
   for (var _len = arguments.length, Ctors = new Array(_len), _key = 0; _key < _len; _key++) {
     Ctors[_key] = arguments[_key];
   }
 
-  return Vue.extend({
-    mixins: Ctors
-  });
-}
-function isPrimitive(value) {
-  var type = _typeof(value);
+  return _a =
+  /*#__PURE__*/
+  function (_Vue) {
+    _inherits(MixedVue, _Vue);
 
-  return value == null || type !== 'object' && type !== 'function';
-}
-function warn(message) {
-  if (typeof console !== 'undefined') {
-    console.warn('[vue-class-component] ' + message);
-  }
-}
+    function MixedVue() {
+      _classCallCheck(this, MixedVue);
 
-function collectDataFromConstructor(vm, Component) {
-  // override _init to prevent to init as Vue instance
-  var originalInit = Component.prototype._init;
-
-  Component.prototype._init = function () {
-    var _this = this;
-
-    // proxy to actual vm
-    var keys = Object.getOwnPropertyNames(vm); // 2.2.0 compat (props are no longer exposed as self properties)
-
-    if (vm.$options.props) {
-      for (var key in vm.$options.props) {
-        if (!vm.hasOwnProperty(key)) {
-          keys.push(key);
-        }
-      }
+      return _possibleConstructorReturn(this, _getPrototypeOf(MixedVue).apply(this, arguments));
     }
 
-    keys.forEach(function (key) {
-      if (key.charAt(0) !== '_') {
-        Object.defineProperty(_this, key, {
-          get: function get() {
-            return vm[key];
-          },
-          set: function set(value) {
-            vm[key] = value;
-          },
-          configurable: true
-        });
-      }
-    });
-  }; // should be acquired class property values
-
-
-  var data = new Component(); // restore original _init to avoid memory leak (#209)
-
-  Component.prototype._init = originalInit; // create plain data object
-
-  var plainData = {};
-  Object.keys(data).forEach(function (key) {
-    if (data[key] !== undefined) {
-      plainData[key] = data[key];
-    }
-  });
-
-  if (process.env.NODE_ENV !== 'production') {
-    if (!(Component.prototype instanceof Vue) && Object.keys(plainData).length > 0) {
-      warn('Component class must inherit Vue or its descendant class ' + 'when class property is used.');
-    }
-  }
-
-  return plainData;
+    return MixedVue;
+  }(Vue), _a.__vccMixins = Ctors.map(function (Ctor) {
+    return Ctor.__vccOpts;
+  }), _a;
 }
 
-var $internalHooks = ['data', 'beforeCreate', 'created', 'beforeMount', 'mounted', 'beforeDestroy', 'destroyed', 'beforeUpdate', 'updated', 'activated', 'deactivated', 'render', 'errorCaptured', 'serverPrefetch' // 2.6
-];
-function componentFactory(Component) {
-  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  options.name = options.name || Component._componentTag || Component.name; // prototype props.
-
-  var proto = Component.prototype;
-  Object.getOwnPropertyNames(proto).forEach(function (key) {
-    if (key === 'constructor') {
-      return;
-    } // hooks
-
-
-    if ($internalHooks.indexOf(key) > -1) {
-      options[key] = proto[key];
-      return;
-    }
-
-    var descriptor = Object.getOwnPropertyDescriptor(proto, key);
-
-    if (descriptor.value !== void 0) {
-      // methods
-      if (typeof descriptor.value === 'function') {
-        (options.methods || (options.methods = {}))[key] = descriptor.value;
-      } else {
-        // typescript decorated data
-        (options.mixins || (options.mixins = [])).push({
-          data: function data() {
-            return _defineProperty({}, key, descriptor.value);
-          }
-        });
-      }
-    } else if (descriptor.get || descriptor.set) {
-      // computed properties
-      (options.computed || (options.computed = {}))[key] = {
-        get: descriptor.get,
-        set: descriptor.set
-      };
-    }
-  });
-  (options.mixins || (options.mixins = [])).push({
-    data: function data() {
-      return collectDataFromConstructor(this, Component);
-    }
-  }); // decorate options
-
-  var decorators = Component.__decorators__;
-
-  if (decorators) {
-    decorators.forEach(function (fn) {
-      return fn(options);
-    });
-    delete Component.__decorators__;
-  } // find super
-
-
-  var superProto = Object.getPrototypeOf(Component.prototype);
-  var Super = superProto instanceof Vue ? superProto.constructor : Vue;
-  var Extended = Super.extend(options);
-  forwardStaticMembers(Extended, Component, Super);
-
-  if (reflectionIsSupported()) {
-    copyReflectionMetadata(Extended, Component);
-  }
-
-  return Extended;
-}
-var reservedPropertyNames = [// Unique id
-'cid', // Super Vue constructor
-'super', // Component options that will be used by the component
-'options', 'superOptions', 'extendOptions', 'sealedOptions', // Private assets
-'component', 'directive', 'filter'];
-var shouldIgnore = {
-  prototype: true,
-  arguments: true,
-  callee: true,
-  caller: true
-};
-
-function forwardStaticMembers(Extended, Original, Super) {
-  // We have to use getOwnPropertyNames since Babel registers methods as non-enumerable
-  Object.getOwnPropertyNames(Original).forEach(function (key) {
-    // Skip the properties that should not be overwritten
-    if (shouldIgnore[key]) {
-      return;
-    } // Some browsers does not allow reconfigure built-in properties
-
-
-    var extendedDescriptor = Object.getOwnPropertyDescriptor(Extended, key);
-
-    if (extendedDescriptor && !extendedDescriptor.configurable) {
-      return;
-    }
-
-    var descriptor = Object.getOwnPropertyDescriptor(Original, key); // If the user agent does not support `__proto__` or its family (IE <= 10),
-    // the sub class properties may be inherited properties from the super class in TypeScript.
-    // We need to exclude such properties to prevent to overwrite
-    // the component options object which stored on the extended constructor (See #192).
-    // If the value is a referenced value (object or function),
-    // we can check equality of them and exclude it if they have the same reference.
-    // If it is a primitive value, it will be forwarded for safety.
-
-    if (!hasProto) {
-      // Only `cid` is explicitly exluded from property forwarding
-      // because we cannot detect whether it is a inherited property or not
-      // on the no `__proto__` environment even though the property is reserved.
-      if (key === 'cid') {
-        return;
-      }
-
-      var superDescriptor = Object.getOwnPropertyDescriptor(Super, key);
-
-      if (!isPrimitive(descriptor.value) && superDescriptor && superDescriptor.value === descriptor.value) {
-        return;
-      }
-    } // Warn if the users manually declare reserved properties
-
-
-    if (process.env.NODE_ENV !== 'production' && reservedPropertyNames.indexOf(key) >= 0) {
-      warn("Static property name '".concat(key, "' declared on class '").concat(Original.name, "' ") + 'conflicts with reserved property name of Vue internal. ' + 'It may cause unexpected behavior of the component. Consider renaming the property.');
-    }
-
-    Object.defineProperty(Extended, key, descriptor);
-  });
-}
-
-function Component(options) {
-  if (typeof options === 'function') {
-    return componentFactory(options);
-  }
-
-  return function (Component) {
-    return componentFactory(Component, options);
-  };
-}
-
-Component.registerHooks = function registerHooks(keys) {
-  $internalHooks.push.apply($internalHooks, _toConsumableArray(keys));
-};
-
+exports.Options = Options;
+exports.Vue = Vue;
 exports.createDecorator = createDecorator;
-exports.default = Component;
 exports.mixins = mixins;
