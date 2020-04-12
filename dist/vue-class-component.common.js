@@ -1,5 +1,5 @@
 /**
-  * vue-class-component v8.0.0-alpha.1
+  * vue-class-component v8.0.0-alpha.2
   * (c) 2015-present Evan You
   * @license MIT
   */
@@ -269,6 +269,23 @@ function () {
         decorators.forEach(function (fn) {
           return fn(options);
         });
+      } // from Vue Loader
+
+
+      if (Ctor.render) {
+        options.render = Ctor.render;
+      }
+
+      if (Ctor.__file) {
+        options.__file = Ctor.__file;
+      }
+
+      if (Ctor.__cssModules) {
+        options.__cssModules = Ctor.__cssModules;
+      }
+
+      if (Ctor.__scopeId) {
+        options.__scopeId = Ctor.__scopeId;
       }
 
       return options;
