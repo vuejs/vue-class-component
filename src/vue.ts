@@ -155,6 +155,23 @@ export class Vue<Props = unknown> implements ComponentPublicInstance<{}, {}, {},
       decorators.forEach(fn => fn(options))
     }
 
+    // from Vue Loader
+    if (Ctor.render) {
+      options.render = Ctor.render
+    }
+
+    if (Ctor.__file) {
+      options.__file = Ctor.__file
+    }
+
+    if (Ctor.__cssModules) {
+      options.__cssModules = Ctor.__cssModules
+    }
+
+    if (Ctor.__scopeId) {
+      options.__scopeId = Ctor.__scopeId
+    }
+
     return options
   }
 
@@ -193,6 +210,12 @@ export class Vue<Props = unknown> implements ComponentPublicInstance<{}, {}, {},
   render?(): VNode | void
   errorCaptured?(err: Error, vm: Vue, info: string): boolean | undefined
   serverPrefetch?(): Promise<unknown>
+
+  // Vue Loader injections
+  static render?: () => VNode | void
+  static __file?: string
+  static __cssModules?: Record<string, any>
+  static __scopeId?: string
 
   constructor (props: Props) {
     this.$props = props
