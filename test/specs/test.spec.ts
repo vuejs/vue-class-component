@@ -71,6 +71,9 @@ describe('vue-class-component', () => {
       foo: number
     }
 
+    @Options({
+      props: ['foo']
+    })
     class MyComp extends Vue<Props> {
       message = 'answer is ' + this.$props.foo
 

@@ -30,7 +30,7 @@ export type VueMixin<V extends Vue = Vue> = VueStatic & { prototype: V }
 
 export type VueBase<V extends Vue = Vue> = VueMixin<V> & (new (...args: any[]) => V)
 
-export class Vue<Props = unknown> implements ComponentPublicInstance<{}, {}, {}, {}, {}, Props>, ClassComponentHooks {
+export class Vue<Props = unknown> implements ComponentPublicInstance<{}, {}, {}, {}, {}, {}, Props>, ClassComponentHooks {
   /** @internal */
   static __vccCache?: ComponentOptions
 
@@ -128,9 +128,9 @@ export class Vue<Props = unknown> implements ComponentPublicInstance<{}, {}, {},
     // Class properties -> reactive data
     const hookDataOption = options.data
 
-    options.data = function () {
+    options.data = function (this: ComponentPublicInstance) {
       const hookData = isFunction(hookDataOption)
-        ? hookDataOption.call(this)
+        ? hookDataOption.call(this, this)
         : hookDataOption
 
       // should be acquired class property values
