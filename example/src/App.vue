@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from '../../lib/index'
+import { Options, Vue } from '../../src'
 
 @Options({
   props: {

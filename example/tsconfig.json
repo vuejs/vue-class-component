@@ -11,11 +11,9 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "jsx": "preserve",
-    "jsxFactory": "h"
+    "sourceMap": true
   },
   "include": [
     "./**/*.ts"
-  ],
-  "compileOnSave": false
+  ]
 }
