@@ -9,9 +9,11 @@
   (global = global || self, factory(global.VueClassComponent = {}, global.Vue));
 }(this, (function (exports, Vue) { 'use strict';
 
-  Vue = Vue && Vue.hasOwnProperty('default') ? Vue['default'] : Vue;
+  Vue = Vue && Object.prototype.hasOwnProperty.call(Vue, 'default') ? Vue['default'] : Vue;
 
   function _typeof(obj) {
+    "@babel/helpers - typeof";
+
     if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
       _typeof = function (obj) {
         return typeof obj;
@@ -41,23 +43,36 @@
   }
 
   function _toConsumableArray(arr) {
-    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
+    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
   }
 
   function _arrayWithoutHoles(arr) {
-    if (Array.isArray(arr)) {
-      for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
-
-      return arr2;
-    }
+    if (Array.isArray(arr)) return _arrayLikeToArray(arr);
   }
 
   function _iterableToArray(iter) {
-    if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
+    if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
+  }
+
+  function _unsupportedIterableToArray(o, minLen) {
+    if (!o) return;
+    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === "Object" && o.constructor) n = o.constructor.name;
+    if (n === "Map" || n === "Set") return Array.from(n);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+  }
+
+  function _arrayLikeToArray(arr, len) {
+    if (len == null || len > arr.length) len = arr.length;
+
+    for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+
+    return arr2;
   }
 
   function _nonIterableSpread() {
-    throw new TypeError("Invalid attempt to spread non-iterable instance");
+    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
   }
 
   // The rational behind the verbose Reflect-feature check below is the fact that there are polyfills
@@ -260,12 +275,34 @@
     prototype: true,
     arguments: true,
     callee: true,
-    caller: true
-  };
+    caller: true,
+    constructor: true,
+    apply: true,
+    bind: true,
+    call: true
+  }; // Get all enumerable/non-enumerable and inherited properties of an object
+
+  function getAllPropertyObjectNames(obj) {
+    var properties = new Set();
+    var firstIteration = true;
+
+    while (obj) {
+      Object.getOwnPropertyNames(obj).forEach(function (property) {
+        if (!firstIteration && reservedPropertyNames.includes(property)) {
+          return;
+        }
+
+        properties.add(property);
+      });
+      firstIteration = false;
+      obj = Object.getPrototypeOf(obj);
+    }
+
+    return _toConsumableArray(properties);
+  }
 
   function forwardStaticMembers(Extended, Original, Super) {
-    // We have to use getOwnPropertyNames since Babel registers methods as non-enumerable
-    Object.getOwnPropertyNames(Original).forEach(function (key) {
+    getAllPropertyObjectNames(Original).forEach(function (key) {
       // Skip the properties that should not be overwritten
       if (shouldIgnore[key]) {
         return;
@@ -278,7 +315,7 @@
         return;
       }
 
-      var descriptor = Object.getOwnPropertyDescriptor(Original, key); // If the user agent does not support `__proto__` or its family (IE <= 10),
+      var descriptor = Object.getOwnPropertyDescriptor(Original, key) || Object.getOwnPropertyDescriptor(Extended, key) || Object.getOwnPropertyDescriptor(Super, key); // If the user agent does not support `__proto__` or its family (IE <= 10),
       // the sub class properties may be inherited properties from the super class in TypeScript.
       // We need to exclude such properties to prevent to overwrite
       // the component options object which stored on the extended constructor (See #192).

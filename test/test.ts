@@ -26,6 +26,20 @@ describe('vue-class-component', () => {
     expect(destroyed).to.be.true
   })
 
+  it('static properties inheritance', () => {
+
+    @Component
+    class MyComp extends Vue {
+      static someVar = 'someValue';
+    }
+
+    @Component
+    class MyComp2 extends MyComp {
+    }
+
+    expect(MyComp2.someVar).to.equal('someValue')
+  })
+
   it('hooks: adding custom hooks', () => {
     Component.registerHooks(['beforeRouteEnter'])
 
