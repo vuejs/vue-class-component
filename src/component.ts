@@ -121,20 +121,20 @@ const shouldIgnore = {
 }
 
 // Get all enumerable/non-enumerable and inherited properties of an object
-function getAllPropertyObjectNames(obj: any): string[] {
-  let properties = new Set<string>();
-  let firstIteration = true;
+function getAllPropertyObjectNames (obj: any): string[] {
+  const properties = new Set<string>()
+  let firstIteration = true
   while (obj) {
-      Object.getOwnPropertyNames(obj).forEach(property => { 
-        if (!firstIteration && reservedPropertyNames.includes(property)) {
-           return;
-        }
-        properties.add(property);
-      });
-      firstIteration = false;
-      obj = Object.getPrototypeOf(obj);
+    Object.getOwnPropertyNames(obj).forEach(property => {
+      if (!firstIteration && reservedPropertyNames.includes(property)) {
+        return
+      }
+      properties.add(property)
+    })
+    firstIteration = false
+    obj = Object.getPrototypeOf(obj)
   }
-  return [...properties];
+  return [...properties]
 }
 
 function forwardStaticMembers (
@@ -143,7 +143,6 @@ function forwardStaticMembers (
   Super: typeof Vue
 ): void {
   getAllPropertyObjectNames(Original).forEach(key => {
-
     // Skip the properties that should not be overwritten
     if (shouldIgnore[key]) {
       return
@@ -155,7 +154,7 @@ function forwardStaticMembers (
       return
     }
 
-    const descriptor = Object.getOwnPropertyDescriptor(Original, key)! || Object.getOwnPropertyDescriptor(Extended, key)! || Object.getOwnPropertyDescriptor(Super, key)!;
+    const descriptor = Object.getOwnPropertyDescriptor(Original, key)! || Object.getOwnPropertyDescriptor(Extended, key)! || Object.getOwnPropertyDescriptor(Super, key)!
 
     // If the user agent does not support `__proto__` or its family (IE <= 10),
     // the sub class properties may be inherited properties from the super class in TypeScript.
