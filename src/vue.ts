@@ -89,9 +89,6 @@ export class Vue<Props = unknown> implements ComponentPublicInstance<{}, {}, {},
       options.mixins = options.mixins ? options.mixins.concat(mixins) : mixins
     }
 
-    // Class name -> component name
-    options.name = options.name || Ctor.name
-
     options.methods = { ...options.methods }
     options.computed = { ...options.computed }
 
