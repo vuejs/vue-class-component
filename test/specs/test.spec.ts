@@ -163,27 +163,6 @@ describe('vue-class-component', () => {
     expect(app.b).toBe(3)
   })
 
-  describe('name', () => {
-    it('via name option', () => {
-      @Options({ name: 'test' })
-      class MyComp extends Vue {
-        render () {}
-      }
-
-      const app = createApp(MyComp).mount(root)
-      expect(app.$options.name).toBe('test')
-    })
-
-    it('via class name', () => {
-      class MyComp extends Vue {
-        render () {}
-      }
-
-      const app = createApp(MyComp).mount(root)
-      expect(app.$options.name).toBe('MyComp')
-    })
-  })
-
   it('other options', (done) => {
     let v: number
 
