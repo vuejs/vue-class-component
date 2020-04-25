@@ -1,11 +1,17 @@
 import {
+  reactive,
   ComponentPublicInstance,
   ComponentOptions,
-  VNode
+  VNode,
+  SetupContext
 } from 'vue'
 
-function isFunction (value: any): value is Function {
-  return typeof value === 'function'
+function defineGetter<T, K extends keyof T> (obj: T, key: K, getter: () => T[K]): void {
+  Object.defineProperty(obj, key, {
+    get: getter,
+    enumerable: false,
+    configurable: true
+  })
 }
 
 function getSuperOptions (Ctor: Function): ComponentOptions | undefined {
@@ -122,29 +128,17 @@ export class Vue<Props = unknown> implements ComponentPublicInstance<{}, {}, {},
       }
     })
 
-    // Class properties -> reactive data
-    const hookDataOption = options.data
+    options.setup = function (props: unknown, ctx: SetupContext) {
+      const data: any = new Ctor(props, ctx)
 
-    options.data = function (this: ComponentPublicInstance) {
-      const hookData = isFunction(hookDataOption)
-        ? hookDataOption.call(this, this)
-        : hookDataOption
-
-      // should be acquired class property values
-      const data: any = new Ctor(this.$props)
-
-      // create plain data object
-      const plainData = {}
+      const plainData: any = {}
       Object.keys(data).forEach(key => {
-        if (data[key] !== undefined && key !== '$props') {
-          (plainData as any)[key] = data[key]
+        if (data[key] !== undefined) {
+          plainData[key] = data[key]
         }
       })
 
-      return {
-        ...hookData,
-        ...plainData
-      }
+      return reactive(plainData)
     }
 
     const decorators = this.hasOwnProperty('__vccDecorators') && this.__vccDecorators
@@ -179,18 +173,19 @@ export class Vue<Props = unknown> implements ComponentPublicInstance<{}, {}, {},
   // Public instance properties
   $!: ComponentPublicInstance['$']
   $data!: ComponentPublicInstance['$data']
-  $attrs!: ComponentPublicInstance['$attrs']
   $refs!: ComponentPublicInstance['$refs']
-  $slots!: ComponentPublicInstance['$slots']
   $root!: ComponentPublicInstance['$root']
   $parent!: ComponentPublicInstance['$parent']
-  $emit!: ComponentPublicInstance['$emit']
   $el!: ComponentPublicInstance['$el']
   $options!: ComponentPublicInstance['$options']
   $forceUpdate!: ComponentPublicInstance['$forceUpdate']
   $nextTick!: ComponentPublicInstance['$nextTick']
   $watch!: ComponentPublicInstance['$watch']
-  $props: Props
+
+  $props!: Props
+  $emit!: (event: string, ...args: any[]) => void
+  $attrs!: ComponentPublicInstance['$attrs']
+  $slots!: ComponentPublicInstance['$slots']
 
   // Built-in hooks
   data?(): object
@@ -214,8 +209,11 @@ export class Vue<Props = unknown> implements ComponentPublicInstance<{}, {}, {},
   static __cssModules?: Record<string, any>
   static __scopeId?: string
 
-  constructor (props: Props) {
-    this.$props = props
+  constructor (props: Props, ctx: SetupContext) {
+    defineGetter(this, '$props', () => props)
+    defineGetter(this, '$attrs', () => ctx.attrs)
+    defineGetter(this, '$slots', () => ctx.slots)
+    defineGetter(this, '$emit', () => ctx.emit)
 
     Object.keys(props).forEach(key => {
       Object.defineProperty(this, key, {

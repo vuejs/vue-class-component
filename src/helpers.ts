@@ -1,4 +1,4 @@
-import { ComponentOptions } from 'vue'
+import { ComponentOptions, SetupContext } from 'vue'
 import { Vue, VueBase, VueMixin } from './vue'
 
 export function Options <V extends Vue> (options: ComponentOptions & ThisType<V>): <VC extends VueBase>(target: VC) => VC {
@@ -58,5 +58,16 @@ export function mixins <T extends VueMixin[]> (...Ctors: T): MixedVueBase<T>
 export function mixins (...Ctors: VueMixin[]): VueBase {
   return class MixedVue<Props> extends Vue<Props> {
     static __vccMixins = Ctors.map(Ctor => Ctor.__vccOpts)
+
+    constructor (props: Props, ctx: SetupContext) {
+      super(props, ctx)
+
+      Ctors.forEach(Ctor => {
+        const data = new (Ctor as any)(props, ctx)
+        Object.keys(data).forEach(key => {
+          (this as any)[key] = data[key]
+        })
+      })
+    }
   }
 }

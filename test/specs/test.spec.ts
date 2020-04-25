@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import { createApp, h, resolveComponent } from 'vue'
+import { createApp, h, resolveComponent, ref, onMounted, reactive } from 'vue'
 import { Options, createDecorator, mixins, Vue } from '../../src'
 
 const root = document.createElement('div')
@@ -190,24 +190,30 @@ describe('vue-class-component', () => {
 
   it('extending', function () {
     class Base extends Vue {
-      a!: number
+      baseA!: number
+      baseB = 2
+
       data (): any {
-        return { a: 1 }
+        return { baseA: 1 }
       }
     }
 
-    class A extends Base {
-      b!: number
+    class Child extends Base {
+      childA!: number
+      childB = 4
+
       data (): any {
-        return { b: 2 }
+        return { childA: 3 }
       }
 
       render () {}
     }
 
-    const app = createApp(A).mount(root) as A
-    expect(app.a).toBe(1)
-    expect(app.b).toBe(2)
+    const app = createApp(Child).mount(root) as Child
+    expect(app.baseA).toBe(1)
+    expect(app.baseB).toBe(2)
+    expect(app.childA).toBe(3)
+    expect(app.childB).toBe(4)
   })
 
   // #199
@@ -398,6 +404,36 @@ describe('vue-class-component', () => {
     app.test()
     expect(app.valueA).toBe('hi')
     expect(app.valueB).toBe(456)
+  })
+
+  it('uses composition functions', () => {
+    function useCounter () {
+      const count = ref(0)
+
+      function increment () {
+        count.value++
+      }
+
+      onMounted(() => {
+        increment()
+      })
+
+      return {
+        count,
+        increment
+      }
+    }
+
+    class App extends Vue {
+      counter = reactive(useCounter())
+
+      render () {}
+    }
+
+    const app = createApp(App).mount(root) as App
+    expect(app.counter.count).toBe(1)
+    app.counter.increment()
+    expect(app.counter.count).toBe(2)
   })
 
   it('keeps reflection metadata available', function () {
