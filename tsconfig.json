@@ -3,9 +3,9 @@
     "target": "esnext",
     "lib": [
       "dom",
-      "es2015"
+      "esnext"
     ],
-    "module": "es2015",
+    "module": "esnext",
     "moduleResolution": "node",
     "outDir": "lib",
     "declaration": true,
