@@ -1,8 +1,10 @@
 /**
-  * vue-class-component v8.0.0-alpha.2
+  * vue-class-component v8.0.0-alpha.3
   * (c) 2015-present Evan You
   * @license MIT
   */
+import { reactive } from 'vue';
+
 function _defineProperty(obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
@@ -52,8 +54,12 @@ function _objectSpread2(target) {
   return target;
 }
 
-function isFunction(value) {
-  return typeof value === 'function';
+function defineGetter(obj, key, getter) {
+  Object.defineProperty(obj, key, {
+    get: getter,
+    enumerable: false,
+    configurable: true
+  });
 }
 
 function getSuperOptions(Ctor) {
@@ -68,8 +74,11 @@ function getSuperOptions(Ctor) {
 }
 
 class Vue {
-  constructor(props) {
-    this.$props = props;
+  constructor(props, ctx) {
+    defineGetter(this, '$props', () => props);
+    defineGetter(this, '$attrs', () => ctx.attrs);
+    defineGetter(this, '$slots', () => ctx.slots);
+    defineGetter(this, '$emit', () => ctx.emit);
     Object.keys(props).forEach(key => {
       Object.defineProperty(this, key, {
         enumerable: false,
@@ -104,10 +113,8 @@ class Vue {
 
     if (mixins) {
       options.mixins = options.mixins ? options.mixins.concat(mixins) : mixins;
-    } // Class name -> component name
+    }
 
-
-    options.name = options.name || Ctor.name;
     options.methods = _objectSpread2({}, options.methods);
     options.computed = _objectSpread2({}, options.computed);
     var proto = Ctor.prototype;
@@ -137,22 +144,17 @@ class Vue {
         };
         return;
       }
-    }); // Class properties -> reactive data
+    });
 
-    var hookDataOption = options.data;
-
-    options.data = function () {
-      var hookData = isFunction(hookDataOption) ? hookDataOption.call(this, this) : hookDataOption; // should be acquired class property values
-
-      var data = new Ctor(this.$props); // create plain data object
-
+    options.setup = function (props, ctx) {
+      var data = new Ctor(props, ctx);
       var plainData = {};
       Object.keys(data).forEach(key => {
-        if (data[key] !== undefined && key !== '$props') {
+        if (data[key] !== undefined) {
           plainData[key] = data[key];
         }
       });
-      return _objectSpread2({}, hookData, {}, plainData);
+      return reactive(plainData);
     };
 
     var decorators = this.hasOwnProperty('__vccDecorators') && this.__vccDecorators;
@@ -212,13 +214,24 @@ function createDecorator(factory) {
   };
 }
 function mixins() {
-  var _a;
-
   for (var _len = arguments.length, Ctors = new Array(_len), _key = 0; _key < _len; _key++) {
     Ctors[_key] = arguments[_key];
   }
 
-  return _a = class MixedVue extends Vue {}, _a.__vccMixins = Ctors.map(Ctor => Ctor.__vccOpts), _a;
+  var _a;
+
+  return _a = class MixedVue extends Vue {
+    constructor(props, ctx) {
+      super(props, ctx);
+      Ctors.forEach(Ctor => {
+        var data = new Ctor(props, ctx);
+        Object.keys(data).forEach(key => {
+          this[key] = data[key];
+        });
+      });
+    }
+
+  }, _a.__vccMixins = Ctors.map(Ctor => Ctor.__vccOpts), _a;
 }
 
 export { Options, Vue, createDecorator, mixins };

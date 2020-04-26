@@ -1,8 +1,10 @@
 /**
-  * vue-class-component v8.0.0-alpha.2
+  * vue-class-component v8.0.0-alpha.3
   * (c) 2015-present Evan You
   * @license MIT
   */
+import { reactive } from 'vue';
+
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -141,8 +143,12 @@ function _nonIterableSpread() {
   throw new TypeError("Invalid attempt to spread non-iterable instance");
 }
 
-function isFunction(value) {
-  return typeof value === 'function';
+function defineGetter(obj, key, getter) {
+  Object.defineProperty(obj, key, {
+    get: getter,
+    enumerable: false,
+    configurable: true
+  });
 }
 
 function getSuperOptions(Ctor) {
@@ -159,12 +165,23 @@ function getSuperOptions(Ctor) {
 var Vue =
 /*#__PURE__*/
 function () {
-  function Vue(props) {
+  function Vue(props, ctx) {
     var _this = this;
 
     _classCallCheck(this, Vue);
 
-    this.$props = props;
+    defineGetter(this, '$props', function () {
+      return props;
+    });
+    defineGetter(this, '$attrs', function () {
+      return ctx.attrs;
+    });
+    defineGetter(this, '$slots', function () {
+      return ctx.slots;
+    });
+    defineGetter(this, '$emit', function () {
+      return ctx.emit;
+    });
     Object.keys(props).forEach(function (key) {
       Object.defineProperty(_this, key, {
         enumerable: false,
@@ -208,10 +225,8 @@ function () {
 
       if (mixins) {
         options.mixins = options.mixins ? options.mixins.concat(mixins) : mixins;
-      } // Class name -> component name
+      }
 
-
-      options.name = options.name || Ctor.name;
       options.methods = _objectSpread2({}, options.methods);
       options.computed = _objectSpread2({}, options.computed);
       var proto = Ctor.prototype;
@@ -241,22 +256,17 @@ function () {
           };
           return;
         }
-      }); // Class properties -> reactive data
+      });
 
-      var hookDataOption = options.data;
-
-      options.data = function () {
-        var hookData = isFunction(hookDataOption) ? hookDataOption.call(this, this) : hookDataOption; // should be acquired class property values
-
-        var data = new Ctor(this.$props); // create plain data object
-
+      options.setup = function (props, ctx) {
+        var data = new Ctor(props, ctx);
         var plainData = {};
         Object.keys(data).forEach(function (key) {
-          if (data[key] !== undefined && key !== '$props') {
+          if (data[key] !== undefined) {
             plainData[key] = data[key];
           }
         });
-        return _objectSpread2({}, hookData, {}, plainData);
+        return reactive(plainData);
       };
 
       var decorators = this.hasOwnProperty('__vccDecorators') && this.__vccDecorators;
@@ -318,21 +328,30 @@ function createDecorator(factory) {
   };
 }
 function mixins() {
-  var _a;
-
   for (var _len = arguments.length, Ctors = new Array(_len), _key = 0; _key < _len; _key++) {
     Ctors[_key] = arguments[_key];
   }
+
+  var _a;
 
   return _a =
   /*#__PURE__*/
   function (_Vue) {
     _inherits(MixedVue, _Vue);
 
-    function MixedVue() {
+    function MixedVue(props, ctx) {
+      var _this;
+
       _classCallCheck(this, MixedVue);
 
-      return _possibleConstructorReturn(this, _getPrototypeOf(MixedVue).apply(this, arguments));
+      _this = _possibleConstructorReturn(this, _getPrototypeOf(MixedVue).call(this, props, ctx));
+      Ctors.forEach(function (Ctor) {
+        var data = new Ctor(props, ctx);
+        Object.keys(data).forEach(function (key) {
+          _this[key] = data[key];
+        });
+      });
+      return _this;
     }
 
     return MixedVue;
