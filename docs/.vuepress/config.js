@@ -34,6 +34,7 @@ module.exports = {
             'guide/additional-hooks.md',
             'guide/custom-decorators.md',
             'guide/extend-and-mixins.md',
+            'guide/provide-and-inject.md',
             'guide/caveats.md'
           ]
         },
