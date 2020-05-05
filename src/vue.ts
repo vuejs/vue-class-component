@@ -3,29 +3,33 @@ import {
   ComponentPublicInstance,
   ComponentOptions,
   VNode,
-  SetupContext
+  SetupContext,
 } from 'vue'
 
-function defineGetter<T, K extends keyof T> (obj: T, key: K, getter: () => T[K]): void {
+function defineGetter<T, K extends keyof T>(
+  obj: T,
+  key: K,
+  getter: () => T[K]
+): void {
   Object.defineProperty(obj, key, {
     get: getter,
     enumerable: false,
-    configurable: true
+    configurable: true,
   })
 }
 
-function defineProxy (proxy: any, key: string, target: any): void {
+function defineProxy(proxy: any, key: string, target: any): void {
   Object.defineProperty(proxy, key, {
     get: () => target[key],
-    set: value => {
+    set: (value) => {
       target[key] = value
     },
     enumerable: true,
-    configurable: true
+    configurable: true,
   })
 }
 
-function getSuperOptions (Ctor: Function): ComponentOptions | undefined {
+function getSuperOptions(Ctor: Function): ComponentOptions | undefined {
   const superProto = Object.getPrototypeOf(Ctor.prototype)
   if (!superProto) {
     return undefined
@@ -40,14 +44,18 @@ interface ClassComponentHooks {
 }
 
 type VueStatic = {
-  [K in keyof typeof Vue]: (typeof Vue)[K]
+  [K in keyof typeof Vue]: typeof Vue[K]
 }
 
 export type VueMixin<V extends Vue = Vue> = VueStatic & { prototype: V }
 
-export type VueBase<V extends Vue = Vue> = VueMixin<V> & (new (...args: any[]) => V)
+export type VueBase<V extends Vue = Vue> = VueMixin<V> &
+  (new (...args: any[]) => V)
 
-export class Vue<Props = unknown> implements ComponentPublicInstance<{}, {}, {}, {}, {}, {}, Props>, ClassComponentHooks {
+export class Vue<Props = unknown>
+  implements
+    ComponentPublicInstance<{}, {}, {}, {}, {}, {}, Props>,
+    ClassComponentHooks {
   /** @internal */
   static __vccCache?: ComponentOptions
 
@@ -75,11 +83,11 @@ export class Vue<Props = unknown> implements ComponentPublicInstance<{}, {}, {},
     'deactivated',
     'render',
     'errorCaptured',
-    'serverPrefetch'
+    'serverPrefetch',
   ]
 
   /** @internal */
-  static get __vccOpts (): ComponentOptions {
+  static get __vccOpts(): ComponentOptions {
     // Early return if `this` is base class as it does not have any options
     if (this === Vue) {
       return {}
@@ -93,9 +101,9 @@ export class Vue<Props = unknown> implements ComponentPublicInstance<{}, {}, {},
     const Ctor = this
 
     // If the options are provided via decorator use it as a base
-    const options = this.__vccCache = this.hasOwnProperty('__vccBase')
+    const options = (this.__vccCache = this.hasOwnProperty('__vccBase')
       ? { ...this.__vccBase }
-      : {}
+      : {})
 
     // Handle super class options
     options.extends = getSuperOptions(Ctor)
@@ -110,14 +118,14 @@ export class Vue<Props = unknown> implements ComponentPublicInstance<{}, {}, {},
     options.computed = { ...options.computed }
 
     const proto = Ctor.prototype
-    Object.getOwnPropertyNames(proto).forEach(key => {
+    Object.getOwnPropertyNames(proto).forEach((key) => {
       if (key === 'constructor') {
         return
       }
 
       // hooks
       if (Ctor.__vccHooks.indexOf(key) > -1) {
-        (options as any)[key] = (proto as any)[key]
+        ;(options as any)[key] = (proto as any)[key]
         return
       }
 
@@ -125,15 +133,15 @@ export class Vue<Props = unknown> implements ComponentPublicInstance<{}, {}, {},
 
       // methods
       if (typeof descriptor.value === 'function') {
-        (options.methods as any)[key] = descriptor.value
+        ;(options.methods as any)[key] = descriptor.value
         return
       }
 
       // computed properties
       if (descriptor.get || descriptor.set) {
-        (options.computed as any)[key] = {
+        ;(options.computed as any)[key] = {
           get: descriptor.get,
-          set: descriptor.set
+          set: descriptor.set,
         }
         return
       }
@@ -146,7 +154,7 @@ export class Vue<Props = unknown> implements ComponentPublicInstance<{}, {}, {},
       const plainData: any = reactive({})
 
       // Initialize reactive data and convert constructor `this` to a proxy
-      dataKeys.forEach(key => {
+      dataKeys.forEach((key) => {
         // Skip if the value is undefined not to make it reactive.
         // If the value has `__s`, it's a value from `setup` helper, proceed it later.
         if (data[key] === undefined || (data[key] && data[key].__s)) {
@@ -158,7 +166,7 @@ export class Vue<Props = unknown> implements ComponentPublicInstance<{}, {}, {},
       })
 
       // Invoke composition functions
-      dataKeys.forEach(key => {
+      dataKeys.forEach((key) => {
         if (data[key] && data[key].__s) {
           plainData[key] = data[key].__s()
         }
@@ -167,9 +175,10 @@ export class Vue<Props = unknown> implements ComponentPublicInstance<{}, {}, {},
       return plainData
     }
 
-    const decorators = this.hasOwnProperty('__vccDecorators') && this.__vccDecorators
+    const decorators =
+      this.hasOwnProperty('__vccDecorators') && this.__vccDecorators
     if (decorators) {
-      decorators.forEach(fn => fn(options))
+      decorators.forEach((fn) => fn(options))
     }
 
     // from Vue Loader
@@ -192,7 +201,7 @@ export class Vue<Props = unknown> implements ComponentPublicInstance<{}, {}, {},
     return options
   }
 
-  static registerHooks (keys: string[]): void {
+  static registerHooks(keys: string[]): void {
     this.__vccHooks.push(...keys)
   }
 
@@ -235,18 +244,18 @@ export class Vue<Props = unknown> implements ComponentPublicInstance<{}, {}, {},
   static __cssModules?: Record<string, any>
   static __scopeId?: string
 
-  constructor (props: Props, ctx: SetupContext) {
+  constructor(props: Props, ctx: SetupContext) {
     defineGetter(this, '$props', () => props)
     defineGetter(this, '$attrs', () => ctx.attrs)
     defineGetter(this, '$slots', () => ctx.slots)
     defineGetter(this, '$emit', () => ctx.emit)
 
-    Object.keys(props).forEach(key => {
+    Object.keys(props).forEach((key) => {
       Object.defineProperty(this, key, {
         enumerable: false,
         configurable: true,
         writable: true,
-        value: (props as any)[key]
+        value: (props as any)[key],
       })
     })
   }

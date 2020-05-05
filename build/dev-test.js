@@ -8,10 +8,10 @@ fs.watch('test/test.build.js', () => {
   run('mocha --reporter min test/test.build.js')
 })
 
-function run (command) {
+function run(command) {
   const [name, ...args] = command.split(' ')
   spawn(`node_modules/.bin/${name}`, args, {
     shell: true,
-    stdio: 'inherit'
+    stdio: 'inherit',
   })
 }

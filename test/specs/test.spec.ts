@@ -9,10 +9,10 @@ describe('vue-class-component', () => {
     let unmounted = false
 
     class MyComp extends Vue {
-      created () {
+      created() {
         created = true
       }
-      unmounted () {
+      unmounted() {
         unmounted = true
       }
     }
@@ -31,7 +31,7 @@ describe('vue-class-component', () => {
     class MyComp extends SubVue {
       static options: any
 
-      beforeRouteEnter () {
+      beforeRouteEnter() {
         return 'beforeRouteEnter'
       }
     }
@@ -43,7 +43,7 @@ describe('vue-class-component', () => {
   if (!process.env.BABEL_TEST) {
     it('data: should collect from class properties', () => {
       @Options({
-        props: ['foo']
+        props: ['foo'],
       })
       class MyComp extends Vue {
         foo!: number
@@ -64,7 +64,7 @@ describe('vue-class-component', () => {
     }
 
     @Options({
-      props: ['foo']
+      props: ['foo'],
     })
     class MyComp extends Vue<Props> {
       message = 'answer is ' + this.$props.foo
@@ -77,10 +77,10 @@ describe('vue-class-component', () => {
   it('data: should not collect uninitialized class properties', () => {
     const Prop = createDecorator((options, key) => {
       if (!options.props) {
-        (options as any).props = {}
+        ;(options as any).props = {}
       }
-      (options.props as any)[key] = {
-        type: null
+      ;(options.props as any)[key] = {
+        type: null,
       }
     })
 
@@ -98,11 +98,11 @@ describe('vue-class-component', () => {
       $store: any
       foo: string = 'Hello, ' + this.$store.state.msg
 
-      beforeCreate () {
+      beforeCreate() {
         this.$store = {
           state: {
-            msg: 'world'
-          }
+            msg: 'world',
+          },
         }
       }
     }
@@ -115,7 +115,7 @@ describe('vue-class-component', () => {
     let msg: string = ''
 
     class MyComp extends Vue {
-      hello () {
+      hello() {
         msg = 'hi'
       }
     }
@@ -128,12 +128,12 @@ describe('vue-class-component', () => {
   it('computed', () => {
     class MyComp extends Vue {
       a!: number
-      data () {
+      data() {
         return {
-          a: 1
+          a: 1,
         }
       }
-      get b () {
+      get b() {
         return this.a + 1
       }
     }
@@ -150,12 +150,14 @@ describe('vue-class-component', () => {
 
     @Options<MyComp>({
       watch: {
-        a: val => { v = val }
-      }
+        a: (val) => {
+          v = val
+        },
+      },
     })
     class MyComp extends Vue {
       a!: number
-      data () {
+      data() {
         return { a: 1 }
       }
     }
@@ -173,7 +175,7 @@ describe('vue-class-component', () => {
       baseA!: number
       baseB = 2
 
-      data (): any {
+      data(): any {
         return { baseA: 1 }
       }
     }
@@ -182,7 +184,7 @@ describe('vue-class-component', () => {
       childA!: number
       childB = 4
 
-      data (): any {
+      data(): any {
         return { childA: 3 }
       }
     }
@@ -196,12 +198,13 @@ describe('vue-class-component', () => {
 
   // #199
   it('should not re-execute super class decortors', function (done) {
-    const Watch = (valueKey: string) => createDecorator((options, key) => {
-      if (!options.watch) {
-        options.watch = {}
-      }
-      options.watch[valueKey] = key
-    })
+    const Watch = (valueKey: string) =>
+      createDecorator((options, key) => {
+        if (!options.watch) {
+          options.watch = {}
+        }
+        options.watch[valueKey] = key
+      })
 
     const spy = jest.fn()
 
@@ -209,7 +212,7 @@ describe('vue-class-component', () => {
       count = 0
 
       @Watch('count')
-      notify () {
+      notify() {
         spy()
       }
     }
@@ -229,10 +232,10 @@ describe('vue-class-component', () => {
       // component options should be passed to the callback
       // and update for the options affect the component
       if (!options.props) {
-        (options as any).props = {}
+        ;(options as any).props = {}
       }
-      (options.props as any)[key] = {
-        type: null
+      ;(options.props as any)[key] = {
+        type: null,
       }
     })
 
@@ -248,7 +251,7 @@ describe('vue-class-component', () => {
 
     class MyComp extends Vue {
       @Prop foo!: string
-      @Wrap get bar (): string {
+      @Wrap get bar(): string {
         return 'world'
       }
     }
@@ -261,22 +264,23 @@ describe('vue-class-component', () => {
   // #104
   it('createDecorator: decorate correctly even if a component is created in another @Component decorator', () => {
     // Just assigns the given value to the decorated property
-    const Value = (value: any) => createDecorator((options, key) => {
-      const data = options.data as Function || (() => ({}))
-      options.data = function () {
-        return {
-          ...data.call(this),
-          [key]: value
+    const Value = (value: any) =>
+      createDecorator((options, key) => {
+        const data = (options.data as Function) || (() => ({}))
+        options.data = function () {
+          return {
+            ...data.call(this),
+            [key]: value,
+          }
         }
-      }
-    })
+      })
 
     const createChild = () => {
       class Child extends Vue {
         @Value('child')
         value!: string
 
-        render () {
+        render() {
           return h('div')
         }
       }
@@ -285,14 +289,14 @@ describe('vue-class-component', () => {
 
     @Options({
       components: {
-        Child: createChild()
-      }
+        Child: createChild(),
+      },
     })
     class Parent extends Vue {
       @Value('parent')
       value!: string
 
-      render () {
+      render() {
         const child = resolveComponent('Child') as any
         return h(child, { ref: 'child' })
       }
@@ -306,10 +310,10 @@ describe('vue-class-component', () => {
 
   // #155
   it('createDecrator: create a class decorator', () => {
-    const DataMixin = createDecorator(options => {
+    const DataMixin = createDecorator((options) => {
       options.data = function () {
         return {
-          test: 'foo'
+          test: 'foo',
         }
       }
     })
@@ -326,7 +330,7 @@ describe('vue-class-component', () => {
       if (!options.methods) {
         options.methods = {}
       }
-      (options.methods as any)[key] = () => 'test'
+      ;(options.methods as any)[key] = () => 'test'
     })
 
     class MyComp extends Vue {
@@ -341,7 +345,7 @@ describe('vue-class-component', () => {
     class MyComp extends Vue {
       static myValue = 52
 
-      static myFunc () {
+      static myFunc() {
         return 42
       }
     }
@@ -360,7 +364,7 @@ describe('vue-class-component', () => {
     }
 
     class MyComp extends mixins(MixinA, MixinB) {
-      test () {
+      test() {
         this.valueA = 'hi'
         this.valueB = 456
       }
@@ -375,10 +379,10 @@ describe('vue-class-component', () => {
   })
 
   it('uses composition functions', () => {
-    function useCounter () {
+    function useCounter() {
       const count = ref(0)
 
-      function increment () {
+      function increment() {
         count.value++
       }
 
@@ -388,7 +392,7 @@ describe('vue-class-component', () => {
 
       return {
         count,
-        increment
+        increment,
       }
     }
 
@@ -402,8 +406,8 @@ describe('vue-class-component', () => {
     expect(root.counter.count).toBe(2)
   })
 
-  it('reactive class properties in a composition function', done => {
-    function test (message: Ref<string>) {
+  it('reactive class properties in a composition function', (done) => {
+    function test(message: Ref<string>) {
       watch(message, () => {
         expect(message.value).toBe('Updated')
         done()
@@ -431,19 +435,25 @@ describe('vue-class-component', () => {
       private _test: boolean = false
 
       @Reflect.metadata('worksMethod', true)
-      test (): void {
+      test(): void {
         void 0
       }
 
       @Reflect.metadata('worksAccessor', true)
-      get testAccessor (): boolean {
+      get testAccessor(): boolean {
         return this._test
       }
     }
 
     expect(Reflect.getOwnMetadata('worksConstructor', Test)).toBe(true)
-    expect(Reflect.getOwnMetadata('worksStatic', Test, 'staticValue')).toBe(true)
-    expect(Reflect.getOwnMetadata('worksMethod', Test.prototype, 'test')).toBe(true)
-    expect(Reflect.getOwnMetadata('worksAccessor', Test.prototype, 'testAccessor')).toBe(true)
+    expect(Reflect.getOwnMetadata('worksStatic', Test, 'staticValue')).toBe(
+      true
+    )
+    expect(Reflect.getOwnMetadata('worksMethod', Test.prototype, 'test')).toBe(
+      true
+    )
+    expect(
+      Reflect.getOwnMetadata('worksAccessor', Test.prototype, 'testAccessor')
+    ).toBe(true)
   })
 })

@@ -3,6 +3,6 @@ module.exports = {
   presets: ['@babel/env', '@babel/typescript'],
   plugins: [
     ['@babel/proposal-decorators', { legacy: true }],
-    ['@babel/proposal-class-properties', { loose: true }]
-  ]
+    ['@babel/proposal-class-properties', { loose: true }],
+  ],
 }

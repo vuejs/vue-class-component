@@ -6,13 +6,13 @@ module.exports = {
   entry: './src/main.ts',
   output: {
     path: __dirname,
-    filename: 'build.js'
+    filename: 'build.js',
   },
   resolve: {
     alias: {
-      vue$: 'vue/dist/vue.esm-bundler.js'
+      vue$: 'vue/dist/vue.esm-bundler.js',
     },
-    extensions: ['.ts', '.tsx', '.js']
+    extensions: ['.ts', '.tsx', '.js'],
   },
   module: {
     rules: [
@@ -25,19 +25,17 @@ module.exports = {
             loader: 'ts-loader',
             options: {
               appendTsSuffixTo: [/\.vue$/],
-              appendTsxSuffixTo: [/\.vue$/]
-            }
-          }
-        ]
+              appendTsxSuffixTo: [/\.vue$/],
+            },
+          },
+        ],
       },
       {
         test: /\.vue$/,
-        use: ['vue-loader']
-      }
-    ]
+        use: ['vue-loader'],
+      },
+    ],
   },
   devtool: 'source-map',
-  plugins: [
-    new VueLoaderPlugin()
-  ]
+  plugins: [new VueLoaderPlugin()],
 }

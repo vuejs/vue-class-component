@@ -4,25 +4,23 @@ const tsJestConfig = {
   preset: 'ts-jest',
   globals: {
     'ts-jest': {
-      tsConfig: 'test/tsconfig.json'
-    }
-  }
+      tsConfig: 'test/tsconfig.json',
+    },
+  },
 }
 
 const babelJestConfig = {
   transform: {
-    '^.+\\.[t|j]sx?$': ['babel-jest', { configFile: './test/babel.config.js' }]
-  }
+    '^.+\\.[t|j]sx?$': ['babel-jest', { configFile: './test/babel.config.js' }],
+  },
 }
 
 module.exports = {
   ...(isBabel ? babelJestConfig : tsJestConfig),
 
-  testMatch: [
-    '**/test/**/?(*.)+(spec|test).[jt]s?(x)'
-  ],
+  testMatch: ['**/test/**/?(*.)+(spec|test).[jt]s?(x)'],
 
   moduleNameMapper: {
-    '^vue$': 'vue/dist/vue.cjs.prod.js'
-  }
+    '^vue$': 'vue/dist/vue.cjs.prod.js',
+  },
 }

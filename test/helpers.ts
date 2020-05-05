@@ -3,7 +3,10 @@ import { VueBase } from '../src/vue'
 
 const wrapper = document.createElement('div')
 
-export function mount<T extends VueBase> (Component: T, props?: Record<string, any>) {
+export function mount<T extends VueBase>(
+  Component: T,
+  props?: Record<string, any>
+) {
   if (!Component.__vccOpts.render) {
     Component.__vccOpts.render = () => {}
   }
@@ -12,6 +15,6 @@ export function mount<T extends VueBase> (Component: T, props?: Record<string, a
   return { app, root }
 }
 
-export function unmount (app: App): void {
+export function unmount(app: App): void {
   app.unmount(wrapper)
 }
