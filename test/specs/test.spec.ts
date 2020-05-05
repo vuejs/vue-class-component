@@ -1,8 +1,7 @@
 import 'reflect-metadata'
-import { createApp, h, resolveComponent, ref, onMounted, Ref, watch, toRef } from 'vue'
+import { h, resolveComponent, ref, onMounted, Ref, watch, toRef } from 'vue'
 import { Options, createDecorator, mixins, Vue, setup } from '../../src'
-
-const root = document.createElement('div')
+import { mount, unmount } from '../helpers'
 
 describe('vue-class-component', () => {
   it('hooks', () => {
@@ -16,15 +15,12 @@ describe('vue-class-component', () => {
       unmounted () {
         unmounted = true
       }
-
-      render () {}
     }
 
-    const app = createApp(MyComp)
-    app.mount(root)
+    const { app } = mount(MyComp)
     expect(created).toBe(true)
     expect(unmounted).toBe(false)
-    app.unmount(root)
+    unmount(app)
     expect(unmounted).toBe(true)
   })
 
@@ -38,12 +34,10 @@ describe('vue-class-component', () => {
       beforeRouteEnter () {
         return 'beforeRouteEnter'
       }
-
-      render () {}
     }
 
-    const app = createApp(MyComp).mount(root)
-    expect((app.$options as any).beforeRouteEnter()).toBe('beforeRouteEnter')
+    const { root } = mount(MyComp)
+    expect((root.$options as any).beforeRouteEnter()).toBe('beforeRouteEnter')
   })
 
   if (!process.env.BABEL_TEST) {
@@ -55,14 +49,12 @@ describe('vue-class-component', () => {
         foo!: number
         a: string = 'hello'
         b: number = this.foo + 1
-
-        render () {}
       }
 
-      const app = createApp(MyComp, { foo: 1 }).mount(root) as MyComp
+      const { root } = mount(MyComp, { foo: 1 })
 
-      expect(app.a).toBe('hello')
-      expect(app.b).toBe(2)
+      expect(root.a).toBe('hello')
+      expect(root.b).toBe(2)
     })
   }
 
@@ -76,12 +68,10 @@ describe('vue-class-component', () => {
     })
     class MyComp extends Vue<Props> {
       message = 'answer is ' + this.$props.foo
-
-      render () {}
     }
 
-    const app = createApp(MyComp, { foo: 42 }).mount(root) as MyComp
-    expect(app.message).toBe('answer is 42')
+    const { root } = mount(MyComp, { foo: 42 })
+    expect(root.message).toBe('answer is 42')
   })
 
   it('data: should not collect uninitialized class properties', () => {
@@ -97,12 +87,10 @@ describe('vue-class-component', () => {
     class MyComp extends Vue {
       foo: any
       @Prop bar: any
-
-      render () {}
     }
-    const c = createApp(MyComp).mount(root)
-    expect('foo' in c.$data).toBe(false)
-    expect('bar' in c.$data).toBe(false)
+    const { root } = mount(MyComp)
+    expect('foo' in root.$data).toBe(false)
+    expect('bar' in root.$data).toBe(false)
   })
 
   xit('data: should collect custom property defined on beforeCreate', () => {
@@ -117,12 +105,10 @@ describe('vue-class-component', () => {
           }
         }
       }
-
-      render () {}
     }
 
-    const app = createApp(MyComp).mount(root) as MyComp
-    expect(app.foo).toBe('Hello, world')
+    const { root } = mount(MyComp)
+    expect(root.foo).toBe('Hello, world')
   })
 
   it('methods', () => {
@@ -132,12 +118,10 @@ describe('vue-class-component', () => {
       hello () {
         msg = 'hi'
       }
-
-      render () {}
     }
 
-    const app = createApp(MyComp).mount(root) as MyComp
-    app.hello()
+    const { root } = mount(MyComp)
+    root.hello()
     expect(msg).toBe('hi')
   })
 
@@ -152,15 +136,13 @@ describe('vue-class-component', () => {
       get b () {
         return this.a + 1
       }
-
-      render () {}
     }
 
-    const app = createApp(MyComp).mount(root) as MyComp
-    expect(app.a).toBe(1)
-    expect(app.b).toBe(2)
-    app.a = 2
-    expect(app.b).toBe(3)
+    const { root } = mount(MyComp)
+    expect(root.a).toBe(1)
+    expect(root.b).toBe(2)
+    root.a = 2
+    expect(root.b).toBe(3)
   })
 
   it('other options', (done) => {
@@ -176,13 +158,11 @@ describe('vue-class-component', () => {
       data () {
         return { a: 1 }
       }
-
-      render () {}
     }
 
-    const app = createApp(MyComp).mount(root) as MyComp
-    app.a = 2
-    app.$nextTick(() => {
+    const { root } = mount(MyComp)
+    root.a = 2
+    root.$nextTick(() => {
       expect(v).toBe(2)
       done()
     })
@@ -205,15 +185,13 @@ describe('vue-class-component', () => {
       data (): any {
         return { childA: 3 }
       }
-
-      render () {}
     }
 
-    const app = createApp(Child).mount(root) as Child
-    expect(app.baseA).toBe(1)
-    expect(app.baseB).toBe(2)
-    expect(app.childA).toBe(3)
-    expect(app.childB).toBe(4)
+    const { root } = mount(Child)
+    expect(root.baseA).toBe(1)
+    expect(root.baseB).toBe(2)
+    expect(root.childA).toBe(3)
+    expect(root.childB).toBe(4)
   })
 
   // #199
@@ -236,13 +214,11 @@ describe('vue-class-component', () => {
       }
     }
 
-    class A extends Base {
-      render () {}
-    }
+    class A extends Base {}
 
-    const app = createApp(A).mount(root) as A
-    app.count++
-    app.$nextTick(() => {
+    const { root } = mount(A)
+    root.count++
+    root.$nextTick(() => {
       expect(spy).toHaveBeenCalledTimes(1)
       done()
     })
@@ -275,13 +251,11 @@ describe('vue-class-component', () => {
       @Wrap get bar (): string {
         return 'world'
       }
-
-      render () {}
     }
 
-    const app = createApp(MyComp, { foo: 'hello' }).mount(root) as MyComp
-    expect(app.foo).toBe('hello')
-    expect(app.bar).toBe('(world)')
+    const { root } = mount(MyComp, { foo: 'hello' })
+    expect(root.foo).toBe('hello')
+    expect(root.bar).toBe('(world)')
   })
 
   // #104
@@ -324,7 +298,7 @@ describe('vue-class-component', () => {
       }
     }
 
-    const parent = createApp(Parent).mount(root) as Parent
+    const { root: parent } = mount(Parent)
     const child = parent.$refs.child as any
     expect(parent.value).toBe('parent')
     expect(child.value).toBe('child')
@@ -341,12 +315,10 @@ describe('vue-class-component', () => {
     })
 
     @DataMixin
-    class MyComp extends Vue {
-      render () {}
-    }
+    class MyComp extends Vue {}
 
-    const app: any = createApp(MyComp).mount(root)
-    expect(app.test).toBe('foo')
+    const { root } = mount(MyComp)
+    expect((root as any).test).toBe('foo')
   })
 
   it('should not throw if property decorator declare some methods', () => {
@@ -359,12 +331,10 @@ describe('vue-class-component', () => {
 
     class MyComp extends Vue {
       @Test test!: () => string
-
-      render () {}
     }
 
-    const vm = createApp(MyComp).mount(root) as MyComp
-    expect(vm.test()).toBe('test')
+    const { root } = mount(MyComp)
+    expect(root.test()).toBe('test')
   })
 
   it('should keep static members available', function () {
@@ -394,16 +364,14 @@ describe('vue-class-component', () => {
         this.valueA = 'hi'
         this.valueB = 456
       }
-
-      render () {}
     }
 
-    const app = createApp(MyComp).mount(root) as MyComp
-    expect(app.valueA).toBe('hello')
-    expect(app.valueB).toBe(123)
-    app.test()
-    expect(app.valueA).toBe('hi')
-    expect(app.valueB).toBe(456)
+    const { root } = mount(MyComp)
+    expect(root.valueA).toBe('hello')
+    expect(root.valueB).toBe(123)
+    root.test()
+    expect(root.valueA).toBe('hi')
+    expect(root.valueB).toBe(456)
   })
 
   it('uses composition functions', () => {
@@ -426,14 +394,12 @@ describe('vue-class-component', () => {
 
     class App extends Vue {
       counter = setup(() => useCounter())
-
-      render () {}
     }
 
-    const app = createApp(App).mount(root) as App
-    expect(app.counter.count).toBe(1)
-    app.counter.increment()
-    expect(app.counter.count).toBe(2)
+    const { root } = mount(App)
+    expect(root.counter.count).toBe(1)
+    root.counter.increment()
+    expect(root.counter.count).toBe(2)
   })
 
   it('reactive class properties in a composition function', done => {
@@ -450,12 +416,10 @@ describe('vue-class-component', () => {
       test = setup(() => {
         return test(toRef(this, 'message'))
       })
-
-      render () {}
     }
 
-    const app = createApp(App).mount(root) as App
-    app.message = 'Updated'
+    const { root } = mount(App)
+    root.message = 'Updated'
   })
 
   it('keeps reflection metadata available', function () {
