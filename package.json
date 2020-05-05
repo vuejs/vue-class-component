@@ -25,6 +25,7 @@
     "test:babel": "BABEL_TEST=1 jest",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "release": "bash build/release.sh"
   },
   "repository": {
@@ -57,6 +58,7 @@
     "@vue/compiler-sfc": "^3.0.0-beta.4",
     "babel-jest": "^25.1.0",
     "babel-loader": "^8.0.6",
+    "conventional-changelog-cli": "^2.0.31",
     "css-loader": "^3.4.2",
     "jest": "^25.1.0",
     "prettier": "^2.0.5",
