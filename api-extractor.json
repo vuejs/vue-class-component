@@ -1,0 +1,56 @@
+/**
+ * Config file for API Extractor.  For more info, please visit: https://api-extractor.com
+ */
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
+  "mainEntryPointFilePath": "<projectFolder>/lib/index.d.ts",
+
+  "apiReport": {
+    "enabled": false
+  },
+
+  "docModel": {
+    "enabled": false
+  },
+
+  "dtsRollup": {
+    "enabled": true,
+    "untrimmedFilePath": "",
+    "publicTrimmedFilePath": "<projectFolder>/dist/<unscopedPackageName>.d.ts"
+  },
+
+  "tsdocMetadata": {
+    "enabled": false
+  },
+
+  "newlineKind": "lf",
+
+  /**
+   * Configures how API Extractor reports error and warning messages produced during analysis.
+   *
+   * There are three sources of messages:  compiler messages, API Extractor messages, and TSDoc messages.
+   */
+  "messages": {
+    "compilerMessageReporting": {
+      "default": {
+        "logLevel": "warning"
+      }
+    },
+
+    "extractorMessageReporting": {
+      "default": {
+        "logLevel": "warning"
+      },
+
+      "ae-missing-release-tag": {
+        "logLevel": "none"
+      }
+    },
+
+    "tsdocMessageReporting": {
+      "default": {
+        "logLevel": "warning"
+      }
+    }
+  }
+}

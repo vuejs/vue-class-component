@@ -39,11 +39,11 @@ function getSuperOptions(Ctor: Function): ComponentOptions | undefined {
   return Super.__vccOpts
 }
 
-interface ClassComponentHooks {
+export interface ClassComponentHooks {
   /* To be extended on user land */
 }
 
-type VueStatic = {
+export type VueStatic = {
   [K in keyof typeof Vue]: typeof Vue[K]
 }
 

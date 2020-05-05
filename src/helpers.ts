@@ -37,21 +37,21 @@ export function createDecorator(
   }
 }
 
-interface PropsMixin {
+export interface PropsMixin {
   new <Props = unknown>(...args: any[]): {
     $props: Props
   }
 }
 
-type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
   k: infer I
 ) => void
   ? I
   : never
 
-type ExtractInstance<T> = T extends VueMixin<infer V> ? V : never
+export type ExtractInstance<T> = T extends VueMixin<infer V> ? V : never
 
-type MixedVueBase<Mixins extends VueMixin[]> = Mixins extends (infer T)[]
+export type MixedVueBase<Mixins extends VueMixin[]> = Mixins extends (infer T)[]
   ? VueBase<UnionToIntersection<ExtractInstance<T>> & Vue> & PropsMixin
   : never
 
