@@ -1,6 +1,6 @@
 import 'reflect-metadata'
-import { createApp, h, resolveComponent, ref, onMounted, reactive } from 'vue'
-import { Options, createDecorator, mixins, Vue } from '../../src'
+import { createApp, h, resolveComponent, ref, onMounted, Ref, watch, toRef } from 'vue'
+import { Options, createDecorator, mixins, Vue, setup } from '../../src'
 
 const root = document.createElement('div')
 
@@ -425,7 +425,7 @@ describe('vue-class-component', () => {
     }
 
     class App extends Vue {
-      counter = reactive(useCounter())
+      counter = setup(() => useCounter())
 
       render () {}
     }
@@ -434,6 +434,28 @@ describe('vue-class-component', () => {
     expect(app.counter.count).toBe(1)
     app.counter.increment()
     expect(app.counter.count).toBe(2)
+  })
+
+  it('reactive class properties in a composition function', done => {
+    function test (message: Ref<string>) {
+      watch(message, () => {
+        expect(message.value).toBe('Updated')
+        done()
+      })
+      return {}
+    }
+
+    class App extends Vue {
+      message = 'Hello'
+      test = setup(() => {
+        return test(toRef(this, 'message'))
+      })
+
+      render () {}
+    }
+
+    const app = createApp(App).mount(root) as App
+    app.message = 'Updated'
   })
 
   it('keeps reflection metadata available', function () {

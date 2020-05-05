@@ -1,3 +1,3 @@
 export { Vue } from './vue'
-export { Options, VueDecorator, createDecorator, mixins } from './helpers'
+export { Options, VueDecorator, createDecorator, mixins, setup } from './helpers'
 

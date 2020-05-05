@@ -14,6 +14,17 @@ function defineGetter<T, K extends keyof T> (obj: T, key: K, getter: () => T[K])
   })
 }
 
+function defineProxy (proxy: any, key: string, target: any): void {
+  Object.defineProperty(proxy, key, {
+    get: () => target[key],
+    set: value => {
+      target[key] = value
+    },
+    enumerable: true,
+    configurable: true
+  })
+}
+
 function getSuperOptions (Ctor: Function): ComponentOptions | undefined {
   const superProto = Object.getPrototypeOf(Ctor.prototype)
   if (!superProto) {
@@ -130,15 +141,30 @@ export class Vue<Props = unknown> implements ComponentPublicInstance<{}, {}, {},
 
     options.setup = function (props: unknown, ctx: SetupContext) {
       const data: any = new Ctor(props, ctx)
+      const dataKeys = Object.keys(data)
 
-      const plainData: any = {}
-      Object.keys(data).forEach(key => {
-        if (data[key] !== undefined) {
-          plainData[key] = data[key]
+      const plainData: any = reactive({})
+
+      // Initialize reactive data and convert constructor `this` to a proxy
+      dataKeys.forEach(key => {
+        // Skip if the value is undefined not to make it reactive.
+        // If the value has `__s`, it's a value from `setup` helper, proceed it later.
+        if (data[key] === undefined || (data[key] && data[key].__s)) {
+          return
+        }
+
+        plainData[key] = data[key]
+        defineProxy(data, key, plainData)
+      })
+
+      // Invoke composition functions
+      dataKeys.forEach(key => {
+        if (data[key] && data[key].__s) {
+          plainData[key] = data[key].__s()
         }
       })
 
-      return reactive(plainData)
+      return plainData
     }
 
     const decorators = this.hasOwnProperty('__vccDecorators') && this.__vccDecorators

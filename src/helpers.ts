@@ -1,4 +1,4 @@
-import { ComponentOptions, SetupContext } from 'vue'
+import { ComponentOptions, SetupContext, UnwrapRef } from 'vue'
 import { Vue, VueBase, VueMixin } from './vue'
 
 export function Options <V extends Vue> (options: ComponentOptions & ThisType<V>): <VC extends VueBase>(target: VC) => VC {
@@ -70,4 +70,12 @@ export function mixins (...Ctors: VueMixin[]): VueBase {
       })
     }
   }
+}
+
+export function setup <R> (setupFn: () => R): UnwrapRef<R> {
+  // Hack to delay the invocation of setup function.
+  // Will be called after dealing with class properties.
+  return {
+    __s: setupFn
+  } as UnwrapRef<R>
 }
