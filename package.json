@@ -1,6 +1,6 @@
 {
   "name": "vue-class-component",
-  "version": "8.0.0-alpha.3",
+  "version": "8.0.0-alpha.4",
   "description": "ES201X/TypeScript class decorator for Vue components",
   "main": "dist/vue-class-component.cjs.js",
   "module": "dist/vue-class-component.esm-bundler.js",

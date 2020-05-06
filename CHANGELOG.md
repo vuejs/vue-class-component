@@ -1,3 +1,29 @@
+# [8.0.0-alpha.4](https://github.com/vuejs/vue-class-component/compare/v8.0.0-alpha.3...v8.0.0-alpha.4) (2020-05-06)
+
+
+### Build System
+
+* rename dist file names to align vue core lib ([c65712e](https://github.com/vuejs/vue-class-component/commit/c65712eb85f03fab8ddfba622f6262d1c01c8670))
+
+
+### Features
+
+* add setup helper function to invoke composition functions ([6f1a404](https://github.com/vuejs/vue-class-component/commit/6f1a40449d51e7ec8225e49d0ddfcb6763477915))
+* mark as side effect free to enable efficient tree-shaking ([#423](https://github.com/vuejs/vue-class-component/issues/423)) ([70ed762](https://github.com/vuejs/vue-class-component/commit/70ed762449d18c5f9d66a8141ab8691f7bfba5ec))
+
+
+### BREAKING CHANGES
+
+* file names under `dist/` directory have been changed as following:
+- vue-class-component.js -> vue-class-component.global.js (also changed from umd to iife)
+- vue-class-component.min.js -> vue-class-component.global.prod.js (also changed from umd to iife)
+- vue-class-component.common.js -> vue-class-component.cjs.js
+- vue-class-component.esm.js -> vue-class-component.esm-bundler.js
+- vue-class-component.esm.browser.js -> vue-class-component.esm-browser.js
+- vue-class-component.esm.browser.min.js -> vue-class-component.esm-browser.prod.js
+
+
+
 # [8.0.0-alpha.3](https://github.com/vuejs/vue-class-component/compare/v8.0.0-alpha.2...v8.0.0-alpha.3) (2020-04-26)
 
 
