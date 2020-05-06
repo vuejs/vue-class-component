@@ -46,34 +46,41 @@ const babelConfigForLegacy = {
 build(
   [
     {
-      file: resolve('dist/vue-class-component.js'),
-      format: 'umd',
+      file: resolve('dist/vue-class-component.global.js'),
+      format: 'iife',
       env: 'development',
     },
     {
-      file: resolve('dist/vue-class-component.min.js'),
-      format: 'umd',
+      file: resolve('dist/vue-class-component.global.prod.js'),
+      format: 'iife',
       env: 'production',
+      minify: true,
     },
     {
-      file: resolve('dist/vue-class-component.common.js'),
+      file: resolve('dist/vue-class-component.cjs.js'),
       format: 'cjs',
     },
     {
-      file: resolve('dist/vue-class-component.esm.js'),
+      file: resolve('dist/vue-class-component.esm-bundler.js'),
       format: 'esm',
     },
     {
-      file: resolve('dist/vue-class-component.esm.browser.js'),
+      file: resolve('dist/vue-class-component.esm-browser.js'),
       format: 'esm',
       env: 'development',
     },
     {
-      file: resolve('dist/vue-class-component.esm.browser.min.js'),
+      file: resolve('dist/vue-class-component.esm-browser.prod.js'),
       format: 'esm',
       env: 'production',
+      minify: true,
     },
-  ].map(genConfig)
+  ].map((options) => {
+    return {
+      config: genConfig(options),
+      options,
+    }
+  })
 ).catch(() => {
   process.exit(1)
 })
@@ -89,6 +96,11 @@ function genConfig(opts) {
             ? babelConfigForModern
             : babelConfigForLegacy
         ),
+        replace({
+          __DEV__: opts.env
+            ? JSON.stringify(opts.env === 'development')
+            : "process.env.NODE_ENV !== 'production'",
+        }),
       ],
     },
     output: {
@@ -103,14 +115,6 @@ function genConfig(opts) {
     },
   }
 
-  if (opts.env) {
-    config.input.plugins.unshift(
-      replace({
-        'process.env.NODE_ENV': JSON.stringify(opts.env),
-      })
-    )
-  }
-
   return config
 }
 
@@ -118,7 +122,8 @@ function build(builds) {
   let built = 0
   const total = builds.length
   const next = () => {
-    return buildEntry(builds[built])
+    const { config, options } = builds[built]
+    return buildEntry(config, options)
       .then(() => {
         built++
         if (built < total) {
@@ -134,14 +139,14 @@ function build(builds) {
   return next()
 }
 
-function buildEntry({ input, output }) {
-  const isProd = /min\.js$/.test(output.file)
+function buildEntry({ input, output }, options) {
+  const isMinify = options.minify
   return rollup
     .rollup(input)
     .then((bundle) => bundle.generate(output))
     .then((result) => {
       const { code } = result.output[0]
-      if (isProd) {
+      if (isMinify) {
         const minified = uglify.minify(code, {
           output: {
             preamble: output.banner,

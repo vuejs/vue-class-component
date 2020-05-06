@@ -2,10 +2,11 @@
   "name": "vue-class-component",
   "version": "8.0.0-alpha.3",
   "description": "ES201X/TypeScript class decorator for Vue components",
-  "main": "dist/vue-class-component.common.js",
-  "module": "dist/vue-class-component.esm.js",
-  "unpkg": "dist/vue-class-component.js",
-  "typings": "dist/vue-class-component.d.ts",
+  "main": "dist/vue-class-component.cjs.js",
+  "module": "dist/vue-class-component.esm-bundler.js",
+  "unpkg": "dist/vue-class-component.global.js",
+  "jsdelivr": "dist/vue-class-component.global.js",
+  "types": "dist/vue-class-component.d.ts",
   "files": [
     "dist"
   ],
