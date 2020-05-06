@@ -1,0 +1,15 @@
+tasks:
+  - name: Compile
+    init: yarn install && yarn build && gp sync-done install
+    command: yarn dev
+  - name: Docs
+    init: gp sync-await install
+    command: yarn docs:dev
+
+ports:
+  - port: 8080
+    onOpen: open-preview
+
+vscode:
+  extensions:
+    - octref.vetur@0.23.0:TEzauMObB6f3i2JqlvrOpA== 
