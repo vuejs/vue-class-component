@@ -10,7 +10,7 @@ See [https://class-component.vuejs.org](https://class-component.vuejs.org)
 
 ## Online one-click setup for contributing
 
-Contribute to Blaze using a fully featured online development environment that will automatically: clone the repo, install the dependencies and start the docs web server and run `yarn dev`.
+Contribute to Vue Class Component using a fully featured online development environment that will automatically: clone the repo, install the dependencies and start the docs web server and run `yarn dev`.
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
 
