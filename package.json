@@ -7,26 +7,25 @@
   "unpkg": "dist/vue-class-component.js",
   "typings": "dist/vue-class-component.d.ts",
   "files": [
-    "dist",
-    "lib",
-    "hooks.js",
-    "hooks.d.ts"
+    "dist"
   ],
   "scripts": {
-    "build": "npm run build:ts && npm run build:main",
+    "build": "yarn build:ts && yarn build:main && yarn build:dts",
     "build:ts": "tsc -p .",
-    "build:main": "node build/build.js",
-    "clean": "rimraf ./lib",
+    "build:main": "node scripts/build.js",
+    "build:dts": "api-extractor run",
+    "clean": "rimraf dist lib",
     "example": "webpack --config example/webpack.config.js",
     "dev": "webpack --config example/webpack.config.js --watch",
-    "lint": "prettier --write --parser typescript \"**/*.[jt]s?(x)\"",
+    "lint": "prettier --parser typescript \"**/*.[jt]s?(x)\"",
+    "lint:fix": "yarn lint --write",
     "test": "yarn test:ts && yarn test:babel",
     "test:ts": "jest",
     "test:babel": "BABEL_TEST=1 jest",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
-    "release": "bash build/release.sh"
+    "release": "bash scripts/release.sh"
   },
   "repository": {
     "type": "git",

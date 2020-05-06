@@ -1,5 +1,5 @@
-node_modules
+node_modules/
 example/build.js
 example/build.js.map
-docs/.vuepress/dist
-lib
+lib/
+dist/

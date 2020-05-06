@@ -11,10 +11,13 @@ then
   npm run clean
   VERSION=$VERSION npm run build
 
-  # commit
+  # generate change log and tag it
+  npm version $VERSION --git-tag-version=false
+  npm run changelog
+  read -p "Please check the git history and the changelog and press enter"
   git add -A
-  git commit -m "[build] $VERSION"
-  npm version $VERSION --message "[release] $VERSION"
+  git commit -m "release: v$VERSION"
+  git tag "v$VERSION"
 
   # publish
   git push origin refs/tags/v$VERSION
