@@ -15,12 +15,12 @@
 ### BREAKING CHANGES
 
 * file names under `dist/` directory have been changed as following:
-- vue-class-component.js -> vue-class-component.global.js (also changed from umd to iife)
-- vue-class-component.min.js -> vue-class-component.global.prod.js (also changed from umd to iife)
-- vue-class-component.common.js -> vue-class-component.cjs.js
-- vue-class-component.esm.js -> vue-class-component.esm-bundler.js
-- vue-class-component.esm.browser.js -> vue-class-component.esm-browser.js
-- vue-class-component.esm.browser.min.js -> vue-class-component.esm-browser.prod.js
+  * vue-class-component.js -> vue-class-component.global.js (also changed from umd to iife)
+  * vue-class-component.min.js -> vue-class-component.global.prod.js (also changed from umd to iife)
+  * vue-class-component.common.js -> vue-class-component.cjs.js
+  * vue-class-component.esm.js -> vue-class-component.esm-bundler.js
+  * vue-class-component.esm.browser.js -> vue-class-component.esm-browser.js
+  * vue-class-component.esm.browser.min.js -> vue-class-component.esm-browser.prod.js
 
 
 
