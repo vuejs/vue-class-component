@@ -182,21 +182,18 @@ export class Vue<Props = unknown>
     }
 
     // from Vue Loader
-    if (Ctor.render) {
-      options.render = Ctor.render
-    }
-
-    if (Ctor.__file) {
-      options.__file = Ctor.__file
-    }
-
-    if (Ctor.__cssModules) {
-      options.__cssModules = Ctor.__cssModules
-    }
-
-    if (Ctor.__scopeId) {
-      options.__scopeId = Ctor.__scopeId
-    }
+    const injections = [
+      'render',
+      '__file',
+      '__cssModules',
+      '__scopeId',
+      '__hmrId',
+    ] as const
+    injections.forEach((key) => {
+      if (Ctor[key]) {
+        options[key] = Ctor[key]
+      }
+    })
 
     return options
   }
@@ -243,6 +240,7 @@ export class Vue<Props = unknown>
   static __file?: string
   static __cssModules?: Record<string, any>
   static __scopeId?: string
+  static __hmrId?: string
 
   constructor(props: Props, ctx: SetupContext) {
     defineGetter(this, '$props', () => props)
