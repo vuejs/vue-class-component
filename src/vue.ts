@@ -39,12 +39,47 @@ function getSuperOptions(Ctor: Function): ComponentOptions | undefined {
   return Super.__vccOpts
 }
 
-export interface ClassComponentHooks {
-  /* To be extended on user land */
-}
+export interface VueStatic {
+  // -- Class component configs
 
-export type VueStatic = {
-  [K in keyof typeof Vue]: typeof Vue[K]
+  /** @internal */
+  __vccCache?: ComponentOptions
+
+  /** @internal */
+  __vccBase?: ComponentOptions
+
+  /** @internal */
+  __vccDecorators?: ((options: ComponentOptions) => void)[]
+
+  /** @internal */
+  __vccMixins?: ComponentOptions[]
+
+  /** @internal */
+  __vccHooks: string[]
+
+  /** @internal */
+  __vccOpts: ComponentOptions
+
+  // --- Vue Loader injections
+
+  /** @internal */
+  render?: () => VNode | void
+
+  /** @internal */
+  __file?: string
+
+  /** @internal */
+  __cssModules?: Record<string, any>
+
+  /** @internal */
+  __scopeId?: string
+
+  /** @internal */
+  __hmrId?: string
+
+  // --- Public APIs
+
+  registerHooks(keys: string[]): void
 }
 
 export type VueMixin<V extends Vue = Vue> = VueStatic & { prototype: V }
@@ -52,10 +87,41 @@ export type VueMixin<V extends Vue = Vue> = VueStatic & { prototype: V }
 export type VueBase<V extends Vue = Vue> = VueMixin<V> &
   (new (...args: any[]) => V)
 
-export class Vue<Props = unknown>
-  implements
-    ComponentPublicInstance<{}, {}, {}, {}, {}, {}, Props>,
-    ClassComponentHooks {
+export interface ClassComponentHooks {
+  // To be extended on user land
+
+  data?(): object
+  beforeCreate?(): void
+  created?(): void
+  beforeMount?(): void
+  mounted?(): void
+  beforeUnmount?(): void
+  unmounted?(): void
+  beforeUpdate?(): void
+  updated?(): void
+  activated?(): void
+  deactivated?(): void
+  render?(): VNode | void
+  errorCaptured?(err: Error, vm: Vue, info: string): boolean | undefined
+  serverPrefetch?(): Promise<unknown>
+}
+
+export type Vue<Props = unknown> = ComponentPublicInstance<
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  Props
+> &
+  ClassComponentHooks
+
+export interface VueConstructor extends VueStatic {
+  new <Props = unknown>(prop: Props, ctx: SetupContext): Vue<Props>
+}
+
+class VueImpl {
   /** @internal */
   static __vccCache?: ComponentOptions
 
@@ -147,7 +213,7 @@ export class Vue<Props = unknown>
       }
     })
 
-    options.setup = function (props: unknown, ctx: SetupContext) {
+    options.setup = function (props: Record<string, any>, ctx: SetupContext) {
       const data: any = new Ctor(props, ctx)
       const dataKeys = Object.keys(data)
 
@@ -188,10 +254,10 @@ export class Vue<Props = unknown>
       '__cssModules',
       '__scopeId',
       '__hmrId',
-    ] as const
+    ]
     injections.forEach((key) => {
-      if (Ctor[key]) {
-        options[key] = Ctor[key]
+      if ((Ctor as any)[key]) {
+        options[key] = (Ctor as any)[key]
       }
     })
 
@@ -202,47 +268,12 @@ export class Vue<Props = unknown>
     this.__vccHooks.push(...keys)
   }
 
-  // Public instance properties
-  $!: ComponentPublicInstance['$']
-  $data!: ComponentPublicInstance['$data']
-  $refs!: ComponentPublicInstance['$refs']
-  $root!: ComponentPublicInstance['$root']
-  $parent!: ComponentPublicInstance['$parent']
-  $el!: ComponentPublicInstance['$el']
-  $options!: ComponentPublicInstance['$options']
-  $forceUpdate!: ComponentPublicInstance['$forceUpdate']
-  $nextTick!: ComponentPublicInstance['$nextTick']
-  $watch!: ComponentPublicInstance['$watch']
-
-  $props!: Props
+  $props!: Record<string, any>
   $emit!: (event: string, ...args: any[]) => void
   $attrs!: ComponentPublicInstance['$attrs']
   $slots!: ComponentPublicInstance['$slots']
 
-  // Built-in hooks
-  data?(): object
-  beforeCreate?(): void
-  created?(): void
-  beforeMount?(): void
-  mounted?(): void
-  beforeUnmount?(): void
-  unmounted?(): void
-  beforeUpdate?(): void
-  updated?(): void
-  activated?(): void
-  deactivated?(): void
-  render?(): VNode | void
-  errorCaptured?(err: Error, vm: Vue, info: string): boolean | undefined
-  serverPrefetch?(): Promise<unknown>
-
-  // Vue Loader injections
-  static render?: () => VNode | void
-  static __file?: string
-  static __cssModules?: Record<string, any>
-  static __scopeId?: string
-  static __hmrId?: string
-
-  constructor(props: Props, ctx: SetupContext) {
+  constructor(props: Record<string, any>, ctx: SetupContext) {
     defineGetter(this, '$props', () => props)
     defineGetter(this, '$attrs', () => ctx.attrs)
     defineGetter(this, '$slots', () => ctx.slots)
@@ -258,3 +289,5 @@ export class Vue<Props = unknown>
     })
   }
 }
+
+export const Vue: VueConstructor = VueImpl as VueConstructor

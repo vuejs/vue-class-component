@@ -10,7 +10,7 @@ export { Options, createDecorator, mixins, setup } from './helpers'
  * Other types
  */
 
-export { VueBase, VueMixin, VueStatic } from './vue'
+export { VueBase, VueMixin, VueStatic, VueConstructor } from './vue'
 
 export {
   VueDecorator,
