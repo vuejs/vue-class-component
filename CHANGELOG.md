@@ -1,3 +1,12 @@
+# [8.0.0-alpha.5](https://github.com/vuejs/vue-class-component/compare/v8.0.0-alpha.4...v8.0.0-alpha.5) (2020-05-10)
+
+
+### Bug Fixes
+
+* handle hot module replacement ([72347b7](https://github.com/vuejs/vue-class-component/commit/72347b7b37b6e0099eaf8c46922ab1f91f061dc5))
+
+
+
 # [8.0.0-alpha.4](https://github.com/vuejs/vue-class-component/compare/v8.0.0-alpha.3...v8.0.0-alpha.4) (2020-05-06)
 
 
