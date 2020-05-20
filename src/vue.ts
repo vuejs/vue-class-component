@@ -115,7 +115,7 @@ export type Vue<Props = unknown> = ComponentPublicInstance<
   {},
   {},
   {},
-  {},
+  Record<string, any>,
   Props
 > &
   ClassComponentHooks
