@@ -1,3 +1,13 @@
+# [8.0.0-alpha.6](https://github.com/vuejs/vue-class-component/compare/v8.0.0-alpha.5...v8.0.0-alpha.6) (2020-05-20)
+
+
+### Bug Fixes
+
+* handle ssr render function injection ([830b3b2](https://github.com/vuejs/vue-class-component/commit/830b3b298f819eb1fbbc6f314b51450f2be57e35))
+* relax $emit type ([bc0a8bc](https://github.com/vuejs/vue-class-component/commit/bc0a8bcc0777cde837bbe3af2a534d146e934864))
+
+
+
 # [8.0.0-alpha.5](https://github.com/vuejs/vue-class-component/compare/v8.0.0-alpha.4...v8.0.0-alpha.5) (2020-05-10)
 
 
