@@ -60,10 +60,13 @@ export interface VueStatic {
   /** @internal */
   __vccOpts: ComponentOptions
 
-  // --- Vue Loader injections
+  // --- Vue Loader etc injections
 
   /** @internal */
   render?: () => VNode | void
+
+  /** @internal */
+  ssrRender?: () => void
 
   /** @internal */
   __file?: string
@@ -250,6 +253,7 @@ class VueImpl {
     // from Vue Loader
     const injections = [
       'render',
+      'ssrRender',
       '__file',
       '__cssModules',
       '__scopeId',
