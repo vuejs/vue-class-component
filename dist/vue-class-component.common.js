@@ -1,5 +1,5 @@
 /**
-  * vue-class-component v7.2.3
+  * vue-class-component v7.2.4
   * (c) 2015-present Evan You
   * @license MIT
   */
@@ -149,17 +149,15 @@ function collectDataFromConstructor(vm, Component) {
     }
 
     keys.forEach(function (key) {
-      if (key.charAt(0) !== '_') {
-        Object.defineProperty(_this, key, {
-          get: function get() {
-            return vm[key];
-          },
-          set: function set(value) {
-            vm[key] = value;
-          },
-          configurable: true
-        });
-      }
+      Object.defineProperty(_this, key, {
+        get: function get() {
+          return vm[key];
+        },
+        set: function set(value) {
+          vm[key] = value;
+        },
+        configurable: true
+      });
     });
   }; // should be acquired class property values
 
