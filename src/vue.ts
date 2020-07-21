@@ -29,14 +29,13 @@ function defineProxy(proxy: any, key: string, target: any): void {
   })
 }
 
-function getSuperOptions(Ctor: Function): ComponentOptions | undefined {
+function getSuper(Ctor: typeof VueImpl): typeof VueImpl | undefined {
   const superProto = Object.getPrototypeOf(Ctor.prototype)
   if (!superProto) {
     return undefined
   }
 
-  const Super = superProto.constructor as typeof Vue
-  return Super.__vccOpts
+  return superProto.constructor as typeof VueImpl
 }
 
 export interface VueStatic {
@@ -52,7 +51,7 @@ export interface VueStatic {
   __vccDecorators?: ((options: ComponentOptions) => void)[]
 
   /** @internal */
-  __vccMixins?: ComponentOptions[]
+  __vccExtend: ((options: ComponentOptions) => void)
 
   /** @internal */
   __vccHooks: string[]
@@ -135,9 +134,6 @@ class VueImpl {
   static __vccDecorators?: ((options: ComponentOptions) => void)[]
 
   /** @internal */
-  static __vccMixins?: ComponentOptions[]
-
-  /** @internal */
   static __vccHooks = [
     'data',
     'beforeCreate',
@@ -154,6 +150,12 @@ class VueImpl {
     'errorCaptured',
     'serverPrefetch',
   ]
+
+  /** @internal */
+  static __vccExtend(options: ComponentOptions) {
+    options.mixins = options.mixins || []
+    options.mixins.push(this.__vccOpts)
+  }
 
   /** @internal */
   static get __vccOpts(): ComponentOptions {
@@ -175,12 +177,9 @@ class VueImpl {
       : {})
 
     // Handle super class options
-    options.extends = getSuperOptions(Ctor)
-
-    // Handle mixins
-    const mixins = this.hasOwnProperty('__vccMixins') && this.__vccMixins
-    if (mixins) {
-      options.mixins = options.mixins ? options.mixins.concat(mixins) : mixins
+    const Super = getSuper(Ctor)
+    if (Super) {
+      Super.__vccExtend(options)
     }
 
     options.methods = { ...options.methods }

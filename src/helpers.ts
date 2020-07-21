@@ -1,4 +1,4 @@
-import { ComponentOptions, SetupContext, UnwrapRef } from 'vue'
+import { ComponentOptions, SetupContext, UnwrapRef, ComponentObjectPropsOptions, ExtractPropTypes } from 'vue'
 import { Vue, VueBase, VueMixin } from './vue'
 
 export function Options<V extends Vue>(
@@ -58,7 +58,9 @@ export type MixedVueBase<Mixins extends VueMixin[]> = Mixins extends (infer T)[]
 export function mixins<T extends VueMixin[]>(...Ctors: T): MixedVueBase<T>
 export function mixins(...Ctors: VueMixin[]): VueBase {
   return class MixedVue<Props> extends Vue<Props> {
-    static __vccMixins = Ctors.map((Ctor) => Ctor.__vccOpts)
+    static __vccExtend(options: ComponentOptions) {
+      Ctors.forEach((Ctor) => Ctor.__vccExtend(options))
+    }
 
     constructor(props: Props, ctx: SetupContext) {
       super(props, ctx)
@@ -71,6 +73,17 @@ export function mixins(...Ctors: VueMixin[]): VueBase {
       })
     }
   }
+}
+
+export function props<PropNames extends string, Props = Readonly<{  [key in PropNames]?: any }>>(propNames: PropNames[]): VueBase<Vue<Props> & Props>
+export function props<PropsOptions extends ComponentObjectPropsOptions, Props = Readonly<ExtractPropTypes<PropsOptions>>>(propsOptions: PropsOptions): VueBase<Vue<Props> & Props>
+export function props(propsOptions: string[] | ComponentObjectPropsOptions): VueBase {
+  class PropsMixin<Props> extends Vue<Props> {
+    static __vccExtend(options: ComponentOptions) {
+      options.props = propsOptions
+    }
+  }
+  return PropsMixin
 }
 
 export function setup<R>(setupFn: () => R): UnwrapRef<R> {

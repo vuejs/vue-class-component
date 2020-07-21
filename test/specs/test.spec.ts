@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import { h, resolveComponent, ref, onMounted, Ref, watch, toRef } from 'vue'
-import { Options, createDecorator, mixins, Vue, setup } from '../../src'
+import { Options, createDecorator, mixins, Vue, setup, props } from '../../src'
 import { mount, unmount } from '../helpers'
 
 describe('vue-class-component', () => {
@@ -376,6 +376,37 @@ describe('vue-class-component', () => {
     root.test()
     expect(root.valueA).toBe('hi')
     expect(root.valueB).toBe(456)
+  })
+
+  it('props mixin: prop names', () => {
+    const Props = props(['foo', 'bar'])
+
+    class App extends Props {
+      baz = this.foo + this.bar
+    }
+
+    const { root } = mount(App, { foo: 'Hello', bar: 'World' })
+    expect(root.baz).toBe('HelloWorld')
+  })
+
+  it('props mixin: props options object', () => {
+    const Props = props({
+      foo: {
+        type: String,
+        default: 'The answer is'
+      },
+      bar: {
+        type: Number,
+        required: true
+      }
+    })
+
+    class App extends Props {
+      baz = this.foo + ': ' + this.bar
+    }
+
+    const { root } = mount(App, { bar: 42 })
+    expect(root.baz).toBe('The answer is: 42')
   })
 
   it('uses composition functions', () => {

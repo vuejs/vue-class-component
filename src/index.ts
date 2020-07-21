@@ -4,7 +4,7 @@
 
 export { Vue, ClassComponentHooks } from './vue'
 
-export { Options, createDecorator, mixins, setup } from './helpers'
+export { Options, createDecorator, mixins, props, setup } from './helpers'
 
 /**
  * Other types
