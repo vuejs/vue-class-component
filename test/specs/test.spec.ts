@@ -93,24 +93,6 @@ describe('vue-class-component', () => {
     expect('bar' in root.$data).toBe(false)
   })
 
-  xit('data: should collect custom property defined on beforeCreate', () => {
-    class MyComp extends Vue {
-      $store: any
-      foo: string = 'Hello, ' + this.$store.state.msg
-
-      beforeCreate() {
-        this.$store = {
-          state: {
-            msg: 'world',
-          },
-        }
-      }
-    }
-
-    const { root } = mount(MyComp)
-    expect(root.foo).toBe('Hello, world')
-  })
-
   it('methods', () => {
     let msg: string = ''
 
