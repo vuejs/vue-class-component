@@ -24,7 +24,7 @@ export function createDecorator (factory: (options: ComponentOptions<Vue>, key: 
       : target.constructor as DecoratedClass
     if (!Ctor.hasOwnProperty('__decorators__')) {
       // If super class has `__decorators__`, clone that. We will just assume that the super
-      // class' `__decorators__` has already been completely populated.
+      // class' `__decorators__` array has already been completely populated.
       Ctor.__decorators__ = Ctor.__decorators__ ? Ctor.__decorators__.slice() : []
     }
     if (typeof index !== 'number') {

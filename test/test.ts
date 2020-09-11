@@ -251,6 +251,7 @@ describe('vue-class-component', () => {
     })
   })
 
+  // #444
   it('even if super class is abstract, should not get super and sub class decorators mixed up', async function() {
     // Watch function/decorator copied from
     // https://github.com/kaorun343/vue-property-decorator/blob/master/src/vue-property-decorator.ts
