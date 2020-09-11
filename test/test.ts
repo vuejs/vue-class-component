@@ -2,7 +2,7 @@ import 'reflect-metadata'
 import Component, { createDecorator, mixins } from '../lib'
 import { expect } from 'chai'
 import * as td from 'testdouble'
-import Vue, { ComputedOptions } from 'vue'
+import Vue, { ComputedOptions, WatchOptions } from 'vue'
 
 describe('vue-class-component', () => {
   it('hooks', () => {
@@ -220,7 +220,7 @@ describe('vue-class-component', () => {
   })
 
   // #199
-  it('should not re-execute super class decortors', function (done) {
+  it('should not re-execute super class decorators', function (done) {
     const Watch = (valueKey: string) => createDecorator((options, key) => {
       if (!options.watch) {
         options.watch = {}
@@ -249,6 +249,111 @@ describe('vue-class-component', () => {
       td.verify(spy(), { times: 1 })
       done()
     })
+  })
+
+  it('even if super class is abstract, should not get super and sub class decorators mixed up', async function() {
+    // Watch function/decorator copied from
+    // https://github.com/kaorun343/vue-property-decorator/blob/master/src/vue-property-decorator.ts
+    function Watch(path: string, options: WatchOptions = {}) {
+      const { deep = false, immediate = false } = options
+
+      return createDecorator((componentOptions, handler) => {
+        if (typeof componentOptions.watch !== 'object') {
+          componentOptions.watch = Object.create(null)
+        }
+
+        const watch: any = componentOptions.watch
+
+        if (typeof watch[path] === 'object' && !Array.isArray(watch[path])) {
+          watch[path] = [watch[path]]
+        } else if (typeof watch[path] === 'undefined') {
+          watch[path] = []
+        }
+
+        watch[path].push({ handler, deep, immediate })
+      })
+    }
+
+    const spyBase = td.function('BaseNotify')
+    const spyA = td.function('ANotify')
+    const spyB = td.function('BNotify')
+    const spyC = td.function('CNotify')
+
+    // Since this is abstract, TS will not let us add the @Component decorator,
+    // like we would normally do
+    abstract class Base extends Vue {
+      count = 0
+
+      @Watch('count')
+      notify() {
+        spyBase()
+      }
+    }
+
+    @Component({})
+    class A extends Base {
+      notify() {
+        spyA()
+      }
+    }
+
+    @Component({ components: {} })
+    class B extends Base {
+      // Oh no! The super class also has a @Watch decorator for "count"!
+      @Watch('count')
+      notify() {
+        spyB()
+      }
+    }
+
+    @Component({ components: {} })
+    class C extends Base {
+      notify() {
+        spyC()
+      }
+    }
+
+    @Component({ components: {} })
+    class D extends Base { }
+
+    const vmA = new A()
+    const vmB = new B()
+    const vmC = new C()
+    const vmD = new D()
+    td.verify(spyBase(), { times: 0 })
+    td.verify(spyA(), { times: 0 })
+    td.verify(spyB(), { times: 0 })
+    td.verify(spyC(), { times: 0 })
+
+    vmA.count++
+    await vmA.$nextTick()
+    td.verify(spyBase(), { times: 0 })
+    td.verify(spyA(), { times: 1 })
+    td.verify(spyB(), { times: 0 })
+    td.verify(spyC(), { times: 0 })
+
+    vmB.count++
+    await vmB.$nextTick()
+    td.verify(spyBase(), { times: 0 })
+    td.verify(spyA(), { times: 1 })
+    // Someday it would be nice if we could change the line
+    // below so that it said `1` not `2`
+    td.verify(spyB(), { times: 2 })
+    td.verify(spyC(), { times: 0 })
+
+    vmC.count++
+    await vmA.$nextTick()
+    td.verify(spyBase(), { times: 0 })
+    td.verify(spyA(), { times: 1 })
+    td.verify(spyB(), { times: 2 })
+    td.verify(spyC(), { times: 1 })
+
+    vmD.count++
+    await vmA.$nextTick()
+    td.verify(spyBase(), { times: 1 })
+    td.verify(spyA(), { times: 1 })
+    td.verify(spyB(), { times: 2 })
+    td.verify(spyC(), { times: 1 })
   })
 
   it('createDecorator', function () {
@@ -322,7 +427,7 @@ describe('vue-class-component', () => {
   })
 
   // #155
-  it('createDecrator: create a class decorator', () => {
+  it('createDecorator: create a class decorator', () => {
     const DataMixin = createDecorator(options => {
       options.data = function () {
         return {

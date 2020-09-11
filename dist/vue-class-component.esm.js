@@ -91,8 +91,10 @@ function createDecorator(factory) {
   return function (target, key, index) {
     var Ctor = typeof target === 'function' ? target : target.constructor;
 
-    if (!Ctor.__decorators__) {
-      Ctor.__decorators__ = [];
+    if (!Ctor.hasOwnProperty('__decorators__')) {
+      // If super class has `__decorators__`, clone that. We will just assume that the super
+      // class' `__decorators__` has already been completely populated.
+      Ctor.__decorators__ = Ctor.__decorators__ ? Ctor.__decorators__.slice() : [];
     }
 
     if (typeof index !== 'number') {
