@@ -4,7 +4,7 @@ The next Vue Class Component for Vue v3.
 
 ## Status
 
-Alpha
+Beta
 
 ## Documentation
 
