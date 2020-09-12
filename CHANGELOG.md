@@ -1,3 +1,12 @@
+# [8.0.0-beta.1](https://github.com/vuejs/vue-class-component/compare/v8.0.0-alpha.6...v8.0.0-beta.1) (2020-09-12)
+
+
+### Features
+
+Added `props` and `emits` mixin helpers to define corresponding component options with type safety.
+You can see the detailed proposal at [#447](https://github.com/vuejs/vue-class-component/issues/447)
+
+
 # [8.0.0-alpha.6](https://github.com/vuejs/vue-class-component/compare/v8.0.0-alpha.5...v8.0.0-alpha.6) (2020-05-20)
 
 
