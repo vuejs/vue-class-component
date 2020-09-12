@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import { h, resolveComponent, ref, onMounted, Ref, watch, toRef } from 'vue'
-import { Options, createDecorator, mixins, Vue, setup, props } from '../../src'
+import { Options, createDecorator, mixins, Vue, setup, props, emits } from '../../src'
 import { mount, unmount } from '../helpers'
 
 describe('vue-class-component', () => {
@@ -59,15 +59,11 @@ describe('vue-class-component', () => {
   }
 
   it('data: $props should be available', () => {
-    interface Props {
-      foo: number
-    }
-
     @Options({
       props: ['foo'],
     })
-    class MyComp extends Vue<Props> {
-      message = 'answer is ' + this.$props.foo
+    class MyComp extends Vue {
+      message = 'answer is ' + (this.$props as any).foo
     }
 
     const { root } = mount(MyComp, { foo: 42 })
@@ -389,6 +385,81 @@ describe('vue-class-component', () => {
 
     const { root } = mount(App, { bar: 42 })
     expect(root.baz).toBe('The answer is: 42')
+  })
+
+  it('emits mixin: emit names', () => {
+    const Emits = emits(['foo', 'bar'])
+
+    class Child extends Emits {
+      mounted() {
+        this.$emit('foo', 42)
+        this.$emit('bar', 'Hello', 'World')
+      }
+
+      render() {
+        return h('span')
+      }
+    }
+
+    class App extends Vue {
+      fooResult: number | null = null
+      barResult: string | null = null
+
+      render() {
+        return h(Child, {
+          onFoo: (result: number) => {
+            this.fooResult = result
+          },
+
+          onBar: (res1: string, res2: string) => {
+            this.barResult = res1 + res2
+          }
+        })
+      }
+    }
+
+    const { root } = mount(App)
+    expect(root.fooResult).toBe(42)
+    expect(root.barResult).toBe('HelloWorld')
+  })
+
+  it('emits mixin: emits options object', () => {
+    const Emits = emits({
+      foo: (_n: number) => true,
+      bar: (_n1: string, _n2: string) => true
+    })
+
+    class Child extends Emits {
+      mounted() {
+        this.$emit('foo', 42)
+        this.$emit('bar', 'Hello', 'World')
+      }
+
+      render() {
+        return h('span')
+      }
+    }
+
+    class App extends Vue {
+      fooResult: number | null = null
+      barResult: string | null = null
+
+      render() {
+        return h(Child, {
+          onFoo: (result: number) => {
+            this.fooResult = result
+          },
+
+          onBar: (res1: string, res2: string) => {
+            this.barResult = res1 + res2
+          }
+        })
+      }
+    }
+
+    const { root } = mount(App)
+    expect(root.fooResult).toBe(42)
+    expect(root.barResult).toBe('HelloWorld')
   })
 
   it('uses composition functions', () => {

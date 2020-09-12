@@ -84,10 +84,9 @@ export interface VueStatic {
   registerHooks(keys: string[]): void
 }
 
-export type VueMixin<V extends Vue = Vue> = VueStatic & { prototype: V }
+export type VueBase = Vue<unknown, never[]>
 
-export type VueBase<V extends Vue = Vue> = VueMixin<V> &
-  (new (...args: any[]) => V)
+export type VueMixin<V extends VueBase = Vue> = VueStatic & { prototype: V }
 
 export interface ClassComponentHooks {
   // To be extended on user land
@@ -108,19 +107,22 @@ export interface ClassComponentHooks {
   serverPrefetch?(): Promise<unknown>
 }
 
-export type Vue<Props = unknown> = ComponentPublicInstance<
+export type ObjectEmitsOptions = Record<string, ((...args: any[]) => any) | null>
+export type EmitsOptions = ObjectEmitsOptions | string[]
+
+export type Vue<Props = unknown, Emits extends EmitsOptions = {}> = ComponentPublicInstance<
   {},
   {},
   {},
   {},
   {},
-  Record<string, any>,
+  Emits,
   Props
 > &
   ClassComponentHooks
 
-export interface VueConstructor extends VueStatic {
-  new <Props = unknown>(prop: Props, ctx: SetupContext): Vue<Props>
+export interface VueConstructor<V extends VueBase = Vue> extends VueStatic {
+  new (...args: any[]): V
 }
 
 class VueImpl {

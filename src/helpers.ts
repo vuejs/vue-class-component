@@ -1,9 +1,9 @@
-import { ComponentOptions, SetupContext, UnwrapRef, ComponentObjectPropsOptions, ExtractPropTypes } from 'vue'
-import { Vue, VueBase, VueMixin } from './vue'
+import { ComponentOptions, UnwrapRef, ComponentObjectPropsOptions, ExtractPropTypes } from 'vue'
+import { EmitsOptions, ObjectEmitsOptions, Vue, VueConstructor, VueMixin } from './vue'
 
 export function Options<V extends Vue>(
   options: ComponentOptions & ThisType<V>
-): <VC extends VueBase>(target: VC) => VC {
+): <VC extends VueConstructor>(target: VC) => VC {
   return (Component) => {
     Component.__vccBase = options
     return Component
@@ -12,7 +12,7 @@ export function Options<V extends Vue>(
 
 export interface VueDecorator {
   // Class decorator
-  (Ctor: VueBase): void
+  (Ctor: VueConstructor): void
 
   // Property decorator
   (target: Vue, key: string): void
@@ -24,9 +24,9 @@ export interface VueDecorator {
 export function createDecorator(
   factory: (options: ComponentOptions, key: string, index: number) => void
 ): VueDecorator {
-  return (target: Vue | VueBase, key?: any, index?: any) => {
+  return (target: Vue | VueConstructor, key?: any, index?: any) => {
     const Ctor =
-      typeof target === 'function' ? target : (target.constructor as VueBase)
+      typeof target === 'function' ? target : (target.constructor as VueConstructor)
     if (!Ctor.__vccDecorators) {
       Ctor.__vccDecorators = []
     }
@@ -52,38 +52,49 @@ export type UnionToIntersection<U> = (
 export type ExtractInstance<T> = T extends VueMixin<infer V> ? V : never
 
 export type MixedVueBase<Mixins extends VueMixin[]> = Mixins extends (infer T)[]
-  ? VueBase<UnionToIntersection<ExtractInstance<T>> & Vue> & PropsMixin
+  ? VueConstructor<UnionToIntersection<ExtractInstance<T>> & Vue> & PropsMixin
   : never
 
 export function mixins<T extends VueMixin[]>(...Ctors: T): MixedVueBase<T>
-export function mixins(...Ctors: VueMixin[]): VueBase {
-  return class MixedVue<Props> extends Vue<Props> {
+export function mixins(...Ctors: VueMixin[]): VueConstructor {
+  return class MixedVue extends Vue {
     static __vccExtend(options: ComponentOptions) {
       Ctors.forEach((Ctor) => Ctor.__vccExtend(options))
     }
 
-    constructor(props: Props, ctx: SetupContext) {
-      super(props, ctx)
+    constructor(...args: any[]) {
+      super(...args)
 
       Ctors.forEach((Ctor) => {
-        const data = new (Ctor as any)(props, ctx)
+        const data = new (Ctor as VueConstructor)(...args)
         Object.keys(data).forEach((key) => {
-          ;(this as any)[key] = data[key]
+          ;(this as any)[key] = (data as any)[key]
         })
       })
     }
   }
 }
 
-export function props<PropNames extends string, Props = Readonly<{  [key in PropNames]?: any }>>(propNames: PropNames[]): VueBase<Vue<Props> & Props>
-export function props<PropsOptions extends ComponentObjectPropsOptions, Props = Readonly<ExtractPropTypes<PropsOptions>>>(propsOptions: PropsOptions): VueBase<Vue<Props> & Props>
-export function props(propsOptions: string[] | ComponentObjectPropsOptions): VueBase {
-  class PropsMixin<Props> extends Vue<Props> {
+export function props<PropNames extends string, Props = Readonly<{ [key in PropNames]?: any }>>(propNames: PropNames[]): VueConstructor<Vue<Props> & Props>
+export function props<PropsOptions extends ComponentObjectPropsOptions, Props = Readonly<ExtractPropTypes<PropsOptions>>>(propsOptions: PropsOptions): VueConstructor<Vue<Props> & Props>
+export function props(propsOptions: string[] | ComponentObjectPropsOptions): VueConstructor {
+  class PropsMixin extends Vue {
     static __vccExtend(options: ComponentOptions) {
       options.props = propsOptions
     }
   }
   return PropsMixin
+}
+
+export function emits<EmitNames extends string>(emitNames: EmitNames[]): VueConstructor<Vue<unknown, EmitNames[]>>
+export function emits<EmitsOptions extends ObjectEmitsOptions>(emitsOptions: EmitsOptions): VueConstructor<Vue<unknown, EmitsOptions>>
+export function emits(emitsOptions: EmitsOptions): VueConstructor {
+  class EmitsMixin extends Vue {
+    static __vccExtend(options: ComponentOptions) {
+      options.emits = emitsOptions
+    }
+  }
+  return EmitsMixin
 }
 
 export function setup<R>(setupFn: () => R): UnwrapRef<R> {

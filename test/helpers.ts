@@ -1,9 +1,9 @@
 import { createApp, App } from 'vue'
-import { VueBase } from '../src/vue'
+import { VueConstructor } from '../src/vue'
 
 const wrapper = document.createElement('div')
 
-export function mount<T extends VueBase>(
+export function mount<T extends VueConstructor>(
   Component: T,
   props?: Record<string, any>
 ) {
