@@ -1,5 +1,19 @@
-import { ComponentOptions, UnwrapRef, ComponentObjectPropsOptions, ExtractPropTypes } from 'vue'
-import { ClassComponentHooks, EmitsOptions, ObjectEmitsOptions, Vue, VueBase, VueConstructor, VueMixin } from './vue'
+import {
+  ComponentOptions,
+  UnwrapRef,
+  ComponentObjectPropsOptions,
+  ExtractPropTypes,
+} from 'vue'
+
+import {
+  ClassComponentHooks,
+  EmitsOptions,
+  ObjectEmitsOptions,
+  Vue,
+  VueBase,
+  VueConstructor,
+  VueMixin,
+} from './vue'
 
 export function Options<V extends Vue>(
   options: ComponentOptions & ThisType<V>
@@ -26,7 +40,9 @@ export function createDecorator(
 ): VueDecorator {
   return (target: Vue | VueConstructor, key?: any, index?: any) => {
     const Ctor =
-      typeof target === 'function' ? target : (target.constructor as VueConstructor)
+      typeof target === 'function'
+        ? target
+        : (target.constructor as VueConstructor)
     if (!Ctor.__vccDecorators) {
       Ctor.__vccDecorators = []
     }
@@ -45,23 +61,26 @@ export type UnionToIntersection<U> = (
 
 export type ExtractInstance<T> = T extends VueMixin<infer V> ? V : never
 
-export type NarrowEmit<T extends VueBase>
-  = Omit<T, '$emit' | keyof ClassComponentHooks>
-
+export type NarrowEmit<T extends VueBase> = Omit<
+  T,
+  '$emit' | keyof ClassComponentHooks
+>
   // Reassign class component hooks as mapped types makes prototype function (`mounted(): void`) instance function (`mounted: () => void`).
   & ClassComponentHooks
 
   // Exclude generic $emit type (`$emit: (event: string, ...args: any[]) => void`) if there are another intersected type.
   & {
-    $emit: T['$emit'] extends ((event: string, ...args: any[]) => void) & infer R
-      ? unknown extends R
-        ? T['$emit']
-        : R
-      : T['$emit']
+    $emit: T['$emit'] extends (((event: string, ...args: any[]) => void) & infer R)
+    ? unknown extends R
+    ? T['$emit']
+    : R
+    : T['$emit']
   }
 
 export type MixedVueBase<Mixins extends VueMixin[]> = Mixins extends (infer T)[]
-  ? VueConstructor<NarrowEmit<UnionToIntersection<ExtractInstance<T>> & Vue> & VueBase>
+  ? VueConstructor<
+    NarrowEmit<UnionToIntersection<ExtractInstance<T>> & Vue> & VueBase
+  >
   : never
 
 export function mixins<T extends VueMixin[]>(...Ctors: T): MixedVueBase<T>
@@ -77,16 +96,26 @@ export function mixins(...Ctors: VueMixin[]): VueConstructor {
       Ctors.forEach((Ctor) => {
         const data = new (Ctor as VueConstructor)(...args)
         Object.keys(data).forEach((key) => {
-          ;(this as any)[key] = (data as any)[key]
+          ; (this as any)[key] = (data as any)[key]
         })
       })
     }
   }
 }
 
-export function props<PropNames extends string, Props = Readonly<{ [key in PropNames]?: any }>>(propNames: PropNames[]): VueConstructor<Vue<Props> & Props>
-export function props<PropsOptions extends ComponentObjectPropsOptions, Props = Readonly<ExtractPropTypes<PropsOptions>>>(propsOptions: PropsOptions): VueConstructor<Vue<Props> & Props>
-export function props(propsOptions: string[] | ComponentObjectPropsOptions): VueConstructor {
+export function props<
+  PropNames extends string,
+  Props = Readonly<{ [key in PropNames]?: any }>
+>(propNames: PropNames[]): VueConstructor<Vue<Props> & Props>
+
+export function props<
+  PropsOptions extends ComponentObjectPropsOptions,
+  Props = Readonly<ExtractPropTypes<PropsOptions>>
+>(propsOptions: PropsOptions): VueConstructor<Vue<Props> & Props>
+
+export function props(
+  propsOptions: string[] | ComponentObjectPropsOptions
+): VueConstructor {
   class PropsMixin extends Vue {
     static __vccExtend(options: ComponentOptions) {
       options.props = propsOptions
@@ -95,8 +124,14 @@ export function props(propsOptions: string[] | ComponentObjectPropsOptions): Vue
   return PropsMixin
 }
 
-export function emits<EmitNames extends string>(emitNames: EmitNames[]): VueConstructor<Vue<unknown, EmitNames[]>>
-export function emits<EmitsOptions extends ObjectEmitsOptions>(emitsOptions: EmitsOptions): VueConstructor<Vue<unknown, EmitsOptions>>
+export function emits<EmitNames extends string>(
+  emitNames: EmitNames[]
+): VueConstructor<Vue<unknown, EmitNames[]>>
+
+export function emits<EmitsOptions extends ObjectEmitsOptions>(
+  emitsOptions: EmitsOptions
+): VueConstructor<Vue<unknown, EmitsOptions>>
+
 export function emits(emitsOptions: EmitsOptions): VueConstructor {
   class EmitsMixin extends Vue {
     static __vccExtend(options: ComponentOptions) {

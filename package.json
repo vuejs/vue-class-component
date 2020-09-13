@@ -19,7 +19,7 @@
     "clean": "rimraf dist lib",
     "example": "webpack --config example/webpack.config.js",
     "dev": "webpack --config example/webpack.config.js --watch",
-    "lint": "prettier --parser typescript \"**/*.[jt]s?(x)\"",
+    "lint": "prettier -l --parser typescript \"**/*.[jt]s?(x)\"",
     "lint:fix": "yarn lint --write",
     "test": "yarn test:ts && yarn test:babel && yarn test:dts",
     "test:ts": "jest",

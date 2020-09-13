@@ -4,18 +4,32 @@
 
 export { Vue, ClassComponentHooks } from './vue'
 
-export { Options, createDecorator, mixins, props, emits, setup } from './helpers'
+export {
+  Options,
+  createDecorator,
+  mixins,
+  props,
+  emits,
+  setup,
+} from './helpers'
 
 /**
  * Other types
  */
 
-export { VueBase, VueMixin, VueStatic, VueConstructor, EmitsOptions, ObjectEmitsOptions } from './vue'
+export {
+  VueBase,
+  VueMixin,
+  VueStatic,
+  VueConstructor,
+  EmitsOptions,
+  ObjectEmitsOptions,
+} from './vue'
 
 export {
   VueDecorator,
   MixedVueBase,
   UnionToIntersection,
   ExtractInstance,
-  NarrowEmit
+  NarrowEmit,
 } from './helpers'

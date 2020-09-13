@@ -51,7 +51,7 @@ export interface VueStatic {
   __vccDecorators?: ((options: ComponentOptions) => void)[]
 
   /** @internal */
-  __vccExtend: ((options: ComponentOptions) => void)
+  __vccExtend: (options: ComponentOptions) => void
 
   /** @internal */
   __vccHooks: string[]
@@ -107,18 +107,16 @@ export interface ClassComponentHooks {
   serverPrefetch?(): Promise<unknown>
 }
 
-export type ObjectEmitsOptions = Record<string, ((...args: any[]) => any) | null>
+export type ObjectEmitsOptions = Record<
+  string,
+  ((...args: any[]) => any) | null
+>
 export type EmitsOptions = ObjectEmitsOptions | string[]
 
-export type Vue<Props = unknown, Emits extends EmitsOptions = {}> = ComponentPublicInstance<
-  {},
-  {},
-  {},
-  {},
-  {},
-  Emits,
-  Props
-> &
+export type Vue<
+  Props = unknown,
+  Emits extends EmitsOptions = {}
+> = ComponentPublicInstance<{}, {}, {}, {}, {}, Emits, Props> &
   ClassComponentHooks
 
 export interface VueConstructor<V extends VueBase = Vue> extends VueMixin<V> {

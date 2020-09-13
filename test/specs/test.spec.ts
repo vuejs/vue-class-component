@@ -1,6 +1,14 @@
 import 'reflect-metadata'
 import { h, resolveComponent, ref, onMounted, Ref, watch, toRef } from 'vue'
-import { Options, createDecorator, mixins, Vue, setup, props, emits } from '../../src'
+import {
+  Options,
+  createDecorator,
+  mixins,
+  Vue,
+  setup,
+  props,
+  emits,
+} from '../../src'
 import { mount, unmount } from '../helpers'
 
 describe('vue-class-component', () => {
@@ -371,12 +379,12 @@ describe('vue-class-component', () => {
     const Props = props({
       foo: {
         type: String,
-        default: 'The answer is'
+        default: 'The answer is',
       },
       bar: {
         type: Number,
-        required: true
-      }
+        required: true,
+      },
     })
 
     class App extends Props {
@@ -413,7 +421,7 @@ describe('vue-class-component', () => {
 
           onBar: (res1: string, res2: string) => {
             this.barResult = res1 + res2
-          }
+          },
         })
       }
     }
@@ -426,7 +434,7 @@ describe('vue-class-component', () => {
   it('emits mixin: emits options object', () => {
     const Emits = emits({
       foo: (_n: number) => true,
-      bar: (_n1: string, _n2: string) => true
+      bar: (_n1: string, _n2: string) => true,
     })
 
     class Child extends Emits {
@@ -452,7 +460,7 @@ describe('vue-class-component', () => {
 
           onBar: (res1: string, res2: string) => {
             this.barResult = res1 + res2
-          }
+          },
         })
       }
     }
