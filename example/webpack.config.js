@@ -32,7 +32,18 @@ module.exports = {
       },
       {
         test: /\.vue$/,
-        use: ['vue-loader'],
+        use: [
+          {
+            loader: 'vue-loader',
+            options: {
+              babelParserPlugins: [
+                'jsx',
+                'classProperties',
+                'decorators-legacy',
+              ],
+            },
+          },
+        ],
       },
     ],
   },

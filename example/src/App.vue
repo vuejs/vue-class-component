@@ -12,16 +12,13 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from '../../src'
+import { props } from '../../src'
 
-@Options({
-  props: {
-    propMessage: String
-  }
+const Props = props({
+  propMessage: String
 })
-export default class App extends Vue {
-  propMessage!: string
 
+export default class App extends Props {
   // inital data
   msg: number = 123
 
