@@ -86,7 +86,7 @@ export interface VueStatic {
 
 export type VueBase = Vue<unknown, never[]>
 
-export type VueMixin<V extends VueBase = Vue> = VueStatic & { prototype: V }
+export type VueMixin<V extends VueBase = VueBase> = VueStatic & { prototype: V }
 
 export interface ClassComponentHooks {
   // To be extended on user land
@@ -121,7 +121,7 @@ export type Vue<Props = unknown, Emits extends EmitsOptions = {}> = ComponentPub
 > &
   ClassComponentHooks
 
-export interface VueConstructor<V extends VueBase = Vue> extends VueStatic {
+export interface VueConstructor<V extends VueBase = Vue> extends VueMixin<V> {
   new (...args: any[]): V
 }
 

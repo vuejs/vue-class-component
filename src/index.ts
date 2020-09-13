@@ -17,5 +17,5 @@ export {
   MixedVueBase,
   UnionToIntersection,
   ExtractInstance,
-  PropsMixin,
+  NarrowEmit
 } from './helpers'

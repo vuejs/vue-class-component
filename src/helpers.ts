@@ -1,5 +1,5 @@
 import { ComponentOptions, UnwrapRef, ComponentObjectPropsOptions, ExtractPropTypes } from 'vue'
-import { EmitsOptions, ObjectEmitsOptions, Vue, VueConstructor, VueMixin } from './vue'
+import { ClassComponentHooks, EmitsOptions, ObjectEmitsOptions, Vue, VueBase, VueConstructor, VueMixin } from './vue'
 
 export function Options<V extends Vue>(
   options: ComponentOptions & ThisType<V>
@@ -37,12 +37,6 @@ export function createDecorator(
   }
 }
 
-export interface PropsMixin {
-  new <Props = unknown>(...args: any[]): {
-    $props: Props
-  }
-}
-
 export type UnionToIntersection<U> = (
   U extends any ? (k: U) => void : never
 ) extends (k: infer I) => void
@@ -51,8 +45,23 @@ export type UnionToIntersection<U> = (
 
 export type ExtractInstance<T> = T extends VueMixin<infer V> ? V : never
 
+export type NarrowEmit<T extends VueBase>
+  = Omit<T, '$emit' | keyof ClassComponentHooks>
+
+  // Reassign class component hooks as mapped types makes prototype function (`mounted(): void`) instance function (`mounted: () => void`).
+  & ClassComponentHooks
+
+  // Exclude generic $emit type (`$emit: (event: string, ...args: any[]) => void`) if there are another intersected type.
+  & {
+    $emit: T['$emit'] extends ((event: string, ...args: any[]) => void) & infer R
+      ? unknown extends R
+        ? T['$emit']
+        : R
+      : T['$emit']
+  }
+
 export type MixedVueBase<Mixins extends VueMixin[]> = Mixins extends (infer T)[]
-  ? VueConstructor<UnionToIntersection<ExtractInstance<T>> & Vue> & PropsMixin
+  ? VueConstructor<NarrowEmit<UnionToIntersection<ExtractInstance<T>> & Vue> & VueBase>
   : never
 
 export function mixins<T extends VueMixin[]>(...Ctors: T): MixedVueBase<T>
