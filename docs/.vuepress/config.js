@@ -44,7 +44,8 @@ module.exports = {
             'guide/props-definition.md',
             'guide/property-type-declaration.md',
             'guide/refs-type-extension.md',
-            'guide/hooks-auto-complete.md'
+            'guide/hooks-auto-complete.md',
+            'guide/annotate-component-type-in-decorator'
           ]
         }
       ]
