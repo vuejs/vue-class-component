@@ -1,3 +1,14 @@
+# [8.0.0-beta.2](https://github.com/vuejs/vue-class-component/compare/v8.0.0-beta.1...v8.0.0-beta.2) (2020-09-14)
+
+
+### Bug Fixes
+
+* correctly inherit mixin type when used with props and emits helpers ([7c87b03](https://github.com/vuejs/vue-class-component/commit/7c87b0390b629bf521debb892a9789f7e572ca99))
+* allow extra props of components in TSX ([7b3029e](https://github.com/vuejs/vue-class-component/commit/7b3029ed458f307a269da4947618fc9bf18d35c3))
+* make props with `default` optional in TSX ([ab65f42](https://github.com/vuejs/vue-class-component/commit/ab65f4236042fbc79e485f2d0b601629cbcc1060))
+
+
+
 # [8.0.0-beta.1](https://github.com/vuejs/vue-class-component/compare/v8.0.0-alpha.6...v8.0.0-beta.1) (2020-09-12)
 
 
