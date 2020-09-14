@@ -4,6 +4,9 @@ import {
   ComponentOptions,
   VNode,
   SetupContext,
+  VNodeProps,
+  AllowedComponentProps,
+  ComponentCustomProps,
 } from 'vue'
 
 function defineGetter<T, K extends keyof T>(
@@ -115,8 +118,12 @@ export type EmitsOptions = ObjectEmitsOptions | string[]
 
 export type Vue<
   Props = unknown,
-  Emits extends EmitsOptions = {}
-> = ComponentPublicInstance<{}, {}, {}, {}, {}, Emits, Props> &
+  Emits extends EmitsOptions = {},
+  PublicProps = Props &
+    VNodeProps &
+    AllowedComponentProps &
+    ComponentCustomProps
+> = ComponentPublicInstance<Props, {}, {}, {}, {}, Emits, PublicProps> &
   ClassComponentHooks
 
 export interface VueConstructor<V extends VueBase = Vue> extends VueMixin<V> {
