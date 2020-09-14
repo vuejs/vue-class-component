@@ -115,14 +115,15 @@ export function props<
     Props
 >
 
-export function props<
-  PropsOptions extends ComponentObjectPropsOptions,
-  Props = Readonly<ExtractPropTypes<PropsOptions>>
->(
+export function props<PropsOptions extends ComponentObjectPropsOptions>(
   propsOptions: PropsOptions
 ): VueConstructor<
-  Vue<Props, {}, VNodeProps & AllowedComponentProps & ComponentCustomProps> &
-    Props
+  Vue<
+    Readonly<ExtractPropTypes<PropsOptions, false>>,
+    {},
+    VNodeProps & AllowedComponentProps & ComponentCustomProps
+  > &
+    Readonly<ExtractPropTypes<PropsOptions>>
 >
 
 export function props(

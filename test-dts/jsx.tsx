@@ -10,7 +10,10 @@ describe('JSX', () => {
         required: true,
       },
 
-      optional: Number,
+      optional: {
+        type: Number,
+        default: 0,
+      },
     })
 
     class App extends Props {}
