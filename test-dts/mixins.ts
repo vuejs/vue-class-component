@@ -91,23 +91,18 @@ describe('props', () => {
 
     class App extends Props {
       mounted() {
-        type ExpectedProps = Readonly<
-          {
-            foo: number
-            bar: string
-          } & {
-            baz?: boolean | undefined
-          }
-        >
-
         const vm = this
         equals<typeof vm.foo, number>(true)
         equals<typeof vm.bar, string>(true)
         equals<typeof vm.baz, boolean | undefined>(true)
-        equals<typeof vm.$props, ExpectedProps>(true)
+        equals<typeof vm.$props.foo, number | undefined>(true)
+        equals<typeof vm.$props.bar, string>(true)
+        equals<typeof vm.$props.baz, boolean | undefined>(true)
 
         // @ts-expect-error
         this.nonExist
+        // @ts-expect-error
+        this.$props.nonExist
       }
     }
   })
@@ -157,7 +152,7 @@ describe('emits', () => {
     class App extends Emits {
       mounted() {
         const vm = this
-        equals<typeof vm.$props, {}>(true)
+        equals<typeof vm.$props, any>(false)
       }
     }
   })
