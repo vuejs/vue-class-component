@@ -14,9 +14,9 @@ Contribute to Vue Class Component using a fully featured online development envi
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
 
-## Questions
+## Issue reporting / pull requests
 
-For questions and support please use the [the official forum](http://forum.vuejs.org) or [community chat](https://chat.vuejs.org/). The issue list of this repo is **exclusively** for bug reports and feature requests.
+See [contribution guideline](./.github/CONTRIBUTING.md)
 
 ## License
 
