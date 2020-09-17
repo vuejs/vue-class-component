@@ -52,6 +52,7 @@ export function mixins <A, B> (CtorA: VueClass<A>, CtorB: VueClass<B>): VueClass
 export function mixins <A, B, C> (CtorA: VueClass<A>, CtorB: VueClass<B>, CtorC: VueClass<C>): VueClass<A & B & C>
 export function mixins <A, B, C, D> (CtorA: VueClass<A>, CtorB: VueClass<B>, CtorC: VueClass<C>, CtorD: VueClass<D>): VueClass<A & B & C & D>
 export function mixins <A, B, C, D, E> (CtorA: VueClass<A>, CtorB: VueClass<B>, CtorC: VueClass<C>, CtorD: VueClass<D>, CtorE: VueClass<E>): VueClass<A & B & C & D & E>
+export function mixins<T>(...Ctors: VueClass<Vue>[]): VueClass<T>
 
 export function mixins<T extends VueClass<Vue>[]>(...Ctors: T): MixedVueClass<T>
 export function mixins (...Ctors: VueClass<Vue>[]): VueClass<Vue> {
