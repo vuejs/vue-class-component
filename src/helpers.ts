@@ -3,9 +3,7 @@ import {
   UnwrapRef,
   ComponentObjectPropsOptions,
   ExtractPropTypes,
-  AllowedComponentProps,
-  ComponentCustomProps,
-  VNodeProps,
+  ExtractDefaultPropTypes,
 } from 'vue'
 
 import {
@@ -108,23 +106,15 @@ export function mixins(...Ctors: VueMixin[]): VueConstructor {
 export function props<
   PropNames extends string,
   Props = Readonly<{ [key in PropNames]?: any }>
->(
-  propNames: PropNames[]
-): VueConstructor<
-  Vue<Props, {}, VNodeProps & AllowedComponentProps & ComponentCustomProps> &
-    Props
->
+>(propNames: PropNames[]): VueConstructor<Vue<Props> & Props>
 
-export function props<PropsOptions extends ComponentObjectPropsOptions>(
+export function props<
+  PropsOptions extends ComponentObjectPropsOptions,
+  Props = Readonly<ExtractPropTypes<PropsOptions>>,
+  DefaultProps = ExtractDefaultPropTypes<PropsOptions>
+>(
   propsOptions: PropsOptions
-): VueConstructor<
-  Vue<
-    Readonly<ExtractPropTypes<PropsOptions, false>>,
-    {},
-    VNodeProps & AllowedComponentProps & ComponentCustomProps
-  > &
-    Readonly<ExtractPropTypes<PropsOptions>>
->
+): VueConstructor<Vue<Props, {}, DefaultProps> & Props>
 
 export function props(
   propsOptions: string[] | ComponentObjectPropsOptions

@@ -87,6 +87,10 @@ export interface VueStatic {
   registerHooks(keys: string[]): void
 }
 
+export type PublicProps = VNodeProps &
+  AllowedComponentProps &
+  ComponentCustomProps
+
 export type VueBase = Vue<unknown, never[]>
 
 export type VueMixin<V extends VueBase = VueBase> = VueStatic & { prototype: V }
@@ -119,11 +123,18 @@ export type EmitsOptions = ObjectEmitsOptions | string[]
 export type Vue<
   Props = unknown,
   Emits extends EmitsOptions = {},
-  PublicProps = Props &
-    VNodeProps &
-    AllowedComponentProps &
-    ComponentCustomProps
-> = ComponentPublicInstance<Props, {}, {}, {}, {}, Emits, PublicProps> &
+  DefaultProps = {}
+> = ComponentPublicInstance<
+  Props,
+  {},
+  {},
+  {},
+  {},
+  Emits,
+  PublicProps,
+  DefaultProps,
+  true
+> &
   ClassComponentHooks
 
 export interface VueConstructor<V extends VueBase = Vue> extends VueMixin<V> {

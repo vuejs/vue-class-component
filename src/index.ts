@@ -24,6 +24,7 @@ export {
   VueConstructor,
   EmitsOptions,
   ObjectEmitsOptions,
+  PublicProps,
 } from './vue'
 
 export {
