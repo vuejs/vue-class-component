@@ -1,5 +1,5 @@
 /**
-  * vue-class-component v7.2.5
+  * vue-class-component v7.2.6
   * (c) 2015-present Evan You
   * @license MIT
   */
