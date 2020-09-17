@@ -145,7 +145,9 @@ export function emits(emitsOptions: EmitsOptions): VueConstructor {
   return EmitsMixin
 }
 
-type UnwrapSetupValue<T> = T extends Ref<infer R> ? R : ShallowUnwrapRef<T>
+export type UnwrapSetupValue<T> = T extends Ref<infer R>
+  ? R
+  : ShallowUnwrapRef<T>
 
 export function setup<R>(setupFn: () => R): UnwrapSetupValue<R> {
   // Hack to delay the invocation of setup function.

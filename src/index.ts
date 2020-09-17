@@ -33,4 +33,5 @@ export {
   UnionToIntersection,
   ExtractInstance,
   NarrowEmit,
+  UnwrapSetupValue,
 } from './helpers'
