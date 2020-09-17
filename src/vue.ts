@@ -1,5 +1,5 @@
 import {
-  reactive,
+  ref,
   ComponentPublicInstance,
   ComponentOptions,
   VNode,
@@ -7,6 +7,7 @@ import {
   VNodeProps,
   AllowedComponentProps,
   ComponentCustomProps,
+  proxyRefs,
 } from 'vue'
 
 function defineGetter<T, K extends keyof T>(
@@ -23,9 +24,9 @@ function defineGetter<T, K extends keyof T>(
 
 function defineProxy(proxy: any, key: string, target: any): void {
   Object.defineProperty(proxy, key, {
-    get: () => target[key],
+    get: () => target[key].value,
     set: (value) => {
-      target[key] = value
+      target[key].value = value
     },
     enumerable: true,
     configurable: true,
@@ -237,7 +238,7 @@ class VueImpl {
       const data: any = new Ctor(props, ctx)
       const dataKeys = Object.keys(data)
 
-      const plainData: any = reactive({})
+      const plainData: any = {}
 
       // Initialize reactive data and convert constructor `this` to a proxy
       dataKeys.forEach((key) => {
@@ -247,14 +248,15 @@ class VueImpl {
           return
         }
 
-        plainData[key] = data[key]
+        plainData[key] = ref(data[key])
         defineProxy(data, key, plainData)
       })
 
       // Invoke composition functions
       dataKeys.forEach((key) => {
         if (data[key] && data[key].__s) {
-          plainData[key] = data[key].__s()
+          const setupState = data[key].__s()
+          plainData[key] = proxyRefs(setupState)
         }
       })
 

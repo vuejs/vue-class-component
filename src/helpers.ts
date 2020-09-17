@@ -1,9 +1,10 @@
 import {
   ComponentOptions,
-  UnwrapRef,
   ComponentObjectPropsOptions,
   ExtractPropTypes,
   ExtractDefaultPropTypes,
+  ShallowUnwrapRef,
+  Ref,
 } from 'vue'
 
 import {
@@ -144,10 +145,12 @@ export function emits(emitsOptions: EmitsOptions): VueConstructor {
   return EmitsMixin
 }
 
-export function setup<R>(setupFn: () => R): UnwrapRef<R> {
+type UnwrapSetupValue<T> = T extends Ref<infer R> ? R : ShallowUnwrapRef<T>
+
+export function setup<R>(setupFn: () => R): UnwrapSetupValue<R> {
   // Hack to delay the invocation of setup function.
   // Will be called after dealing with class properties.
   return {
     __s: setupFn,
-  } as UnwrapRef<R>
+  } as UnwrapSetupValue<R>
 }

@@ -49,7 +49,7 @@ describe('vue-class-component', () => {
   })
 
   if (!process.env.BABEL_TEST) {
-    it('data: should collect from class properties', () => {
+    it('data: should collect from class properties', async () => {
       @Options({
         props: ['foo'],
       })
@@ -57,12 +57,20 @@ describe('vue-class-component', () => {
         foo!: number
         a: string = 'hello'
         b: number = this.foo + 1
+
+        render() {
+          return h('div', [this.b])
+        }
       }
 
       const { root } = mount(MyComp, { foo: 1 })
 
       expect(root.a).toBe('hello')
       expect(root.b).toBe(2)
+      expect(root.$el.textContent).toBe('2')
+      root.b = 3
+      await root.$nextTick()
+      expect(root.$el.textContent).toBe('3')
     })
   }
 
@@ -470,7 +478,7 @@ describe('vue-class-component', () => {
     expect(root.barResult).toBe('HelloWorld')
   })
 
-  it('uses composition functions', () => {
+  it('setup', () => {
     function useCounter() {
       const count = ref(0)
 
@@ -496,6 +504,38 @@ describe('vue-class-component', () => {
     expect(root.counter.count).toBe(1)
     root.counter.increment()
     expect(root.counter.count).toBe(2)
+  })
+
+  it('setup: unwrap the direct ref', () => {
+    function useAnswer() {
+      const answer = ref(42)
+      return answer
+    }
+
+    class App extends Vue {
+      answer = setup(() => useAnswer())
+    }
+
+    const { root } = mount(App)
+    expect(root.answer).toBe(42)
+  })
+
+  it('setup: not unwrap nested refs', () => {
+    function useAnswer() {
+      const answer = ref(42)
+      return {
+        nested: {
+          answer,
+        },
+      }
+    }
+
+    class App extends Vue {
+      answer = setup(() => useAnswer())
+    }
+
+    const { root } = mount(App)
+    expect(root.answer.nested.answer.value).toBe(42)
   })
 
   it('reactive class properties in a composition function', (done) => {
