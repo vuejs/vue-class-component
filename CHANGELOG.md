@@ -1,3 +1,16 @@
+# [8.0.0-beta.3](https://github.com/vuejs/vue-class-component/compare/v8.0.0-beta.2...v8.0.0-beta.3) (2020-09-17)
+
+
+### Features
+
+* make props type compatible with vue@3.0.0-rc.12 ([39774a8](https://github.com/vuejs/vue-class-component/commit/39774a8b78898b222532787ef4b2c6eab03977ac))
+
+### Breaking Changes
+
+* setup only unwrap shallow refs ([57e16c9](https://github.com/vuejs/vue-class-component/commit/57e16c96939c5eed1e627e6ef2b8e791518d6214))
+
+
+
 # [8.0.0-beta.2](https://github.com/vuejs/vue-class-component/compare/v8.0.0-beta.1...v8.0.0-beta.2) (2020-09-14)
 
 
