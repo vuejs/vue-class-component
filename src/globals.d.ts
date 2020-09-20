@@ -1,5 +1,5 @@
 /**
- * global type declarations in this project
- * should not expose to userland
+ * объявления глобального типа в этом проекте
+ * не должны открываться для пользователей.
  */
 import 'reflect-metadata'

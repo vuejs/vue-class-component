@@ -3,12 +3,12 @@ import { VueClass } from './declarations'
 import { warn } from './util'
 
 export function collectDataFromConstructor (vm: Vue, Component: VueClass<Vue>) {
-  // override _init to prevent to init as Vue instance
+  // переопределить _init, чтобы предотвратить инициализацию как экземпляр Vue
   const originalInit = Component.prototype._init
   Component.prototype._init = function (this: Vue) {
-    // proxy to actual vm
+    // прокси к фактическому vm
     const keys = Object.getOwnPropertyNames(vm)
-    // 2.2.0 compat (props are no longer exposed as self properties)
+    // 2.2.0 compat (реквизиты больше не отображаются как собственные свойства)
     if (vm.$options.props) {
       for (const key in vm.$options.props) {
         if (!vm.hasOwnProperty(key)) {
@@ -25,13 +25,13 @@ export function collectDataFromConstructor (vm: Vue, Component: VueClass<Vue>) {
     })
   }
 
-  // should be acquired class property values
+  // должны быть приобретены значения класса собственности
   const data = new Component()
 
-  // restore original _init to avoid memory leak (#209)
+  // восстановить исходный _init, чтобы избежать утечки памяти (#209)
   Component.prototype._init = originalInit
 
-  // create plain data object
+  // создать простой объект данных
   const plainData = {}
   Object.keys(data).forEach(key => {
     if (data[key] !== undefined) {

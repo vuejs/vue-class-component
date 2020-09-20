@@ -253,14 +253,14 @@ describe('vue-class-component', () => {
 
   it('createDecorator', function () {
     const Prop = createDecorator((options, key) => {
-      // component options should be passed to the callback
-      // and update for the options affect the component
+      // параметры компонента должны быть переданы в обратный вызов,
+      // и обновление параметров влияет на компонент
       (options.props || (options.props = {}))[key] = true
     })
 
     const NoCache = createDecorator((options, key) => {
-      // options should have computed and methods etc.
-      // that specified by class property accessors and methods
+      // параметры должны иметь вычисленные и методы и т. д.,
+      // которые указаны средствами и методами доступа к свойствам класса
       const computedOption = options.computed![key] as ComputedOptions<Vue>
       computedOption.cache = false
     })
@@ -285,7 +285,7 @@ describe('vue-class-component', () => {
 
   // #104
   it('createDecorator: decorate correctly even if a component is created in another @Component decorator', () => {
-    // Just assigns the given value to the decorated property
+    // Просто присваивает заданное значение украшенному свойству
     const Value = (value: any) => createDecorator((options, key) => {
       const data = options.data as Function || (() => ({}))
       options.data = function () {

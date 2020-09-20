@@ -3,8 +3,8 @@ import Vue, { ComponentOptions } from 'vue'
 export type VueClass<V> = { new (...args: any[]): V & Vue } & typeof Vue
 
 export type DecoratedClass = VueClass<Vue> & {
-  // Property, method and parameter decorators created by `createDecorator` helper
-  // will enqueue functions that update component options for lazy processing.
-  // They will be executed just before creating component constructor.
+  // Декораторы свойств, методов и параметров, созданные помощником `createDecorator`,
+  // будут помещать в очередь функции, обновляющие параметры компонентов для отложенной обработки.
+  // Они будут выполнены непосредственно перед созданием конструктора компонента.
   __decorators__?: ((options: ComponentOptions<Vue>) => void)[]
 }

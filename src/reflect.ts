@@ -1,9 +1,9 @@
 import Vue, { VueConstructor } from 'vue'
 import { VueClass } from './declarations'
 
-// The rational behind the verbose Reflect-feature check below is the fact that there are polyfills
-// which add an implementation for Reflect.defineMetadata but not for Reflect.getOwnMetadataKeys.
-// Without this check consumers will encounter hard to track down runtime errors.
+// За подробной проверкой Reflect-feature, приведенной ниже, является то, что есть полифиллы.
+// которые добавляют реализацию для Reflect.defineMetadata, но не для Reflect.getOwnMetadataKeys.
+// Без этой проверки потребители столкнутся с трудно обнаруживаемыми ошибками времени выполнения.
 export function reflectionIsSupported () {
   return typeof Reflect !== 'undefined' && Reflect.defineMetadata && Reflect.getOwnMetadataKeys
 }

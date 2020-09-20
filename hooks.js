@@ -1,1 +1,1 @@
-// Dummy empty file to avoid import error when using hooks.d.ts
+// Фиктивный пустой файл, чтобы избежать ошибки импорта при использовании hooks.d.ts

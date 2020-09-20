@@ -26,25 +26,25 @@ export function componentFactory (
   options: ComponentOptions<Vue> = {}
 ): VueClass<Vue> {
   options.name = options.name || (Component as any)._componentTag || (Component as any).name
-  // prototype props.
+  // прототип реквизита.
   const proto = Component.prototype
   Object.getOwnPropertyNames(proto).forEach(function (key) {
     if (key === 'constructor') {
       return
     }
 
-    // hooks
+    // крючки
     if ($internalHooks.indexOf(key) > -1) {
       options[key] = proto[key]
       return
     }
     const descriptor = Object.getOwnPropertyDescriptor(proto, key)!
     if (descriptor.value !== void 0) {
-      // methods
+      // методы
       if (typeof descriptor.value === 'function') {
         (options.methods || (options.methods = {}))[key] = descriptor.value
       } else {
-        // typescript decorated data
+        // машинописные декорированные данные
         (options.mixins || (options.mixins = [])).push({
           data (this: Vue) {
             return { [key]: descriptor.value }
@@ -52,7 +52,7 @@ export function componentFactory (
         })
       }
     } else if (descriptor.get || descriptor.set) {
-      // computed properties
+      // вычисленные свойства
       (options.computed || (options.computed = {}))[key] = {
         get: descriptor.get,
         set: descriptor.set
@@ -60,21 +60,21 @@ export function componentFactory (
     }
   })
 
-  // add data hook to collect class properties as Vue instance's data
+  // добавить обработчик данных для сбора свойств класса как данных экземпляра Vue
   ;(options.mixins || (options.mixins = [])).push({
     data (this: Vue) {
       return collectDataFromConstructor(this, Component)
     }
   })
 
-  // decorate options
+  // варианты украшения
   const decorators = (Component as DecoratedClass).__decorators__
   if (decorators) {
     decorators.forEach(fn => fn(options))
     delete (Component as DecoratedClass).__decorators__
   }
 
-  // find super
+  // найти супер
   const superProto = Object.getPrototypeOf(Component.prototype)
   const Super = superProto instanceof Vue
     ? superProto.constructor as VueClass<Vue>
@@ -91,19 +91,19 @@ export function componentFactory (
 }
 
 const reservedPropertyNames = [
-  // Unique id
+  // Уникальный идентификатор
   'cid',
 
-  // Super Vue constructor
+  // Конструктор Super Vue
   'super',
 
-  // Component options that will be used by the component
+  // Параметры компонента, которые будет использовать компонент
   'options',
   'superOptions',
   'extendOptions',
   'sealedOptions',
 
-  // Private assets
+  // Частные активы
   'component',
   'directive',
   'filter'
@@ -121,14 +121,14 @@ function forwardStaticMembers (
   Original: typeof Vue,
   Super: typeof Vue
 ): void {
-  // We have to use getOwnPropertyNames since Babel registers methods as non-enumerable
+  // Мы должны использовать getOwnPropertyNames, поскольку Babel регистрирует методы как неперечислимые
   Object.getOwnPropertyNames(Original).forEach(key => {
-    // Skip the properties that should not be overwritten
+    // Пропустите свойства, которые нельзя перезаписывать
     if (shouldIgnore[key]) {
       return
     }
 
-    // Some browsers does not allow reconfigure built-in properties
+    // Некоторые браузеры не позволяют перенастроить встроенные свойства
     const extendedDescriptor = Object.getOwnPropertyDescriptor(Extended, key)
     if (extendedDescriptor && !extendedDescriptor.configurable) {
       return
@@ -136,17 +136,17 @@ function forwardStaticMembers (
 
     const descriptor = Object.getOwnPropertyDescriptor(Original, key)!
 
-    // If the user agent does not support `__proto__` or its family (IE <= 10),
-    // the sub class properties may be inherited properties from the super class in TypeScript.
-    // We need to exclude such properties to prevent to overwrite
-    // the component options object which stored on the extended constructor (See #192).
-    // If the value is a referenced value (object or function),
-    // we can check equality of them and exclude it if they have the same reference.
-    // If it is a primitive value, it will be forwarded for safety.
+    // Если пользовательский агент не поддерживает `__proto__` или его семейство (IE <= 10),
+    // свойства подкласса могут быть унаследованы от суперкласса в TypeScript.
+    // Нам необходимо исключить такие свойства, чтобы предотвратить перезапись
+    // объекта параметров компонента, который хранится в расширенном конструкторе. (See #192).
+    // Если значение является ссылочным значением (объектом или функцией),
+    // мы можем проверить их равенство и исключить его, если они имеют одинаковую ссылку.
+    // Если это примитивное значение, оно будет отправлено в целях безопасности.
     if (!hasProto) {
-      // Only `cid` is explicitly exluded from property forwarding
-      // because we cannot detect whether it is a inherited property or not
-      // on the no `__proto__` environment even though the property is reserved.
+      // Только cid явно исключается из пересылки свойств, потому что мы не можем определить,
+      // является ли это унаследованным свойством или нет в среде no `__proto__`,
+      // даже если свойство зарезервировано.
       if (key === 'cid') {
         return
       }
@@ -162,15 +162,15 @@ function forwardStaticMembers (
       }
     }
 
-    // Warn if the users manually declare reserved properties
+    // Предупреждать, если пользователи вручную объявляют зарезервированные свойства
     if (
       process.env.NODE_ENV !== 'production' &&
       reservedPropertyNames.indexOf(key) >= 0
     ) {
       warn(
-        `Static property name '${key}' declared on class '${Original.name}' ` +
-        'conflicts with reserved property name of Vue internal. ' +
-        'It may cause unexpected behavior of the component. Consider renaming the property.'
+        `Имя статического свойства '${key}', объявленное в классе '${Original.name}', ` +
+        'конфликтует с зарезервированным именем свойства Vue internal. ' +
+        'Это может вызвать неожиданное поведение компонента. Рассмотрите возможность его переименования.'
       )
     }
 

@@ -1,23 +1,23 @@
-# Vue Class Component
+# Представление компонентов класса
 
-ECMAScript / TypeScript decorator for class-style Vue components.
+ECMAScript/TypeScript декоратор для компонентов Vue в стиле классов.
 
 [![npm](https://img.shields.io/npm/v/vue-class-component.svg)](https://www.npmjs.com/package/vue-class-component) [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/vuejs/vue-class-component) 
 
-## Document
+## Документ
 
-See [https://class-component.vuejs.org](https://class-component.vuejs.org)
+См. [https://class-component.vuejs.org](https://class-component.vuejs.org)
 
-## Online one-click setup for contributing
+## Онлайн-настройка в один клик для участия
 
-Contribute to Vue Class Component using a fully featured online development environment that will automatically: clone the repo, install the dependencies and start the docs web server and run `yarn dev`.
+Внесите свой вклад в компонент Vue Class, используя полнофункциональную среду онлайн-разработки, которая автоматически: клонирует репозиторий, устанавливает зависимости, запускает веб-сервер документации и `yarn dev`.
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
 
-## Issue reporting / pull requests
+## Отчеты о проблемах/запросы на вытягивание
 
-See [contribution guideline](./.github/CONTRIBUTING.md)
+См. [contribution guideline](./.github/CONTRIBUTING.md)
 
-## License
+## Лицензия
 
 [MIT](http://opensource.org/licenses/MIT)

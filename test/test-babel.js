@@ -11,7 +11,7 @@ describe('vue-class-component with Babel', () => {
     expect(() => new MyComp()).to.not.throw(Error)
   })
 
-  it('should collect class properties as data', () => {
+  it('должен собирать свойства класса как данные', () => {
     @Component({
       props: ['propValue']
     })
@@ -29,7 +29,7 @@ describe('vue-class-component with Babel', () => {
     expect(c.bar).to.equal(2)
   })
 
-  it('should collect decorated class properties', () => {
+  it('должен собирать декорированные свойства класса', () => {
     const valueDecorator = (value) => () => {
       return {
         enumerable: true,
@@ -60,7 +60,7 @@ describe('vue-class-component with Babel', () => {
     expect(c.field2).to.equal('field2')
   })
 
-  it('should not collect uninitialized class properties', () => {
+  it('не должен собирать неинициализированные свойства класса', () => {
     const Prop = createDecorator((options, key) => {
       if (!options.props) {
         options.props = {}
@@ -78,7 +78,7 @@ describe('vue-class-component with Babel', () => {
     expect('bar' in c.$data).to.be.false
   })
 
-  it('warn if class property is used without inheriting Vue class', () => {
+  it('предупреждать, если свойство класса используется без наследования класса Vue', () => {
     const originalWarn = console.warn
     console.warn = td.function('warn')
 
@@ -95,8 +95,8 @@ describe('vue-class-component with Babel', () => {
     })
 
     const message = '[vue-class-component] ' +
-      'Component class must inherit Vue or its descendant class ' +
-      'when class property is used.'
+      'Класс компонента должен наследовать Vue или его дочерний класс, ' +
+      'когда используется свойство класса.'
 
     try {
       td.verify(console.warn(message))
@@ -123,7 +123,7 @@ describe('vue-class-component with Babel', () => {
     expect(vm.test).to.equal('foo')
   })
 
-  it('should not throw if property decorator declare some methods', () => {
+  it('не следует бросать, если декоратор свойств объявляет некоторые методы', () => {
     const Test = createDecorator((options, key) => {
       if (!options.methods) {
         options.methods = {}
@@ -181,7 +181,7 @@ describe('vue-class-component with Babel', () => {
     expect(vm.valueB).to.equal(456)
   })
 
-  it('copies reflection metadata', function () {
+  it('копирует метаданные отражения', function () {
     @Component
     @Reflect.metadata('worksConstructor', true)
     class Test extends Vue {

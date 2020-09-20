@@ -7,13 +7,13 @@ const fakeArray = { __proto__: [] }
 export const hasProto = fakeArray instanceof Array
 
 export interface VueDecorator {
-  // Class decorator
+  // Декоратор классов
   (Ctor: typeof Vue): void
 
-  // Property decorator
+  // Декоратор недвижимости
   (target: Vue, key: string): void
 
-  // Parameter decorator
+  // Декоратор параметров
   (target: Vue, key: string, index: number): void
 }
 
@@ -46,7 +46,7 @@ export type MixedVueClass<
   ? VueClass<UnionToIntersection<ExtractInstance<T>>>
   : never
 
-// Retain legacy declaration for backward compatibility
+// Сохраните устаревшую декларацию для обратной совместимости
 export function mixins <A> (CtorA: VueClass<A>): VueClass<A>
 export function mixins <A, B> (CtorA: VueClass<A>, CtorB: VueClass<B>): VueClass<A & B>
 export function mixins <A, B, C> (CtorA: VueClass<A>, CtorB: VueClass<B>, CtorC: VueClass<C>): VueClass<A & B & C>
