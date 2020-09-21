@@ -42,8 +42,8 @@ export function collectDataFromConstructor (vm: Vue, Component: VueClass<Vue>) {
   if (process.env.NODE_ENV !== 'production') {
     if (!(Component.prototype instanceof Vue) && Object.keys(plainData).length > 0) {
       warn(
-        'Component class must inherit Vue or its descendant class ' +
-        'when class property is used.'
+        'Класс компонента должен наследовать Vue или его дочерний класс ' +
+        'когда используется свойство класса.'
       )
     }
   }
