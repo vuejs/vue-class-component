@@ -1,6 +1,6 @@
 # Props Definition
 
-There is no dedicated API for props definition that Vue Class Component provides. You, however, can do that by using canonical `Vue.extend` API:
+Не существует специального API для определения свойств, который предоставляет компонент класса Vue. Однако вы можете сделать это, используя канонический `Vue.extend` API:
 
 ```vue
 <template>
@@ -29,9 +29,9 @@ export default class Greeting extends GreetingProps {
 </script>
 ```
 
-As `Vue.extend` infers defined prop types, it is possible to use them in your class component by extending it.
+Поскольку `Vue.extend` подразумевает определенные типы опор, их можно использовать в компоненте вашего класса, расширив его.
 
-If you have a super class component or mixins to extend, use `mixins` helper to combine defined props with them:
+Если у вас есть компонент суперкласса или миксины для расширения, используйте помощник `mixins`, чтобы объединить с ними определенные свойства:
 
 ```vue
 <template>
@@ -43,18 +43,18 @@ import Vue from 'vue'
 import Component, { mixins } from 'vue-class-component'
 import Super from './super'
 
-// Define the props by using Vue's canonical way.
+// Определите реквизиты, используя канонический способ Vue.
 const GreetingProps = Vue.extend({
   props: {
     name: String
   }
 })
 
-// Use `mixins` helper to combine defined props and a mixin.
+// Используйте помощник `mixins`, чтобы комбинировать определенные свойства и миксин.
 @Component
 export default class Greeting extends mixins(GreetingProps, Super) {
   get message(): string {
-    // this.name will be typed
+    // this.name будет набран
     return 'Hello, ' + this.name
   }
 }

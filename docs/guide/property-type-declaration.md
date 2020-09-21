@@ -1,17 +1,17 @@
-# Property Type Declaration
+# Объявление типа собственности
 
-Sometimes, you have to define component properties and methods out of a class component. For example, [Vuex](https://github.com/vuejs/vuex), the official state management library for Vue, provides `mapGetters` and `mapActions` helpers to map a store to component properties and methods. These helpers need to be used in a component options object.
+Иногда вам необходимо определить свойства и методы компонента вне компонента класса. Например, [Vuex](https://github.com/vuejs/vuex), официальная библиотека управления состоянием для Vue, предоставляет помощники `mapGetters` и `mapActions` для сопоставления магазина свойствам и методам компонентов. Эти помощники необходимо использовать в объекте параметров компонента.
 
-Even in this case, you can pass component options to the `@Component` decorator's argument. However it does not automatically declare the properties and methods on type level while they work on runtime.
+Даже в этом случае вы можете передать параметры компонента в аргумент декоратора `@Component`. Однако он не объявляет автоматически свойства и методы на уровне типа, пока они работают во время выполнения.
 
-You need to manually declare their types in the class component:
+Вам нужно вручную объявить их типы в компоненте класса:
 
 ```ts
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import { mapGetters, mapActions } from 'vuex'
 
-// Interface of post
+// Интерфейс поста
 import { Post } from './post'
 
 @Component({
@@ -24,18 +24,18 @@ import { Post } from './post'
   ])
 })
 export default class Posts extends Vue {
-  // Declare mapped getters and actions on type level.
-  // You may need to add `!` after the property name
-  // to avoid compilation error (definite assignment assertion).
+  // Объявите отображенные геттеры и действия на уровне типа.
+  // Вам может потребоваться добавить `!` После имени свойства,
+  // чтобы избежать ошибки компиляции (утверждение определенного присваивания).
 
-  // Type the mapped posts getter.
+  // Введите получатель сопоставленных сообщений.
   posts!: Post[]
 
-  // Type the mapped fetchPosts action.
+  // Введите сопоставленное действие fetchPosts.
   fetchPosts!: () => Promise<void>
 
   mounted() {
-    // Use the mapped getter and action.
+    // Используйте сопоставленный получатель и действие.
     this.fetchPosts().then(() => {
       console.log(this.posts)
     })

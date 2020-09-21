@@ -1,8 +1,8 @@
 # `$refs` Type Extension
 
-`$refs` type of a component is declared as the broadest type to handle all possible type of ref. While it is theoretically collect, in most cases, each ref only has a specific element or a component in practice.
+Тип компонента `$refs` объявлен как самый широкий тип для обработки всех возможных типов ссылок. Хотя теоретически это сбор, в большинстве случаев каждая ссылка имеет только определенный элемент или компонент на практике.
 
-You can specify a specific ref type by overriding `$refs` type in a class component:
+Вы можете указать конкретный тип ссылки, переопределив тип `$refs` в компоненте класса:
 
 ```vue
 <template>
@@ -30,6 +30,6 @@ export default class InputFocus extends Vue {
 </script>
 ```
 
-You can access `input` type without type cast as `$refs.input` type is specified on the class component in the above example.
+Вы можете получить доступ к типу `input` без приведения типа, поскольку тип `$refs.input` указан в компоненте класса в приведенном выше примере.
 
-Note that it should be a type annotation (using colon `:`) rather than value assignment (`=`).
+Обратите внимание, что это должна быть аннотация типа (с использованием двоеточия `:`), а не присвоение значения (`=`).

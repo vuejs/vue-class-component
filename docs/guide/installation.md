@@ -1,56 +1,56 @@
-# Installation
+# Монтаж
 
-## Vue CLI Setup
+## Настройка Vue CLI
 
-You can easily setup your Vue Class Component project by using [Vue CLI](https://cli.vuejs.org/). Run the following command to create a new project:
+Вы можете легко настроить свой проект Vue Class Component, используя [Vue CLI](https://cli.vuejs.org/). Выполните следующую команду, чтобы создать новый проект:
 
 ```sh
 $ vue create hello-world
 ```
 
-You will be asked whether using preset or not. Select "Manually select features":
+Вас спросят, используется ли предустановка или нет. Выберите «Выбрать функции вручную»:
 
 ![](../assets/vue-cli-1.png)
 
-Check TypeScript feature to use Vue Class Component. You can add other features in addition if you need:
+Отметьте функцию TypeScript, чтобы использовать компонент класса Vue. Вы можете добавить другие функции, если вам нужно:
 
 ![](../assets/vue-cli-2.png)
 
-Press `y` for the question `Use class-style component syntax?`:
+Нажмите `y`, чтобы задать вопрос `Use class-style component syntax?`:
 
 ![](../assets/vue-cli-3.png)
 
-You can answer the remaining questions as your preferences. After finishing this setup process, Vue CLI creates a new project directory with Vue Class Component installed.
+Вы можете ответить на оставшиеся вопросы по своему усмотрению. После завершения этого процесса установки Vue CLI создает новый каталог проекта с установленным компонентом класса Vue.
 
-## Manual Setup
+## Ручная настройка
 
-If you prefer manual setup, install it via npm and configure your build tool.
+Если вы предпочитаете ручную настройку, установите ее через npm и настройте инструмент сборки.
 
 ### npm
 
-You can install Vue Class Component with `npm` command. Please make sure to also install Vue core library as Vue Class Component depends on it:
+Вы можете установить компонент класса Vue с помощью команды `npm`. Не забудьте также установить базовую библиотеку Vue, поскольку от нее зависит компонент класса Vue:
 
 ```sh
 $ npm install --save vue vue-class-component
 ```
 
-You can use `yarn` command if you prefer:
+Вы можете использовать команду `yarn`, если хотите:
 
 ```sh
 $ yarn add --save vue vue-class-component
 ```
 
-### Build Setup
+### Настройка сборки
 
-To use Vue Class Component, you need to configure [TypeScript](https://www.typescriptlang.org/) or [Babel](https://babeljs.io/) in your project as it relies on [ECMAScript stage 1 decorators](https://github.com/wycats/javascript-decorators/blob/master/README.md) which is needed to transpile to run on browsers.
+Чтобы использовать Vue Class Component, вам необходимо настроить [TypeScript](https://www.typescriptlang.org/) или [Babel](https://babeljs.io/) в своем проекте, поскольку он основан на [ECMAScript этап 1 декораторы](https://github.com/wycats/javascript-decorators/blob/master/README.md), который необходим для транспиляции для работы в браузерах.
 
-::: warning
-It does not support the stage 2 decorators yet since TypeScript transpiler still only supports the old decorators spec.
+::: предупреждение
+Он еще не поддерживает декораторы этапа 2, поскольку транспилятор TypeScript по-прежнему поддерживает только старые спецификации декораторов.
 :::
 
 #### TypeScript
 
-Create `tsconfig.json` on your project root and specify `experimentalDecorators` option so that it transpiles decorator syntax:
+Создайте `tsconfig.json` в корне вашего проекта и укажите опцию `experimentalDecorators`, чтобы он транслировал синтаксис декоратора:
 
 ```json
 {
@@ -66,13 +66,13 @@ Create `tsconfig.json` on your project root and specify `experimentalDecorators`
 
 #### Babel
 
-Install `@babel/plugin-proposal-decorators` and `@babel/plugin-proposal-class-properties`:
+Установить `@babel/plugin-proposal-decorators` и `@babel/plugin-proposal-class-properties`:
 
 ```sh
 $ npm install --save-dev @babel/plugin-proposal-decorators @babel/plugin-proposal-class-properties
 ```
 
-Then configure `.babelrc` on your project root:
+Затем настройте `.babelrc` в корне вашего проекта:
 
 ```json
 {
@@ -84,28 +84,29 @@ Then configure `.babelrc` on your project root:
 ```
 
 Note that `legacy` and `loose` option are needed as Vue Class Component only supports stage 1 (legacy) decorator spec yet.
+Обратите внимание, что необходимы опции `legacy` и `loose`, поскольку компонент класса Vue пока поддерживает только спецификацию декоратора стадии 1 (устаревшую).
 
 ## CDN
 
-[unpkg.com](https://unpkg.com/) provides npm-based CDN links. You can choose specific version of Vue Class Component by replacing the `@latest` part in url (e.g. `https://unpkg.com/vue-class-component@7.2.2/dist/vue-class-component.js` to use version 7.2.2).
+[unpkg.com](https://unpkg.com/) предоставляет ссылки CDN на основе npm. Вы можете выбрать конкретную версию Vue Class Component, заменив `@latest` часть в url (например `https://unpkg.com/vue-class-component@7.2.2/dist/vue-class-component.js` используя версию 7.2.2).
 
 ```html
-<!-- UMD build -->
+<!-- Сборка UMD -->
 <script src="https://unpkg.com/vue-class-component@latest/dist/vue-class-component.js"></script>
 
-<!-- UMD minified build -->
+<!-- UMD минифицированная сборка -->
 <script src="https://unpkg.com/vue-class-component@latest/dist/vue-class-component.min.js"></script>
 
-<!-- ES Module build -->
+<!-- ES Сборка модуля -->
 <script src="https://unpkg.com/vue-class-component@latest/dist/vue-class-component.esm.browser.js"></script>
 
-<!-- ES Module minified build -->
+<!-- ES Минифицированная сборка модуля -->
 <script src="https://unpkg.com/vue-class-component@latest/dist/vue-class-component.esm.browser.min.js"></script>
 ```
 
-## Different Builds
+## Различные сборки
 
-Vue Class Component is provided as different builds for different environments and usages.
+Компонент Vue Class предоставляется в виде разных сборок для разных сред и применений.
 
 - **For development**
   - `vue-class-component.js` (UMD)
