@@ -1,50 +1,51 @@
-# Extend and Mixins
+# Расширение и миксины
 
-## Extend
+## Расширить
 
-You can extend an existing class component as native class inheritance. Imagine you have following super class component:
+Вы можете расширить существующий компонент класса как наследование собственного класса. Представьте, что у вас есть следующий компонент суперкласса:
 
 ```js
 // super.js
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
-// Define a super class component
+// Определите компонент суперкласса
 @Component
 export default class Super extends Vue {
   superValue = 'Hello'
 }
 ```
 
-You can extend it by using native class inheritance syntax:
+Вы можете расширить его, используя синтаксис наследования собственного класса:
 
 ```js
 import Super from './super'
 import Component from 'vue-class-component'
 
-// Extending the Super class component
+// Расширение компонента суперкласса
 @Component
 export default class HelloWorld extends Super {
   created() {
-    console.log(this.superValue) // -> Hello
+    console.log(this.superValue) // -> Привет
   }
 }
 ```
 
-Note that every super class must be a class component. In other words, it needs to inherit `Vue` constructor as an ancestor and be decorated by `@Component` decorator.
+Обратите внимание, что каждый суперкласс должен быть компонентом класса. Другими словами, он должен наследовать конструктор `Vue` в качестве предка и украшаться декоратором `@Component`.
 
-## Mixins
+## Миксины
 
-Vue Class Component provides `mixins` helper function to use [mixins](https://vuejs.org/v2/guide/mixins.html) in class style manner. By using `mixins` helper, TypeScript can infer mixin types and inherit them on the component type.
+Компонент класса Vue предоставляет вспомогательную функцию `mixins` для использования [mixins](https://vuejs.org/v2/guide/mixins.html) в стиле класса.  
+Используя помощник `mixins`, TypeScript может определять типы миксинов и наследовать их от типа компонента.
 
-Example of declaring mixins `Hello` and `World`:
+Пример объявления миксинов `Hello` и `World`:
 
 ```js
 // mixins.js
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
-// You can declare mixins as the same style as components.
+// Вы можете объявить миксины в том же стиле, что и компоненты.
 @Component
 export class Hello extends Vue {
   hello = 'Hello'
@@ -56,14 +57,14 @@ export class World extends Vue {
 }
 ```
 
-Use them in a class style component:
+Используйте их в компоненте стиля класса:
 
 ```js
 import Component, { mixins } from 'vue-class-component'
 import { Hello, World } from './mixins'
 
-// Use `mixins` helper function instead of `Vue`.
-// `mixins` can receive any number of arguments.
+// Используйте вспомогательную функцию `mixins` вместо `Vue`.
+// `mixins` может принимать любое количество аргументов.
 @Component
 export class HelloWorld extends mixins(Hello, World) {
   created () {
@@ -72,4 +73,4 @@ export class HelloWorld extends mixins(Hello, World) {
 }
 ```
 
-As same as super class, all mixins must be declared as class components.
+Как и суперкласс, все миксины должны быть объявлены как компоненты класса.

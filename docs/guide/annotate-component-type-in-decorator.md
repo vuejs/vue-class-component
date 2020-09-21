@@ -1,14 +1,14 @@
-# Annotate Component Type in Decorator
+# Аннотирование типа компонента в декораторе
 
-There are cases that you want to use your component type on a function in `@Component` decorator argument.
-For example, to access component methods in a watch handler:
+Есть случаи, когда вы хотите использовать свой тип компонента в функции в аргументе декоратора `@Component`.
+Например, чтобы получить доступ к методам компонентов в обработчике часов:
 
 ```ts
 @Component({
   watch: {
     postId(id: string) {
-      // To fetch post data when the id is changed.
-      this.fetchPost(id) // -> Property 'fetchPost' does not exist on type 'Vue'.
+      // Для получения данных публикации при изменении идентификатора.
+      this.fetchPost(id) // -> Свойство 'fetchPost' не существует для типа 'Vue'.
     }
   }
 })
@@ -21,17 +21,17 @@ class Post extends Vue {
 }
 ```
 
-The above code produces a type error that indicates `fetchPost` does not exist on `this` in the watch handler. This happens because `this` type in `@Component` decorator argument is the base `Vue` type.
+Приведенный выше код вызывает ошибку типа, которая указывает, что `fetchPost` не существует на `this` в обработчике часов. Это происходит потому, что тип `this` в аргументе декоратора `@Component` является базовым типом `Vue`.
 
-To use your own component type (in this case `Post`), you can annotate the decorator through its type parameter.
+Чтобы использовать свой собственный тип компонента (в данном случае `Post`), вы можете аннотировать декоратор через его параметр типа.
 
 ```ts
-// Annotate the decorator with the component type 'Post' so that `this` type in
-// the decorator argument becomes 'Post'.
+// Аннотируйте декоратор с типом компонента 'Post', чтобы тип 'this' в аргументе декоратора стал 'Post'.
+//
 @Component<Post>({
   watch: {
     postId(id: string) {
-      this.fetchPost(id) // -> No errors
+      this.fetchPost(id) // -> Без ошибок
     }
   }
 })

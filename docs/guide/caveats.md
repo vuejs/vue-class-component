@@ -1,10 +1,10 @@
-# Caveats of Class Component
+# Предостережения относительно компонента класса
 
-Vue Class Component collects class properties as Vue instance data by instantiating the original constructor under the hood. While we can define instance data like native class manner, we sometimes need to know how it works.
+Компонент класса Vue собирает свойства класса как данные экземпляра Vue, создавая экземпляр исходного конструктора под капотом. Хотя мы можем определять данные экземпляра как собственный класс, иногда нам нужно знать, как это работает.
 
-## `this` value in property initializer
+## значение `this` в инициализаторе свойства
 
-If you define an arrow function as a class property and access `this` in it, it will not work. This is because `this` is just a proxy object to the Vue instance when initializing class properties:
+Если вы определите стрелочную функцию как свойство класса и получите в ней доступ к `this`, она не будет работать. Это потому, что `this` - это просто прокси-объект для экземпляра Vue при инициализации свойств класса:
 
 ```js
 import Vue from 'vue'
@@ -14,16 +14,16 @@ import Component from 'vue-class-component'
 export default class MyComp extends Vue {
   foo = 123
 
-  // DO NOT do this
+  // Не делай этого
   bar = () => {
-    // Does not update the expected property.
-    // `this` value is not a Vue instance in fact.
+    // Не обновляет ожидаемое свойство.
+    // Фактически, значение `this` не является экземпляром Vue.
     this.foo = 456
   }
 }
 ```
 
-You can simply define a method instead of a class property in that case because Vue will bind the instance automatically:
+В этом случае вы можете просто определить метод вместо свойства класса, потому что Vue автоматически привяжет экземпляр:
 
 ```js
 import Vue from 'vue'
@@ -33,17 +33,17 @@ import Component from 'vue-class-component'
 export default class MyComp extends Vue {
   foo = 123
 
-  // DO this
+  // Сделай это
   bar() {
-    // Correctly update the expected property.
+    // Правильно обнови ожидаемое свойство.
     this.foo = 456
   }
 }
 ```
 
-## Always use lifecycle hooks instead of `constructor`
+## Всегда используйте хуки жизненного цикла вместо конструктора
 
-As the original constructor is invoked to collect initial component data, it is recommended against declaring `constructor` by yourself:
+Поскольку исходный конструктор вызывается для сбора исходных данных компонента, не рекомендуется объявлять `constructor` самостоятельно:
 
 ```js
 import Vue from 'vue'
@@ -53,7 +53,7 @@ import Component from 'vue-class-component'
 export default class Posts extends Vue {
   posts = []
 
-  // DO NOT do this
+  // Не делай этого
   constructor() {
     fetch('/posts.json')
       .then(res => res.json())
@@ -64,9 +64,9 @@ export default class Posts extends Vue {
 }
 ```
 
-The above code intends to fetch post list on component initialization but the fetch will be called twice unexpectedly because of how Vue Class Component works.
+Приведенный выше код намеревается получить список сообщений при инициализации компонента, но выборка будет вызываться дважды неожиданно из-за того, как работает компонент класса Vue.
 
-It is recommended to write lifecycle hooks such as `created` instead of `constructor`:
+Рекомендуется писать хуки жизненного цикла, такие как `created` вместо `constructor`:
 
 ```js
 import Vue from 'vue'
@@ -76,7 +76,7 @@ import Component from 'vue-class-component'
 export default class Posts extends Vue {
   posts = []
 
-  // DO this
+  // Сделай это
   created() {
     fetch('/posts.json')
       .then(res => res.json())

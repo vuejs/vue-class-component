@@ -1,12 +1,12 @@
-# Additional Hooks
+# Дополнительные хуки
 
-If you use some Vue plugins like [Vue Router](https://router.vuejs.org/), you may want class components to resolve hooks that they provide. In that case, `Component.registerHooks` allows you to register such hooks:
+Если вы используете плагины Vue, например [Vue Router](https://router.vuejs.org/), вы можете захотеть, чтобы компоненты класса разрешали предоставляемые ими перехватчики. В этом случае `Component.registerHooks` позволяет вам регистрировать такие хуки:
 
 ```js
 // class-component-hooks.js
 import Component from 'vue-class-component'
 
-// Register the router hooks with their names
+// Зарегистрируйте хуки маршрутизатора с их именами
 Component.registerHooks([
   'beforeRouteEnter',
   'beforeRouteLeave',
@@ -14,7 +14,7 @@ Component.registerHooks([
 ])
 ```
 
-After registering the hooks, class component realizes them as class prototype methods:
+После регистрации хуков компонент класса реализует их как методы прототипа класса:
 
 ```js
 import Vue from 'vue'
@@ -22,8 +22,8 @@ import Component from 'vue-class-component'
 
 @Component
 export default class HelloWorld extends Vue {
-  // The class component now treats beforeRouteEnter,
-  // beforeRouteUpdate and beforeRouteLeave as Vue Router hooks
+  // Компонент класса теперь обрабатывает beforeRouteEnter,
+  // beforeRouteUpdate и beforeRouteLeave как хуки Vue Router
   beforeRouteEnter(to, from, next) {
     console.log('beforeRouteEnter')
     next()
@@ -41,12 +41,12 @@ export default class HelloWorld extends Vue {
 }
 ```
 
-It is recommended to write this registration code in a separated file because you have to register them before any component definitions. You can make sure the execution order by putting `import` statement for the hooks registration on the top of the main file:
+Рекомендуется записать этот регистрационный код в отдельный файл, потому что вы должны зарегистрировать их до любых определений компонентов. Вы можете убедиться в порядке выполнения, поместив оператор `import` для регистрации хуков вверху основного файла:
 
 ```js
 // main.js
 
-// Make sure to register before importing any components
+// Обязательно зарегистрируйтесь перед импортом любых компонентов
 import './class-component-hooks'
 
 import Vue from 'vue'

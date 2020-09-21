@@ -1,19 +1,19 @@
-# Class Component
+# Компонент класса
 
-`@Component` decorator makes your class a Vue component:
+Декоратор `@Component` делает ваш класс компонентом Vue:
 
 ```js
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
-// HelloWorld class will be a Vue component
+// Класс HelloWorld будет компонентом Vue
 @Component
 export default class HelloWorld extends Vue {}
 ```
 
 ## Data
 
-Initial `data` can be declared as class properties:
+Исходные `data` могут быть объявлены как свойства класса:
 
 ```vue
 <template>
@@ -26,15 +26,15 @@ import Component from 'vue-class-component'
 
 @Component
 export default class HelloWorld extends Vue {
-  // Declared as component data
+  // Объявлено в качестве компонентных данных
   message = 'Hello World!'
 }
 </script>
 ```
 
-The above component renders `Hello World!` in the `<div>` element as `message` is component data.
+Вышеупомянутый компонент отображает `Hello World!` в элементе `<div>` как `сообщение` является компонентом данных.
 
-Note that if the initial value is `undefined`, the class property will not be reactive which means the changes for the properties will not be detected:
+Обратите внимание, что если начальное значение является `undefined`, свойство класса не будет реактивным, что означает, что изменения свойств не будут обнаружены:
 
 ```js
 import Vue from 'vue'
@@ -42,12 +42,12 @@ import Component from 'vue-class-component'
 
 @Component
 export default class HelloWorld extends Vue {
-  // `message` will not be reactive value
+  // `message` не будет реактивным значением
   message = undefined
 }
 ```
 
-To avoid this, you can use `null` value or use `data` hook instead:
+Чтобы избежать этого, вы можете использовать значение `null` или вместо этого использовать ловушку `data`:
 
 ```js
 import Vue from 'vue'
@@ -55,22 +55,22 @@ import Component from 'vue-class-component'
 
 @Component
 export default class HelloWorld extends Vue {
-  // `message` will be reactive with `null` value
+  // `message` будет реагировать со значением `null`
   message = null
 
-  // See Hooks section for details about `data` hook inside class.
+  // См. Раздел «Хуки» для подробностей о ловушке `data` внутри класса.
   data() {
     return {
-      // `hello` will be reactive as it is declared via `data` hook.
+      // `hello` будет реактивным, поскольку он объявлен через ловушку `data`.
       hello: undefined
     }
   }
 }
 ```
 
-## Methods
+## Методы
 
-Components `methods` can be declared directly as class prototype methods:
+Компоненты `методы` могут быть объявлены непосредственно как методы прототипа класса:
 
 ```vue
 <template>
@@ -83,7 +83,7 @@ import Component from 'vue-class-component'
 
 @Component
 export default class HelloWorld extends Vue {
-  // Declared as component method
+  // Заявлен как компонентный метод
   hello() {
     console.log('Hello World!')
   }
@@ -91,9 +91,9 @@ export default class HelloWorld extends Vue {
 </script>
 ```
 
-## Computed Properties
+## Вычисленные свойства
 
-Computed properties can be declared as class property getter / setter:
+Вычисляемые свойства могут быть объявлены как свойство класса getter/setter:
 
 ```vue
 <template>
@@ -109,12 +109,12 @@ export default class HelloWorld extends Vue {
   firstName = 'John'
   lastName = 'Doe'
 
-  // Declared as computed property getter
+  // Заявлено как вычисляемое свойство getter
   get name() {
     return this.firstName + ' ' + this.lastName
   }
 
-  // Declared as computed property setter
+  // Заявлено как вычисляемое свойство setter
   set name(value) {
     const splitted = value.split(' ')
     this.firstName = splitted[0]
@@ -126,7 +126,7 @@ export default class HelloWorld extends Vue {
 
 ## Hooks
 
-`data`, `render` and all Vue lifecycle hooks can be directly declared as class prototype methods as well, but you cannot invoke them on the instance itself. When declaring custom methods, you should avoid these reserved names.
+`data`, `render` и все хуки жизненного цикла Vue также могут быть напрямую объявлены как методы прототипа класса, но вы не можете вызывать их в самом экземпляре. При объявлении пользовательских методов следует избегать этих зарезервированных имен.
 
 ```jsx
 import Vue from 'vue'
@@ -134,21 +134,21 @@ import Component from 'vue-class-component'
 
 @Component
 export default class HelloWorld extends Vue {
-  // Declare mounted lifecycle hook
+  // Объявить установленный хук жизненного цикла
   mounted() {
     console.log('mounted')
   }
 
-  // Declare render function
+  // Объявить функцию рендеринга
   render() {
     return <div>Hello World!</div>
   }
 }
 ```
 
-## Other Options
+## Другие варианты
 
-For all other options, pass them to the decorator function:
+Для всех остальных параметров передайте их функции декоратора:
 
 ```vue
 <template>
@@ -161,8 +161,8 @@ import Component from 'vue-class-component'
 import OtherComponent from './OtherComponent.vue'
 
 @Component({
-  // Specify `components` option.
-  // See Vue.js docs for all available options:
+  // Укажите опцию `components`.
+  // См. Все доступные параметры в документации Vue.js:
   // https://vuejs.org/v2/api/#Options-Data
   components: {
     OtherComponent
