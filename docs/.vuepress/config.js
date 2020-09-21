@@ -1,6 +1,6 @@
 module.exports = {
   title: 'Представление компонентов класса',
-  description: 'ECMAScript / TypeScript decorator for class-style Vue components',
+  description: 'ECMAScript/TypeScript декоратор для компонентов Vue в стиле классов',
 
   themeConfig: {
     repo: 'vuejs/vue-class-component',
@@ -27,7 +27,7 @@ module.exports = {
         '',
         'guide/installation.md',
         {
-          title: 'General Guide',
+          title: 'Общее руководство',
           collapsable: false,
           children: [
             'guide/class-component.md',
@@ -38,7 +38,7 @@ module.exports = {
           ]
         },
         {
-          title: 'TypeScript Guide',
+          title: 'TypeScript Руководство',
           collapsable: false,
           children: [
             'guide/props-definition.md',

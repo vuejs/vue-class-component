@@ -15,15 +15,15 @@ import Component from 'vue-class-component'
 
 @Component
 export default class InputFocus extends Vue {
-  // annotate refs type.
-  // The symbol `!` (definite assignment assertion)
-  // is needed to get rid of compilation error.
+  // аннотировать тип ссылки.
+  // Символ `!` (утверждение определенного присваивания)
+  // необходим для избавления от ошибки компиляции.
   $refs!: {
     input: HTMLInputElement
   }
 
   mounted() {
-    // Use `input` ref without type cast.
+    // Используйте `input` ref без приведения типа.
     this.$refs.input.focus()
   }
 }

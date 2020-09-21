@@ -11,18 +11,18 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
-// Define the props by using Vue's canonical way.
+// Определите реквизиты, используя канонический способ Vue.
 const GreetingProps = Vue.extend({
   props: {
     name: String
   }
 })
 
-// Use defined props by extending GreetingProps.
+// Используйте определенные свойства, расширяя GreetingProps.
 @Component
 export default class Greeting extends GreetingProps {
   get message(): string {
-    // this.name will be typed
+    // this.name будет напечатано
     return 'Hello, ' + this.name
   }
 }

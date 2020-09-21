@@ -186,7 +186,7 @@
   ];
   function componentFactory(Component) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    options.name = options.name || Component._componentTag || Component.name; // prototype props.
+    options.name = options.name || Component._componentTag || Component.name; // прототип реквизита.
 
     var proto = Component.prototype;
     Object.getOwnPropertyNames(proto).forEach(function (key) {
