@@ -1,37 +1,37 @@
-# API Reference
+# Справочник по API
 
 ## `@Component([options])`
 
-- **Arguments**
+- **Аргументы**
   - `{Object} [options]`
 
-A decorator to define class style components. You can pass [Vue component options](https://vuejs.org/v2/api/#Options-Data) via the optional 1st argument.
+Декоратор для определения компонентов стиля класса. Вы можете передать [параметры компонента Vue](https://vuejs.org/v2/api/#Options-Data) через необязательный 1-й аргумент.
 
-See also: [Class Component](../guide/class-component.md)
+Смотрите также: [Class Component](../guide/class-component.md)
 
 ## `Component.registerHooks(hooks)`
 
-- **Arguments**
+- **Аргументы**
   - `{Array} hooks`
 
-Registers method names that class components handles them as hooks.
+Регистрирует имена методов, которые компоненты класса обрабатывают как перехватчики.
 
-See [Additional Hooks](../guide/additional-hooks.md) for more details.
+См. [Additional Hooks](../guide/additional-hooks.md) для получения более подробной информации.
 
 ## `createDecorator(callback)`
 
-- **Arguments**
+- **Аргументы**
   - `{Function} callback`
-- **Return**
+- **Возврат**
   - `{Function}`
 
-Creates a new decorator which class components process.
+Создает новый декоратор, который обрабатывает компоненты класса.
 
 See [Custom Decorators](../guide/custom-decorators.md) for more details.
 
-## Built-in Hook Methods
+## Встроенные методы перехвата
 
-The followings are built-in hook names that class components treat as special methods.
+Ниже приведены встроенные имена ловушек, которые компоненты класса рассматривают как специальные методы.
 
 - data
 - beforeCreate
@@ -48,13 +48,13 @@ The followings are built-in hook names that class components treat as special me
 - errorCaptured
 - serverPrefetch
 
-They will not be registered as component methods but (lifecycle) hooks. You should avoid these reserved names when your properties or methods are not supposed to be such hooks.
+Они не будут регистрироваться как методы компонентов, а как хуки (жизненного цикла). Вам следует избегать этих зарезервированных имен, если ваши свойства или методы не должны быть такими хуками.
 
-See also: [Hooks](../guide/class-component.md#Hooks)
+Смотрите также: [Hooks](../guide/class-component.md#Hooks)
 
-## Built-in Hook Method Types
+## Типы встроенных методов перехвата
 
-Only available in TypeScript. It enables built-in hooks methods auto-complete once your import it:
+Доступно только в TypeScript. Он позволяет автоматически заполнять встроенные методы хуков после импорта:
 
 ```ts
 import 'vue-class-component/hooks'

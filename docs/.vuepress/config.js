@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'Vue Class Component',
+  title: 'Представление компонентов класса',
   description: 'ECMAScript / TypeScript decorator for class-style Vue components',
 
   themeConfig: {
