@@ -1,12 +1,12 @@
 #!/bin/bash
 set -e
-read -p "Enter release version: " VERSION
+read -p "Введите версию выпуска: " VERSION
 
-read -p "Releasing $VERSION - are you sure? (y/N) " -n 1 -r
-echo    # (optional) move to a new line
+read -p "Версия $VERSION - вы уверены? (y/N) " -n 1 -r
+echo    # (optional) переход на новую строку
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-  echo "Releasing $VERSION ..."
+  echo "Версия $VERSION ..."
   npm test
   npm run clean
   VERSION=$VERSION npm run build

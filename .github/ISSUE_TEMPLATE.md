@@ -1,11 +1,11 @@
 <!--
-Please make sure to provide a **minimal and self-contained reproduction** if you are reporting a bug.
-You can use the following jsfiddle template or make an example github repository.
+Пожалуйста, не забудьте предоставить **минимальное и автономное воспроизведение**, если вы сообщаете об ошибке.
+Вы можете использовать следующий шаблон jsfiddle или создать пример репозитория github.
 https://jsfiddle.net/ktsn/nm55jnjk/
 
-For usage questions, please use the following resources:
+По вопросам использования, пожалуйста, используйте следующие ресурсы:
 
-* Ask on the forum https://forum.vuejs.org
-* Ask on the chat room https://chat.vuejs.org
-* Look for / ask questions on Stack Overflow
+* Спросите на форуме https://forum.vuejs.org
+* Спросите в чате https://chat.vuejs.org
+* Ищите/задавайте вопросы по Stack Overflow
 -->

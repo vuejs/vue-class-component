@@ -1,7 +1,7 @@
 {
   "name": "vue-class-component",
   "version": "7.2.6",
-  "description": "ES201X/TypeScript class decorator for Vue components",
+  "description": "ES201X/TypeScript декоратор классов для компонентов Vue",
   "main": "dist/vue-class-component.common.js",
   "module": "dist/vue-class-component.esm.js",
   "unpkg": "dist/vue-class-component.js",

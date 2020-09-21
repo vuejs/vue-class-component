@@ -1,29 +1,27 @@
-# Contributing to Vue Class Component
+# Вклад в компонент класса Vue
 
-Thank you for contributing to Vue Class Component! To manage the process smoothly, please take a look at the following points.
+Спасибо Вам за вклад в компонент класса Vue! Чтобы управлять процессом плавно, пожалуйста, обратите внимание на следующие моменты.
 
-## Issue Reporting
+## Отчет О Проблемах
 
-Please make sure that your issue is either a **bug report** or **feature request**. The other kinds of issue will be closed immediately. For usage questions, 
-please use [Stack Overflow](https://stackoverflow.com/), [the official Vue.js forum](https://forum.vuejs.org), [the official Discord server](https://chat.vuejs.org), etc.
+Пожалуйста, убедитесь, что ваша проблема является либо **сообщением об ошибке**, либо **запросом функции**. Другие виды вопросов будут немедленно закрыты. По вопросам использования посетите [Stack Overflow](https://stackoverflow.com/), [the official Vue.js forum](https://forum.vuejs.org), [the official Discord server](https://chat.vuejs.org), и т.д.
 
-Also, please try searching existing issue before creating a new one. Your issue may exist already in an old thread.
+Кроме того, пожалуйста, попробуйте найти существующую проблему, прежде чем создавать новую. Возможно, ваша проблема уже существует в старом потоке.
 
-### Bug Report
+### Отчет об ошибке
 
-Please **make sure to provide [minimal and self-contained reproduction](https://new-issue.vuejs.org/?repo=vuejs/vue#why-repro)**.
-A bug report without a proper reproduction may be closed immediately.
+Пожалуйста, **убедитесь, что вы обеспечили [минимальное и автономное воспроизведение](https://new-issue.vuejs.org/?repo=vuejs/vue#why-repro)**.
+Сообщение об ошибке без надлежащего воспроизведения может быть немедленно закрыто.
 
-To create a reproduction, you can use on-browser playground such as JSFiddle ([template for Vue Class Component](https://jsfiddle.net/ktsn/nm55jnjk/))
-or create a GitHub repository and share its link.
+Для создания репродукции вы можете использовать игровую площадку в браузере, такую ​​как JSFiddle ([шаблон для Vue Class Component](https://jsfiddle.net/ktsn/nm55jnjk/)) или создайте репозиторий GitHub и поделитесь ссылкой на него.
 
-Please also clarify the expected behavior, actual behavior and steps to reproduce the bug to confirm it precisely.
+Пожалуйста, поясните также ожидаемое поведение, фактическое поведение и шаги по воспроизведению ошибки, чтобы точно подтвердить ее.
 
-### Feature Request
+### Запрос функции
 
-For feature request, please make sure to clarify **the use case** that you want to solve.
-Explaining it with actual code example or pseudo code would be useful to share your idea.
+Для запроса функции обязательно уточните **вариант использования**, который вы хотите решить.
+Объяснение этого фактическим примером кода или псевдокодом было бы полезно, чтобы поделиться своей идеей.
 
-## Pull Request
+## Запрос на вытягивание
 
-Please do not commit the files under `dist/`. They are supporsed to be generated during the releasing process.
+Пожалуйста, не фиксируйте файлы в папке `dist/`. Предполагается, что они будут созданы в процессе выпуска.

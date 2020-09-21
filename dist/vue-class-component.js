@@ -57,12 +57,12 @@
   }
 
   function _nonIterableSpread() {
-    throw new TypeError("Invalid attempt to spread non-iterable instance");
+    throw new TypeError("Недопустимая попытка распространения не повторяемого экземпляра");
   }
 
-  // The rational behind the verbose Reflect-feature check below is the fact that there are polyfills
-  // which add an implementation for Reflect.defineMetadata but not for Reflect.getOwnMetadataKeys.
-  // Without this check consumers will encounter hard to track down runtime errors.
+  // За подробной проверкой Reflect-feature, приведенной ниже, следует понимать наличие полифиллов,
+  // которые добавляют реализацию для Reflect.defineMetadata, но не для Reflect.getOwnMetadataKeys.
+  // Без этой проверки потребители столкнутся с трудно обнаруживаемыми ошибками времени выполнения.
   function reflectionIsSupported() {
     return typeof Reflect !== 'undefined' && Reflect.defineMetadata && Reflect.getOwnMetadataKeys;
   }
@@ -131,14 +131,14 @@
   }
 
   function collectDataFromConstructor(vm, Component) {
-    // override _init to prevent to init as Vue instance
+    // переопределить _init, чтобы предотвратить инициализацию как экземпляр Vue
     var originalInit = Component.prototype._init;
 
     Component.prototype._init = function () {
       var _this = this;
 
       // proxy to actual vm
-      var keys = Object.getOwnPropertyNames(vm); // 2.2.0 compat (props are no longer exposed as self properties)
+      var keys = Object.getOwnPropertyNames(vm); // 2.2.0 compat (реквизиты больше не отображаются как собственные свойства)
 
       if (vm.$options.props) {
         for (var key in vm.$options.props) {
@@ -159,12 +159,12 @@
           configurable: true
         });
       });
-    }; // should be acquired class property values
+    }; // должны быть приобретены значения класса собственности
 
 
-    var data = new Component(); // restore original _init to avoid memory leak (#209)
+    var data = new Component(); // восстановить исходный _init, чтобы избежать утечки памяти (# 209)
 
-    Component.prototype._init = originalInit; // create plain data object
+    Component.prototype._init = originalInit; // создать простой объект данных
 
     var plainData = {};
     Object.keys(data).forEach(function (key) {
@@ -175,7 +175,7 @@
 
     {
       if (!(Component.prototype instanceof Vue) && Object.keys(plainData).length > 0) {
-        warn('Component class must inherit Vue or its descendant class ' + 'when class property is used.');
+        warn('Класс компонента должен наследовать Vue или его дочерний класс ' + 'когда используется свойство класса.');
       }
     }
 
@@ -207,7 +207,7 @@
         if (typeof descriptor.value === 'function') {
           (options.methods || (options.methods = {}))[key] = descriptor.value;
         } else {
-          // typescript decorated data
+          // декорированные данные typescript
           (options.mixins || (options.mixins = [])).push({
             data: function data() {
               return _defineProperty({}, key, descriptor.value);
@@ -215,7 +215,7 @@
           });
         }
       } else if (descriptor.get || descriptor.set) {
-        // computed properties
+        // вычисленные свойства
         (options.computed || (options.computed = {}))[key] = {
           get: descriptor.get,
           set: descriptor.set
@@ -226,7 +226,7 @@
       data: function data() {
         return collectDataFromConstructor(this, Component);
       }
-    }); // decorate options
+    }); // варианты украшения
 
     var decorators = Component.__decorators__;
 
@@ -235,7 +235,7 @@
         return fn(options);
       });
       delete Component.__decorators__;
-    } // find super
+    } // найти супер
 
 
     var superProto = Object.getPrototypeOf(Component.prototype);
@@ -249,10 +249,10 @@
 
     return Extended;
   }
-  var reservedPropertyNames = [// Unique id
-  'cid', // Super Vue constructor
-  'super', // Component options that will be used by the component
-  'options', 'superOptions', 'extendOptions', 'sealedOptions', // Private assets
+  var reservedPropertyNames = [// Уникальный идентификатор
+  'cid', // Конструктор Super Vue
+  'super', // Параметры компонента, которые будет использовать компонент
+  'options', 'superOptions', 'extendOptions', 'sealedOptions', // Частные активы
   'component', 'directive', 'filter'];
   var shouldIgnore = {
     prototype: true,
@@ -262,12 +262,12 @@
   };
 
   function forwardStaticMembers(Extended, Original, Super) {
-    // We have to use getOwnPropertyNames since Babel registers methods as non-enumerable
+    // Мы должны использовать getOwnPropertyNames, поскольку Babel регистрирует методы как неперечислимые
     Object.getOwnPropertyNames(Original).forEach(function (key) {
-      // Skip the properties that should not be overwritten
+      // Пропустите свойства, которые нельзя перезаписывать
       if (shouldIgnore[key]) {
         return;
-      } // Some browsers does not allow reconfigure built-in properties
+      } // Некоторые браузеры не позволяют перенастроить встроенные свойства
 
 
       var extendedDescriptor = Object.getOwnPropertyDescriptor(Extended, key);
@@ -276,18 +276,18 @@
         return;
       }
 
-      var descriptor = Object.getOwnPropertyDescriptor(Original, key); // If the user agent does not support `__proto__` or its family (IE <= 10),
-      // the sub class properties may be inherited properties from the super class in TypeScript.
-      // We need to exclude such properties to prevent to overwrite
-      // the component options object which stored on the extended constructor (See #192).
-      // If the value is a referenced value (object or function),
-      // we can check equality of them and exclude it if they have the same reference.
-      // If it is a primitive value, it will be forwarded for safety.
+      var descriptor = Object.getOwnPropertyDescriptor(Original, key); // Если пользовательский агент не поддерживает `__proto__` или его семейство (IE <= 10),
+      // свойства подкласса могут быть унаследованы от свойств суперкласса в TypeScript.
+      // Нам нужно исключить такие свойства, чтобы предотвратить перезапись
+      // объект параметров компонента, который хранится в расширенном конструкторе (см. №192).
+      // Если значение является ссылочным значением (объектом или функцией),
+      // мы можем проверить их равенство и исключить, если они имеют одинаковую ссылку.
+      // Если это примитивное значение, оно будет передано в целях безопасности.
 
       if (!hasProto) {
-        // Only `cid` is explicitly exluded from property forwarding
-        // because we cannot detect whether it is a inherited property or not
-        // on the no `__proto__` environment even though the property is reserved.
+        // Только `cid` явно исключается из пересылки свойств
+        // потому что мы не можем определить, унаследованное ли это свойство или нет
+        // в среде без `__proto__`, даже если свойство зарезервировано.
         if (key === 'cid') {
           return;
         }
@@ -301,7 +301,7 @@
 
 
       if ( reservedPropertyNames.indexOf(key) >= 0) {
-        warn("Static property name '".concat(key, "' declared on class '").concat(Original.name, "' ") + 'conflicts with reserved property name of Vue internal. ' + 'It may cause unexpected behavior of the component. Consider renaming the property.');
+        warn("Имя статического свойства '".concat(key, "' объявлен в классе '").concat(Original.name, "' ") + 'конфликтует с зарезервированным именем свойства Vue internal. ' + 'Это может вызвать неожиданное поведение компонента. Рассмотрите возможность переименования собственности.');
       }
 
       Object.defineProperty(Extended, key, descriptor);

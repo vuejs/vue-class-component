@@ -82,7 +82,7 @@ function _objectSpread2(target) {
 
 function _inherits(subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function");
+    throw new TypeError("Супервыражение должно быть либо нулевым, либо функцией");
   }
 
   subClass.prototype = Object.create(superClass && superClass.prototype, {
@@ -126,7 +126,7 @@ function _isNativeReflectConstruct() {
 
 function _assertThisInitialized(self) {
   if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    throw new ReferenceError("это не было инициализировано - super() не был вызван");
   }
 
   return self;
@@ -189,7 +189,7 @@ function _arrayLikeToArray(arr, len) {
 }
 
 function _nonIterableSpread() {
-  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  throw new TypeError("Недопустимая попытка распространения не повторяемого экземпляра.\nЧтобы быть итерируемыми, объекты, не являющиеся массивами, должны иметь метод [Symbol.iterator]().");
 }
 
 function defineGetter(obj, key, getter) {
@@ -264,7 +264,7 @@ var VueImpl = /*#__PURE__*/function () {
   }, {
     key: "__vccOpts",
     get: function get() {
-      // Early return if `this` is base class as it does not have any options
+      // Ранний возврат, если `this` является базовым классом, так как у него нет никаких опций
       if (this === Vue) {
         return {};
       }
@@ -275,11 +275,11 @@ var VueImpl = /*#__PURE__*/function () {
         return cache;
       }
 
-      var Ctor = this; // If the options are provided via decorator use it as a base
+      var Ctor = this; // Если параметры предоставляются через декоратор, используйте его как основу
 
-      var options = this.__vccCache = this.hasOwnProperty('__vccBase') ? _objectSpread2({}, this.__vccBase) : {}; // Handle super class options
+      var options = this.__vccCache = this.hasOwnProperty('__vccBase') ? _objectSpread2({}, this.__vccBase) : {}; // Обрабатывать варианты суперкласса
 
-      options["extends"] = getSuperOptions(Ctor); // Handle mixins
+      options["extends"] = getSuperOptions(Ctor); // Обработка миксинов
 
       var mixins = this.hasOwnProperty('__vccMixins') && this.__vccMixins;
 
@@ -301,12 +301,12 @@ var VueImpl = /*#__PURE__*/function () {
           return;
         }
 
-        var descriptor = Object.getOwnPropertyDescriptor(proto, key); // methods
+        var descriptor = Object.getOwnPropertyDescriptor(proto, key); // методы
 
         if (typeof descriptor.value === 'function') {
           options.methods[key] = descriptor.value;
           return;
-        } // computed properties
+        } // вычисленные свойства
 
 
         if (descriptor.get || descriptor.set) {
@@ -321,18 +321,18 @@ var VueImpl = /*#__PURE__*/function () {
       options.setup = function (props, ctx) {
         var data = new Ctor(props, ctx);
         var dataKeys = Object.keys(data);
-        var plainData = vue.reactive({}); // Initialize reactive data and convert constructor `this` to a proxy
+        var plainData = vue.reactive({}); // Инициализировать реактивные данные и преобразовать конструктор `this` в прокси
 
         dataKeys.forEach(function (key) {
-          // Skip if the value is undefined not to make it reactive.
-          // If the value has `__s`, it's a value from `setup` helper, proceed it later.
+          // Пропустите, если значение не определено, чтобы не сделать его реактивным.
+          // Если значение имеет `__s`, это значение из помощника `setup`, продолжить его позже.
           if (data[key] === undefined || data[key] && data[key].__s) {
             return;
           }
 
           plainData[key] = data[key];
           defineProxy(data, key, plainData);
-        }); // Invoke composition functions
+        }); // Вызов функций композиции
 
         dataKeys.forEach(function (key) {
           if (data[key] && data[key].__s) {
@@ -348,7 +348,7 @@ var VueImpl = /*#__PURE__*/function () {
         decorators.forEach(function (fn) {
           return fn(options);
         });
-      } // from Vue Loader
+      } // из Vue Loader
 
 
       var injections = ['render', 'ssrRender', '__file', '__cssModules', '__scopeId', '__hmrId'];
@@ -425,8 +425,8 @@ function mixins() {
   }), _a;
 }
 function setup(setupFn) {
-  // Hack to delay the invocation of setup function.
-  // Will be called after dealing with class properties.
+  // Взломать, чтобы отложить вызов функции настройки.
+  // Будет вызываться после работы со свойствами класса.
   return {
     __s: setupFn
   };
