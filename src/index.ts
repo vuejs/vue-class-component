@@ -17,8 +17,6 @@ export {
   VueMixin,
   VueStatic,
   VueConstructor,
-  EmitsOptions,
-  ObjectEmitsOptions,
   PublicProps,
 } from './vue'
 

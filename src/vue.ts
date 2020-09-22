@@ -10,6 +10,7 @@ import {
   proxyRefs,
   Prop,
   ComponentObjectPropsOptions,
+  EmitsOptions,
 } from 'vue'
 import { VueWithProps } from './props'
 
@@ -115,12 +116,6 @@ export interface ClassComponentHooks {
   errorCaptured?(err: Error, vm: Vue, info: string): boolean | undefined
   serverPrefetch?(): Promise<unknown>
 }
-
-export type ObjectEmitsOptions = Record<
-  string,
-  ((...args: any[]) => any) | null
->
-export type EmitsOptions = ObjectEmitsOptions | string[]
 
 export type Vue<
   Props = unknown,
