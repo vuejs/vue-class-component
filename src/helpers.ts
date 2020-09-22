@@ -19,7 +19,7 @@ import {
 
 export function Options<V extends Vue>(
   options: ComponentOptions & ThisType<V>
-): <VC extends VueConstructor>(target: VC) => VC {
+): <VC extends VueConstructor<VueBase>>(target: VC) => VC {
   return (Component) => {
     Component.__vccBase = options
     return Component
@@ -28,19 +28,23 @@ export function Options<V extends Vue>(
 
 export interface VueDecorator {
   // Class decorator
-  (Ctor: VueConstructor): void
+  (Ctor: VueConstructor<VueBase>): void
 
   // Property decorator
-  (target: Vue, key: string): void
+  (target: VueBase, key: string): void
 
   // Parameter decorator
-  (target: Vue, key: string, index: number): void
+  (target: VueBase, key: string, index: number): void
 }
 
 export function createDecorator(
   factory: (options: ComponentOptions, key: string, index: number) => void
 ): VueDecorator {
-  return (target: Vue | VueConstructor, key?: any, index?: any) => {
+  return (
+    target: VueBase | VueConstructor<VueBase>,
+    key?: any,
+    index?: any
+  ) => {
     const Ctor =
       typeof target === 'function'
         ? target
