@@ -1,25 +1,40 @@
-import { Vue, props } from '../src'
+import { PropType } from 'vue'
+import { Vue, prop } from '../src'
 
 describe('JSX', () => {
   function assertJsx(jsx: JSX.Element): void {}
 
   it('checks props type', () => {
-    const Props = props({
-      required: {
-        type: String,
-        required: true,
-      },
+    interface Person {
+      name: string
+      age?: number
+    }
 
-      optional: {
-        type: Number,
-        default: 0,
-      },
-    })
+    class Props {
+      required!: string
+      optional?: number
 
-    class App extends Props {}
+      withDefault = prop({ default: false })
+
+      withDefaultType = prop<Person>({
+        default: () => ({
+          name: 'Test',
+          age: 20,
+        }),
+      })
+    }
+
+    class App extends Vue.props(Props) {}
 
     assertJsx(<App required="Hello" />)
-    assertJsx(<App required="Hello" optional={123} />)
+    assertJsx(
+      <App
+        required="Hello"
+        optional={123}
+        withDefault={true}
+        withDefaultType={{ name: 'Foo' }}
+      />
+    )
 
     // @ts-expect-error
     assertJsx(<App />)
@@ -27,6 +42,13 @@ describe('JSX', () => {
     assertJsx(<App required={true} />)
     // @ts-expect-error
     assertJsx(<App required="Hello" optional={{ foo: 'bar' }} />)
+    // @ts-expect-error
+    assertJsx(<App required="Hello" withDefault={Symbol()} />)
+
+    assertJsx(
+      // @ts-expect-error
+      <App required="Hello" withDefaultType={{ name: 'Foo', age: true }} />
+    )
 
     assertJsx(
       <App ref="app" class="foo" required="Test" testCustomProp="custom" />

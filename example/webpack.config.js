@@ -1,4 +1,5 @@
 const { VueLoaderPlugin } = require('vue-loader')
+const babelConfig = require('./babel.config')
 
 module.exports = {
   mode: 'development',
@@ -20,7 +21,10 @@ module.exports = {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         use: [
-          'babel-loader',
+          {
+            loader: 'babel-loader',
+            options: babelConfig,
+          },
           {
             loader: 'ts-loader',
             options: {
@@ -32,18 +36,7 @@ module.exports = {
       },
       {
         test: /\.vue$/,
-        use: [
-          {
-            loader: 'vue-loader',
-            options: {
-              babelParserPlugins: [
-                'jsx',
-                'classProperties',
-                'decorators-legacy',
-              ],
-            },
-          },
-        ],
+        use: ['vue-loader'],
       },
     ],
   },
