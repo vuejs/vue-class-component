@@ -3,28 +3,26 @@ module.exports = {
   description: 'ECMAScript/TypeScript декоратор для компонентов Vue в стиле классов',
 
   themeConfig: {
-    repo: 'vuejs/vue-class-component',
+    repo: 'warsan/vue-class-component',
     docsDir: 'docs',
     editLinks: true,
 
     nav: [
       {
-        text: 'Guide',
+        text: 'Руководство',
         link: '/'
       },
       {
-        text: 'API Reference',
+        text: 'Справочник по API',
         link: '/api/'
       }
     ],
 
     sidebar: {
-      '/api/': [
-        ''
-      ],
+      '/api/': [ '' ],
 
-      '/': [
-        '',
+      '/': 
+      ['',
         'guide/installation.md',
         {
           title: 'Общее руководство',
@@ -38,7 +36,7 @@ module.exports = {
           ]
         },
         {
-          title: 'TypeScript Руководство',
+          title: 'Руководство TypeScript ',
           collapsable: false,
           children: [
             'guide/props-definition.md',
