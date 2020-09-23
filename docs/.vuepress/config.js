@@ -15,11 +15,26 @@ module.exports = {
       {
         text: 'Справочник по API',
         link: '/api/'
+      },
+      {
+        text: 'Проба',
+        link: '/проба/'
       }
     ],
 
     sidebar: {
-      '/api/': [ '' ],
+      '/api/': [''],
+      '/проба/': 
+      ['/',
+         '/проба/проба.md',
+        {
+          title: 'Эксперимент', 
+          collapsable: false, 
+          children: [ 
+                 'проба/проба.md'
+             ]
+        },
+      ],
 
       '/': 
       ['',

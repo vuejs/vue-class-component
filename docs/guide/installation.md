@@ -83,7 +83,6 @@ $ npm install --save-dev @babel/plugin-proposal-decorators @babel/plugin-proposa
 }
 ```
 
-Note that `legacy` and `loose` option are needed as Vue Class Component only supports stage 1 (legacy) decorator spec yet.
 Обратите внимание, что необходимы опции `legacy` и `loose`, поскольку компонент класса Vue пока поддерживает только спецификацию декоратора стадии 1 (устаревшую).
 
 ## CDN
