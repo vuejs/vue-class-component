@@ -29,7 +29,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vuejs/vue-class-component.git"
+    "url": "git+https://github.com/warsan/vue-class-component.git"
   },
   "keywords": [
     "vue",
@@ -40,9 +40,9 @@
   "author": "Evan You",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/vuejs/vue-class-component/issues"
+    "url": "https://github.com/warsan/vue-class-component/issues"
   },
-  "homepage": "https://github.com/vuejs/vue-class-component#readme",
+  "homepage": "https://github.com/warsan/vue-class-component#readme",
   "peerDependencies": {
     "vue": "^2.0.0"
   },

@@ -8,7 +8,7 @@
 $ vue create hello-world
 ```
 
-Вас спросят, используется ли предустановка или нет. Выберите «Выбрать функции вручную»:
+Вас спросят, используется ли предустановка. Выберите «Выбрать функции вручную»:
 
 ![](../assets/vue-cli-1.png)
 
@@ -42,7 +42,7 @@ $ yarn add --save vue vue-class-component
 
 ### Настройка сборки
 
-Чтобы использовать Vue Class Component, вам необходимо настроить [TypeScript](https://www.typescriptlang.org/) или [Babel](https://babeljs.io/) в своем проекте, поскольку он основан на [ECMAScript этап 1 декораторы](https://github.com/wycats/javascript-decorators/blob/master/README.md), который необходим для транспиляции для работы в браузерах.
+Чтобы использовать Vue Class Component, вам необходимо настроить [TypeScript](https://www.typescriptlang.org/) или [Babel](https://babeljs.io/) в своем проекте, поскольку он основан на [ECMAScript этап 1 декораторы](https://github.com/wycats/javascript-decorators/blob/master/README.md), который необходим для транспиляции при работе в браузерах.
 
 ::: предупреждение
 Он еще не поддерживает декораторы этапа 2, поскольку транспилятор TypeScript по-прежнему поддерживает только старые спецификации декораторов.
