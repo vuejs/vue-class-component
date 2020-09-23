@@ -1,6 +1,6 @@
-# Overview
+# Обзор
 
-Vue Class Component is a library that lets you make your Vue components in class-style syntax. For example, below is a simple counter component written with Vue Class Component:
+Компонент класса Vue - это библиотека, которая позволяет создавать компоненты Vue в синтаксисе в стиле классов. Например, ниже представлен простой компонент счетчика, написанный с помощью компонента класса Vue:
 
 ```vue
 <template>
@@ -33,8 +33,8 @@ export default class Counter extends Vue {
 </script>
 ```
 
-As the example shows, you can define component data and methods in the intuitive and standard class syntax by annotating the class with the `@Component` decorator. You can simply replace your component definition with a class-style component as it is equivalent with the ordinary options object style of component definition.
+Как показывает пример, вы можете определить данные и методы компонентов в интуитивно понятном и стандартном синтаксисе класса, аннотируя класс с помощью декоратора `@Component`. Вы можете просто заменить определение компонента на компонент в стиле класса, поскольку он эквивалентен обычному стилю объекта параметров определения компонента.
 
-By defining your component in class-style, you not only change the syntax but also can utilize some ECMAScript language features such as class inheritance and decorators. Vue Class Component also provides a [`mixins` helper](guide/extend-and-mixins.md#Mixins) for mixin inheritance, and a [`createDecorator` function](guide/custom-decorators.md) to create your own decorators easily.
+Определяя свой компонент в стиле класса, вы не только меняете синтаксис, но также можете использовать некоторые функции языка ECMAScript, такие как наследование классов и декораторы. Компонент класса Vue также предоставляет помощник [`mixins` helper](guide/extend-and-mixins.md#Mixins) для наследования миксинов и функцию [`createDecorator` function](guide/custom-decorators.md) для лёгкого создания собственных декораторов.
 
-You may also want to check out the `@Prop` and `@Watch` decorators provided by [Vue Property Decorator](https://github.com/kaorun343/vue-property-decorator).
+Также вы можете ознакомиться с декораторами `@Prop` и `@Watch`, предоставленными [Vue Property Decorator](https://github.com/kaorun343/vue-property-decorator).
