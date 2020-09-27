@@ -1,3 +1,4 @@
+import { PropType } from 'vue'
 import { prop, Vue } from '../src'
 
 describe('props', () => {
@@ -18,6 +19,12 @@ describe('props', () => {
         }),
       })
 
+      optional = prop(Object as PropType<Person>)
+      required = prop({
+        type: String,
+        required: true,
+      })
+
       // @ts-expect-error
       invalidDefault: string = prop({ default: 'default' })
     }
@@ -30,10 +37,14 @@ describe('props', () => {
         equals<typeof vm.bar, number | undefined>(true)
         equals<typeof vm.baz, boolean>(true)
         equals<typeof vm.qux, Person>(true)
+        equals<typeof vm.optional, Person | undefined>(true)
+        equals<typeof vm.required, string>(true)
         equals<typeof vm.$props.foo, string>(true)
         equals<typeof vm.$props.bar, number | undefined>(true)
         equals<typeof vm.$props.baz, boolean | undefined>(true)
         equals<typeof vm.$props.qux, Person | undefined>(true)
+        equals<typeof vm.$props.optional, Person | undefined>(true)
+        equals<typeof vm.$props.required, string>(true)
 
         // @ts-expect-error
         vm.notExists

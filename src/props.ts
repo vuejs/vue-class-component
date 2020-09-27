@@ -48,7 +48,7 @@ export function prop<T>(options: PropOptionsWithDefault<T>): WithDefault<T>
 export function prop<T>(options: PropOptionsWithRequired<T>): T
 
 // Others
-export function prop<T>(options: Prop<T>): T
+export function prop<T>(options: Prop<T>): T | undefined
 
 // Actual implementation
 export function prop(options: Prop<unknown>): unknown {
