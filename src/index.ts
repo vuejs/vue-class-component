@@ -38,4 +38,5 @@ export {
   UnionToIntersection,
   ExtractInstance,
   UnwrapSetupValue,
+  UnwrapPromise,
 } from './helpers'

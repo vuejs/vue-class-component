@@ -243,6 +243,7 @@ class VueImpl {
       const dataKeys = Object.keys(data)
 
       const plainData: any = {}
+      let promise: Promise<any> | null = null
 
       // Initialize reactive data and convert constructor `this` to a proxy
       dataKeys.forEach((key) => {
@@ -260,11 +261,23 @@ class VueImpl {
       dataKeys.forEach((key) => {
         if (data[key] && data[key].__s) {
           const setupState = data[key].__s()
-          plainData[key] = proxyRefs(setupState)
+          if (setupState instanceof Promise) {
+            if (!promise) {
+              promise = Promise.resolve(plainData)
+            }
+            promise = promise.then(() => {
+              return setupState.then((value) => {
+                plainData[key] = proxyRefs(value)
+                return plainData
+              })
+            })
+          } else {
+            plainData[key] = proxyRefs(setupState)
+          }
         }
       })
 
-      return plainData
+      return promise ?? plainData
     }
 
     const decorators =

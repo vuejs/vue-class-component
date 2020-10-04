@@ -1,6 +1,6 @@
 import { ComponentOptions, ShallowUnwrapRef, Ref } from 'vue'
 
-import { Vue, VueConstructor, VueMixin } from './vue'
+import { Vue, VueBase, VueConstructor, VueMixin } from './vue'
 
 export function Options<V extends Vue>(
   options: ComponentOptions & ThisType<V>
@@ -80,10 +80,12 @@ export type UnwrapSetupValue<T> = T extends Ref<infer R>
   ? R
   : ShallowUnwrapRef<T>
 
-export function setup<R>(setupFn: () => R): UnwrapSetupValue<R> {
+export type UnwrapPromise<T> = T extends Promise<infer R> ? R : T
+
+export function setup<R>(setupFn: () => R): UnwrapSetupValue<UnwrapPromise<R>> {
   // Hack to delay the invocation of setup function.
   // Will be called after dealing with class properties.
   return {
     __s: setupFn,
-  } as UnwrapSetupValue<R>
+  } as UnwrapSetupValue<UnwrapPromise<R>>
 }

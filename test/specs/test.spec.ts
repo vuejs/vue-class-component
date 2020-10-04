@@ -1,5 +1,15 @@
 import 'reflect-metadata'
-import { h, resolveComponent, ref, onMounted, Ref, watch, toRef } from 'vue'
+import {
+  h,
+  resolveComponent,
+  ref,
+  onMounted,
+  Ref,
+  watch,
+  toRef,
+  nextTick,
+  Suspense,
+} from 'vue'
 import { Options, createDecorator, mixins, Vue, setup, prop } from '../../src'
 import { mount, unmount } from '../helpers'
 
@@ -414,6 +424,48 @@ describe('vue-class-component', () => {
 
     const { root } = mount(App)
     expect(root.answer.nested.answer.value).toBe(42)
+  })
+
+  it('setup: suspense', () => {
+    const deps: Promise<any>[] = []
+
+    class Child extends Vue {
+      foo = 'Hello'
+
+      bar = setup(() => {
+        const a = ref(42)
+        return {
+          a,
+        }
+      })
+
+      baz = setup(() => {
+        const b = ref(true)
+        const p = Promise.resolve({
+          b,
+        })
+        deps.push(p.then(() => Promise.resolve()))
+        return p
+      })
+
+      render() {
+        return h('div', [[this.foo, this.bar.a, this.baz.b].join(',')])
+      }
+    }
+
+    class App extends Vue {
+      render() {
+        return h(Suspense, null, {
+          default: h(Child),
+          fallback: h('div', 'fallback'),
+        })
+      }
+    }
+
+    const { root } = mount(App)
+    return Promise.all(deps)
+      .then(() => nextTick())
+      .then(() => expect(root.$el.textContent).toBe('Hello,42,true'))
   })
 
   it('reactive class properties in a composition function', (done) => {
