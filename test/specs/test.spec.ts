@@ -1,14 +1,6 @@
 import 'reflect-metadata'
 import { h, resolveComponent, ref, onMounted, Ref, watch, toRef } from 'vue'
-import {
-  Options,
-  createDecorator,
-  mixins,
-  Vue,
-  setup,
-  props,
-  emits,
-} from '../../src'
+import { Options, createDecorator, mixins, Vue, setup, prop } from '../../src'
 import { mount, unmount } from '../helpers'
 
 describe('vue-class-component', () => {
@@ -47,32 +39,6 @@ describe('vue-class-component', () => {
     const { root } = mount(MyComp)
     expect((root.$options as any).beforeRouteEnter()).toBe('beforeRouteEnter')
   })
-
-  if (!process.env.BABEL_TEST) {
-    it('data: should collect from class properties', async () => {
-      @Options({
-        props: ['foo'],
-      })
-      class MyComp extends Vue {
-        foo!: number
-        a: string = 'hello'
-        b: number = this.foo + 1
-
-        render() {
-          return h('div', [this.b])
-        }
-      }
-
-      const { root } = mount(MyComp, { foo: 1 })
-
-      expect(root.a).toBe('hello')
-      expect(root.b).toBe(2)
-      expect(root.$el.textContent).toBe('2')
-      root.b = 3
-      await root.$nextTick()
-      expect(root.$el.textContent).toBe('3')
-    })
-  }
 
   it('data: $props should be available', () => {
     @Options({
@@ -372,110 +338,22 @@ describe('vue-class-component', () => {
     expect(root.valueB).toBe(456)
   })
 
-  it('props mixin: prop names', () => {
-    const Props = props(['foo', 'bar'])
-
-    class App extends Props {
-      baz = this.foo + this.bar
+  it('props class', () => {
+    class Props {
+      foo?: string
+      bar: string = prop({ required: true })
+      baz = prop({ default: 'default value' })
     }
 
-    const { root } = mount(App, { foo: 'Hello', bar: 'World' })
-    expect(root.baz).toBe('HelloWorld')
-  })
+    class App extends Vue.props(Props) {}
 
-  it('props mixin: props options object', () => {
-    const Props = props({
-      foo: {
-        type: String,
-        default: 'The answer is',
-      },
-      bar: {
-        type: Number,
-        required: true,
-      },
+    const { root } = mount(App, {
+      foo: 'foo test',
+      bar: 'bar test',
     })
-
-    class App extends Props {
-      baz = this.foo + ': ' + this.bar
-    }
-
-    const { root } = mount(App, { bar: 42 })
-    expect(root.baz).toBe('The answer is: 42')
-  })
-
-  it('emits mixin: emit names', () => {
-    const Emits = emits(['foo', 'bar'])
-
-    class Child extends Emits {
-      mounted() {
-        this.$emit('foo', 42)
-        this.$emit('bar', 'Hello', 'World')
-      }
-
-      render() {
-        return h('span')
-      }
-    }
-
-    class App extends Vue {
-      fooResult: number | null = null
-      barResult: string | null = null
-
-      render() {
-        return h(Child, {
-          onFoo: (result: number) => {
-            this.fooResult = result
-          },
-
-          onBar: (res1: string, res2: string) => {
-            this.barResult = res1 + res2
-          },
-        })
-      }
-    }
-
-    const { root } = mount(App)
-    expect(root.fooResult).toBe(42)
-    expect(root.barResult).toBe('HelloWorld')
-  })
-
-  it('emits mixin: emits options object', () => {
-    const Emits = emits({
-      foo: (_n: number) => true,
-      bar: (_n1: string, _n2: string) => true,
-    })
-
-    class Child extends Emits {
-      mounted() {
-        this.$emit('foo', 42)
-        this.$emit('bar', 'Hello', 'World')
-      }
-
-      render() {
-        return h('span')
-      }
-    }
-
-    class App extends Vue {
-      fooResult: number | null = null
-      barResult: string | null = null
-
-      render() {
-        return h(Child, {
-          onFoo: (result: number) => {
-            this.fooResult = result
-          },
-
-          onBar: (res1: string, res2: string) => {
-            this.barResult = res1 + res2
-          },
-        })
-      }
-    }
-
-    const { root } = mount(App)
-    expect(root.fooResult).toBe(42)
-    expect(root.barResult).toBe('HelloWorld')
+    expect(root.foo).toBe('foo test')
+    expect(root.bar).toBe('bar test')
+    expect(root.baz).toBe('default value')
   })
 
   it('setup', () => {

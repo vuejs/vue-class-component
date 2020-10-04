@@ -8,7 +8,11 @@ import {
   AllowedComponentProps,
   ComponentCustomProps,
   proxyRefs,
+  Prop,
+  ComponentObjectPropsOptions,
+  EmitsOptions,
 } from 'vue'
+import { VueWithProps } from './props'
 
 function defineGetter<T, K extends keyof T>(
   obj: T,
@@ -82,10 +86,6 @@ export interface VueStatic {
 
   /** @internal */
   __hmrId?: string
-
-  // --- Public APIs
-
-  registerHooks(keys: string[]): void
 }
 
 export type PublicProps = VNodeProps &
@@ -94,7 +94,9 @@ export type PublicProps = VNodeProps &
 
 export type VueBase = Vue<unknown, never[]>
 
-export type VueMixin<V extends VueBase = VueBase> = VueStatic & { prototype: V }
+export type VueMixin<V extends VueBase = VueBase> = VueStatic & {
+  prototype: V
+}
 
 export interface ClassComponentHooks {
   // To be extended on user land
@@ -115,12 +117,6 @@ export interface ClassComponentHooks {
   serverPrefetch?(): Promise<unknown>
 }
 
-export type ObjectEmitsOptions = Record<
-  string,
-  ((...args: any[]) => any) | null
->
-export type EmitsOptions = ObjectEmitsOptions | string[]
-
 export type Vue<
   Props = unknown,
   Emits extends EmitsOptions = {},
@@ -140,6 +136,14 @@ export type Vue<
 
 export interface VueConstructor<V extends VueBase = Vue> extends VueMixin<V> {
   new (...args: any[]): V
+
+  // --- Public APIs
+
+  registerHooks(keys: string[]): void
+
+  props<P extends { new (): unknown }>(
+    Props: P
+  ): VueConstructor<V & VueWithProps<InstanceType<P>>>
 }
 
 class VueImpl {
@@ -289,6 +293,23 @@ class VueImpl {
 
   static registerHooks(keys: string[]): void {
     this.__vccHooks.push(...keys)
+  }
+
+  static props(Props: { new (): unknown }): VueConstructor {
+    const propsMeta = new Props() as Record<string, Prop<any> | undefined>
+    const props: ComponentObjectPropsOptions = {}
+
+    Object.keys(propsMeta).forEach((key) => {
+      const meta = propsMeta[key]
+      props[key] = meta ?? null
+    })
+
+    class PropsMixin extends this {
+      static __vccExtend(options: ComponentOptions) {
+        options.props = props
+      }
+    }
+    return PropsMixin as VueConstructor
   }
 
   $props!: Record<string, any>

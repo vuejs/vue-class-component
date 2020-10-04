@@ -1,19 +1,15 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom", "esnext"],
     "module": "es2015",
     "moduleResolution": "node",
     "experimentalDecorators": true,
+    "useDefineForClassFields": true,
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "sourceMap": true
   },
-  "include": [
-    "./**/*.ts"
-  ]
+  "include": ["./**/*.ts"]
 }

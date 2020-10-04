@@ -3,10 +3,9 @@
   "compilerOptions": {
     "module": "CommonJS",
     "experimentalDecorators": true,
+    "useDefineForClassFields": true,
     "declaration": false
   },
-  "include": [
-    "./**/*.ts"
-  ],
+  "include": ["./**/*.ts"],
   "compileOnSave": false
 }
