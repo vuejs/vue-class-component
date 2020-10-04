@@ -1,3 +1,24 @@
+# [8.0.0-beta.4](https://github.com/vuejs/vue-class-component/compare/v8.0.0-beta.3...v8.0.0-beta.4) (2020-10-04)
+
+
+### Breaking Changes
+
+* Reverted `props` and `emits` helper proposed at [#447](https://github.com/vuejs/vue-class-component/issues/447)
+
+### Bug Fixes
+
+* **types:** include undefined type for optional prop definition ([19880a7](https://github.com/vuejs/vue-class-component/commit/19880a72a27d260af1ec14f628f440ff2a2ccd80))
+* make decorator accepts any vue constructor types (fix [#457](https://github.com/vuejs/vue-class-component/issues/457)) ([c3ccae0](https://github.com/vuejs/vue-class-component/commit/c3ccae03d795380c615e90fe066c4e1ffb272e15))
+
+
+### Features
+
+* allow to define `props` by class ([fd96c63](https://github.com/vuejs/vue-class-component/commit/fd96c6323377b287519005594865ed1264602642))
+  * You can see the detailed proposal at [#465](https://github.com/vuejs/vue-class-component/issues/465)
+* support async setup (fix [#463](https://github.com/vuejs/vue-class-component/issues/463)) ([90336e9](https://github.com/vuejs/vue-class-component/commit/90336e99d4dcaf69f4e8e2743f962f069002f304))
+
+
+
 # [8.0.0-beta.3](https://github.com/vuejs/vue-class-component/compare/v8.0.0-beta.2...v8.0.0-beta.3) (2020-09-17)
 
 
