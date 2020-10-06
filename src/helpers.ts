@@ -6,7 +6,7 @@ export function Options<V extends Vue>(
   options: ComponentOptions & ThisType<V>
 ): <VC extends VueConstructor<VueBase>>(target: VC) => VC {
   return (Component) => {
-    Component.__vccBase = options
+    Component.__o = options
     return Component
   }
 }
@@ -34,13 +34,13 @@ export function createDecorator(
       typeof target === 'function'
         ? target
         : (target.constructor as VueConstructor)
-    if (!Ctor.__vccDecorators) {
-      Ctor.__vccDecorators = []
+    if (!Ctor.__d) {
+      Ctor.__d = []
     }
     if (typeof index !== 'number') {
       index = undefined
     }
-    Ctor.__vccDecorators.push((options) => factory(options, key, index))
+    Ctor.__d.push((options) => factory(options, key, index))
   }
 }
 
@@ -59,8 +59,8 @@ export type MixedVueBase<Mixins extends VueMixin[]> = Mixins extends (infer T)[]
 export function mixins<T extends VueMixin[]>(...Ctors: T): MixedVueBase<T>
 export function mixins(...Ctors: VueMixin[]): VueConstructor {
   return class MixedVue extends Vue {
-    static __vccExtend(options: ComponentOptions) {
-      Ctors.forEach((Ctor) => Ctor.__vccExtend(options))
+    static __b: ComponentOptions = {
+      mixins: Ctors.map((Ctor) => Ctor.__vccOpts),
     }
 
     constructor(...args: any[]) {

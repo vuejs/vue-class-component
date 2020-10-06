@@ -348,6 +348,45 @@ describe('vue-class-component', () => {
     expect(root.valueB).toBe(456)
   })
 
+  it('nested mixins', () => {
+    class GrandParentA extends Vue {
+      get a() {
+        return 'Hello'
+      }
+    }
+
+    class GrandParentB extends Vue {
+      get b() {
+        return 'World'
+      }
+    }
+
+    class ParentA extends mixins(GrandParentA, GrandParentB) {
+      get helloWorld() {
+        return this.a + this.b
+      }
+    }
+
+    class ParentB extends Vue {
+      get c() {
+        return 'Foobar'
+      }
+    }
+
+    class App extends mixins(ParentA, ParentB) {
+      get d() {
+        return 'Test'
+      }
+    }
+
+    const { root } = mount(App)
+    expect(root.a).toBe('Hello')
+    expect(root.b).toBe('World')
+    expect(root.helloWorld).toBe('HelloWorld')
+    expect(root.c).toBe('Foobar')
+    expect(root.d).toBe('Test')
+  })
+
   it('props class', () => {
     class Props {
       foo?: string

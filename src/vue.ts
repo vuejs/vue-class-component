@@ -46,25 +46,52 @@ function getSuper(Ctor: typeof VueImpl): typeof VueImpl | undefined {
   return superProto.constructor as typeof VueImpl
 }
 
+function getOwn<T extends Object, K extends keyof T>(
+  value: T,
+  key: K
+): T[K] | undefined {
+  return value.hasOwnProperty(key) ? value[key] : undefined
+}
+
 export interface VueStatic {
   // -- Class component configs
 
-  /** @internal */
-  __vccCache?: ComponentOptions
+  /**
+   * @internal
+   * The cache of __vccOpts
+   */
+  __c?: ComponentOptions
 
-  /** @internal */
-  __vccBase?: ComponentOptions
+  /**
+   * @internal
+   * The base options specified to this class.
+   */
+  __b?: ComponentOptions
 
-  /** @internal */
-  __vccDecorators?: ((options: ComponentOptions) => void)[]
+  /**
+   * @internal
+   * Component options specified with `@Options` decorator
+   */
+  __o?: ComponentOptions
 
-  /** @internal */
-  __vccExtend: (options: ComponentOptions) => void
+  /**
+   * @internal
+   * Decorators applied to this class.
+   */
+  __d?: ((options: ComponentOptions) => void)[]
 
-  /** @internal */
-  __vccHooks: string[]
+  /**
+   * @internal
+   * Registered (lifecycle) hooks that will be ported from class methods
+   * into component options.
+   */
+  __h: string[]
 
-  /** @internal */
+  /**
+   * @internal
+   * Final component options object that Vue core processes.
+   * The name must be __vccOpts since it is the contract with the Vue core.
+   */
   __vccOpts: ComponentOptions
 
   // --- Vue Loader etc injections
@@ -147,17 +174,7 @@ export interface VueConstructor<V extends VueBase = Vue> extends VueMixin<V> {
 }
 
 class VueImpl {
-  /** @internal */
-  static __vccCache?: ComponentOptions
-
-  /** @internal */
-  static __vccBase?: ComponentOptions
-
-  /** @internal */
-  static __vccDecorators?: ((options: ComponentOptions) => void)[]
-
-  /** @internal */
-  static __vccHooks = [
+  static __h = [
     'data',
     'beforeCreate',
     'created',
@@ -174,35 +191,34 @@ class VueImpl {
     'serverPrefetch',
   ]
 
-  /** @internal */
-  static __vccExtend(options: ComponentOptions) {
-    options.mixins = options.mixins || []
-    options.mixins.push(this.__vccOpts)
-  }
-
-  /** @internal */
   static get __vccOpts(): ComponentOptions {
     // Early return if `this` is base class as it does not have any options
     if (this === Vue) {
       return {}
     }
 
-    const cache = this.hasOwnProperty('__vccCache') && this.__vccCache
+    const Ctor = this as VueConstructor
+
+    const cache = getOwn(Ctor, '__c')
     if (cache) {
       return cache
     }
 
-    const Ctor = this
-
     // If the options are provided via decorator use it as a base
-    const options = (this.__vccCache = this.hasOwnProperty('__vccBase')
-      ? { ...this.__vccBase }
-      : {})
+    const options: ComponentOptions = { ...getOwn(Ctor, '__o') }
+    Ctor.__c = options
 
     // Handle super class options
     const Super = getSuper(Ctor)
     if (Super) {
-      Super.__vccExtend(options)
+      options.extends = Super.__vccOpts
+    }
+
+    // Inject base options as a mixin
+    const base = getOwn(Ctor, '__b')
+    if (base) {
+      options.mixins = options.mixins || []
+      options.mixins.unshift(base)
     }
 
     options.methods = { ...options.methods }
@@ -215,7 +231,7 @@ class VueImpl {
       }
 
       // hooks
-      if (Ctor.__vccHooks.indexOf(key) > -1) {
+      if (Ctor.__h.indexOf(key) > -1) {
         ;(options as any)[key] = (proto as any)[key]
         return
       }
@@ -280,8 +296,7 @@ class VueImpl {
       return promise ?? plainData
     }
 
-    const decorators =
-      this.hasOwnProperty('__vccDecorators') && this.__vccDecorators
+    const decorators = getOwn(Ctor, '__d')
     if (decorators) {
       decorators.forEach((fn) => fn(options))
     }
@@ -305,7 +320,7 @@ class VueImpl {
   }
 
   static registerHooks(keys: string[]): void {
-    this.__vccHooks.push(...keys)
+    this.__h.push(...keys)
   }
 
   static props(Props: { new (): unknown }): VueConstructor {
@@ -318,8 +333,8 @@ class VueImpl {
     })
 
     class PropsMixin extends this {
-      static __vccExtend(options: ComponentOptions) {
-        options.props = props
+      static __b: ComponentOptions = {
+        props,
       }
     }
     return PropsMixin as VueConstructor
