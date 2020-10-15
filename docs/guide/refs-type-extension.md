@@ -1,6 +1,6 @@
 # `$refs` Type Extension
 
-`$refs` type of a component is declared as the broadest type to handle all possible type of ref. While it is theoretically collect, in most cases, each ref only has a specific element or a component in practice.
+`$refs` type of a component is declared as the broadest type to handle all possible type of ref. While it is theoretically correct, in most cases, each ref only has a specific element or a component in practice.
 
 You can specify a specific ref type by overriding `$refs` type in a class component:
 
