@@ -54,7 +54,7 @@ See also: [Hooks](../guide/class-component.md#Hooks)
 
 ## Built-in Hook Method Types
 
-Only available in TypeScript. It enables built-in hooks methods auto-complete once your import it:
+Only available in TypeScript. It enables built-in hooks methods auto-complete once you import it:
 
 ```ts
 import 'vue-class-component/hooks'
