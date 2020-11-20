@@ -1,3 +1,16 @@
+# [8.0.0-rc.1](https://github.com/vuejs/vue-class-component/compare/v8.0.0-beta.4...v8.0.0-rc.1) (2020-11-20)
+
+
+### Breaking Changes
+
+* Renamed `Vue.props` with `Vue.with`
+
+### Bug Fixes
+
+* avoid extended mixin missing own options (fix [#467](https://github.com/vuejs/vue-class-component/issues/467)) ([9d11761](https://github.com/vuejs/vue-class-component/commit/9d117611e8881f5c983534196413b2a8aa76c6ee))
+
+
+
 # [8.0.0-beta.4](https://github.com/vuejs/vue-class-component/compare/v8.0.0-beta.3...v8.0.0-beta.4) (2020-10-04)
 
 
