@@ -24,7 +24,7 @@ describe('JSX', () => {
       })
     }
 
-    class App extends Vue.props(Props) {}
+    class App extends Vue.with(Props) {}
 
     assertJsx(<App required="Hello" />)
     assertJsx(

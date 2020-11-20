@@ -168,7 +168,7 @@ export interface VueConstructor<V extends VueBase = Vue> extends VueMixin<V> {
 
   registerHooks(keys: string[]): void
 
-  props<P extends { new (): unknown }>(
+  with<P extends { new (): unknown }>(
     Props: P
   ): VueConstructor<V & VueWithProps<InstanceType<P>>>
 }
@@ -323,7 +323,7 @@ class VueImpl {
     this.__h.push(...keys)
   }
 
-  static props(Props: { new (): unknown }): VueConstructor {
+  static with(Props: { new (): unknown }): VueConstructor {
     const propsMeta = new Props() as Record<string, Prop<any> | undefined>
     const props: ComponentObjectPropsOptions = {}
 

@@ -394,7 +394,7 @@ describe('vue-class-component', () => {
       baz = prop({ default: 'default value' })
     }
 
-    class App extends Vue.props(Props) {}
+    class App extends Vue.with(Props) {}
 
     const { root } = mount(App, {
       foo: 'foo test',

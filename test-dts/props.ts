@@ -29,7 +29,7 @@ describe('props', () => {
       invalidDefault: string = prop({ default: 'default' })
     }
 
-    class App extends Vue.props(Props) {
+    class App extends Vue.with(Props) {
       mounted() {
         const vm = this
 
