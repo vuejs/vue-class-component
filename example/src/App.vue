@@ -18,7 +18,7 @@ class Props {
   propMessage!: string
 }
 
-export default class App extends Vue.props(Props) {
+export default class App extends Vue.with(Props) {
   // inital data
   msg: number = 123
 
