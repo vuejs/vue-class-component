@@ -53,6 +53,14 @@ jobs:
           at: ~/
       - run: yarn test
 
+  coverage:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: yarn test:coverage
+      - run:  yarn codecov
+
 workflows:
   version: 2
   build-and-test:
@@ -68,5 +76,8 @@ workflows:
           requires:
             - install
       - test:
+          requires:
+            - install
+      - coverage:
           requires:
             - install
