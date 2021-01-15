@@ -15,7 +15,7 @@ For example, to access component methods in a watch handler:
 class Post extends Vue {
   postId: string
 
-  fetchPost(postId: string): Promise<void> {
+  async fetchPost(postId: string): Promise<void> {
     // ...
   }
 }
@@ -38,7 +38,7 @@ To use your own component type (in this case `Post`), you can annotate the decor
 class Post extends Vue {
   postId: string
 
-  fetchPost(postId: string): Promise<void> {
+  async fetchPost(postId: string): Promise<void> {
     // ...
   }
 }
