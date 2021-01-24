@@ -20,30 +20,68 @@ module.exports = {
     ],
 
     sidebar: {
-      '/api/': [''],
+      '/api/': [
+        {
+          text: 'API Reference',
+          link: '/api/',
+        },
+      ],
 
       '/': [
-        '',
-        'guide/installation.md',
         {
-          title: 'General Guide',
+          text: 'Overview',
+          link: '/',
+        },
+        {
+          text: 'Installation',
+          link: '/guide/installation.html',
+        },
+        {
+          text: 'General Guide',
           collapsable: false,
           children: [
-            'guide/class-component.md',
-            'guide/additional-hooks.md',
-            'guide/custom-decorators.md',
-            'guide/extend-and-mixins.md',
-            'guide/caveats.md',
+            {
+              text: 'Class Component',
+              link: '/guide/class-component.html',
+            },
+            {
+              text: 'Additional Hooks',
+              link: '/guide/additional-hooks.html',
+            },
+            {
+              text: 'Custom Decorators',
+              link: '/guide/custom-decorators.html',
+            },
+            {
+              text: 'Extend and Mixins',
+              link: '/guide/extend-and-mixins.html',
+            },
+            {
+              text: 'Caveats of Class Component',
+              link: '/guide/caveats.html',
+            },
           ],
         },
         {
-          title: 'TypeScript Guide',
+          text: 'TypeScript Guide',
           collapsable: false,
           children: [
-            'guide/props-definition.md',
-            'guide/property-type-declaration.md',
-            'guide/refs-type-extension.md',
-            'guide/hooks-auto-complete.md',
+            {
+              text: 'Props Definition',
+              link: '/guide/props-definition.html',
+            },
+            {
+              text: 'Property Type Declaration',
+              link: '/guide/property-type-declaration.html',
+            },
+            {
+              text: '$refs Type Extension',
+              link: '/guide/refs-type-extension.html',
+            },
+            {
+              text: 'Hooks Auto-complete',
+              link: '/guide/hooks-auto-complete.html',
+            },
           ],
         },
       ],
