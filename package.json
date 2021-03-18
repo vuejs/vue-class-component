@@ -48,7 +48,8 @@
   },
   "homepage": "https://github.com/vuejs/vue-class-component#readme",
   "peerDependencies": {
-    "vue": "^3.0.0"
+    "vue": "^3.0.0",
+    "@vue/runtime-dom": "^3.0.7"
   },
   "devDependencies": {
     "@babel/core": "^7.11.4",
