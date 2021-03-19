@@ -97,7 +97,7 @@ export interface VueStatic {
   // --- Vue Loader etc injections
 
   /** @internal */
-  render?: () => VNode | void
+  render?: () => VNode | JSX.Element | void
 
   /** @internal */
   ssrRender?: () => void
