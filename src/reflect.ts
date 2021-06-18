@@ -13,6 +13,7 @@ export function copyReflectionMetadata (
   from: VueClass<Vue>
 ) {
   forwardMetadata(to, from)
+  forwardMetadata(to.prototype, from.prototype)
 
   Object.getOwnPropertyNames(from.prototype).forEach(key => {
     forwardMetadata(to.prototype, from.prototype, key)
