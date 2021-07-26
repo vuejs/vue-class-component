@@ -40,4 +40,4 @@ By defining your component in class-style, you not only change the syntax but al
 You may also want to check out the `@Prop` and `@Watch` decorators provided by [Vue Property Decorator](https://github.com/kaorun343/vue-property-decorator).
 
 ---
-#### Note: Class components will dropped in Vue 3. [The reasons can be found here.](https://github.com/vuejs/rfcs/pull/17#issuecomment-494242121) ####
+#### Note: Class components will be dropped in Vue 3. [The reasons can be found here.](https://github.com/vuejs/rfcs/pull/17#issuecomment-494242121) ####
