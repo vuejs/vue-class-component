@@ -38,3 +38,6 @@ As the example shows, you can define component data and methods in the intuitive
 By defining your component in class-style, you not only change the syntax but also can utilize some ECMAScript language features such as class inheritance and decorators. Vue Class Component also provides a [`mixins` helper](guide/extend-and-mixins.md#Mixins) for mixin inheritance, and a [`createDecorator` function](guide/custom-decorators.md) to create your own decorators easily.
 
 You may also want to check out the `@Prop` and `@Watch` decorators provided by [Vue Property Decorator](https://github.com/kaorun343/vue-property-decorator).
+
+---
+#### Note: Class components will dropped in Vue 3. [The reasons can be found here.](https://github.com/vuejs/rfcs/pull/17#issuecomment-494242121) ####
