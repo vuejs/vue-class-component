@@ -1,13 +1,13 @@
 # Additional Hooks
 
-If you use some Vue plugins like [Vue Router](https://router.vuejs.org/), you may want class components to resolve hooks that they provide. In that case, `Component.registerHooks` allows you to register such hooks:
+If you use some Vue plugins like [Vue Router](https://router.vuejs.org/), you may want class components to resolve hooks that they provide. In that case, `Vue.registerHooks` allows you to register such hooks:
 
 ```js
 // class-component-hooks.js
-import Component from 'vue-class-component'
+import { Vue } from 'vue-class-component'
 
 // Register the router hooks with their names
-Component.registerHooks([
+Vue.registerHooks([
   'beforeRouteEnter',
   'beforeRouteLeave',
   'beforeRouteUpdate'
