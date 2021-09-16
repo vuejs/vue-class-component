@@ -64,7 +64,7 @@ export default class Posts extends Vue {
 }
 ```
 
-The above code intends to fetch post list on component initialization but the fetch will be called twice unexpectedly because of how Vue Class Component works.
+The above code intends to fetch post list on component initialization but the fetch will be called once unexpectedly because of how Vue Class Component works.
 
 It is recommended to write lifecycle hooks such as `created` instead of `constructor`:
 
