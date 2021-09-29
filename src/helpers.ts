@@ -33,14 +33,18 @@ export function createDecorator(
     const Ctor =
       typeof target === 'function'
         ? target
-        : (target as any as VueConstructor)
-    if (!Ctor.hasOwnProperty('__d')) {
-      Object.defineProperty(Ctor, '__d', {value: []})
+        : (target.constructor as VueConstructor)
+    if (!Ctor.__d) {
+      Ctor.__d = []
+      ;(Ctor.__d as any).__n = Ctor.name
+    } else if ((Ctor.__d as any).__n !== Ctor.name){
+      Ctor.__d = [].concat(Ctor.__d as [])
+      ;(Ctor.__d as any).__n = Ctor.name
     }
     if (typeof index !== 'number') {
       index = undefined
     }
-    Ctor?.__d?.push((options) => factory(options, key, index))
+    Ctor.__d.push((options) => factory(options, key, index))
   }
 }
 

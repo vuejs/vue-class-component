@@ -297,14 +297,6 @@ class VueImpl {
     }
 
     let decorators = getOwn(Ctor, '__d')
-    if (!decorators) {
-      decorators = []
-    }
-    let parent = (Ctor as any).prototype
-    while(parent) {
-      decorators.push(...(parent?.__d || []))
-      parent = parent.prototype
-    }
     if (decorators) {
       decorators.forEach((fn) => fn(options))
     }
