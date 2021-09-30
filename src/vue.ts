@@ -315,7 +315,6 @@ class VueImpl {
         options[key] = (Ctor as any)[key]
       }
     })
-
     return options
   }
 

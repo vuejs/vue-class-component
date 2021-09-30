@@ -5,6 +5,8 @@
     <p>msg: {{ msg }}</p>
     <p>helloMsg: {{ helloMsg }}</p>
     <p>computed msg: {{ computedMsg }}</p>
+    <comp />
+    <comp2 />
     <p>
       <button @click="greet">Greet</button>
     </p>
@@ -12,12 +14,20 @@
 </template>
 
 <script lang="ts">
-import { Vue } from '../../src'
+import { Vue, Options } from '../../src'
+import Comp from './Comp.vue'
+import Comp2 from './Comp2.vue'
 
 class Props {
   propMessage!: string
 }
 
+@Options({
+  components: {
+    Comp,
+    Comp2
+  }
+})
 export default class App extends Vue.with(Props) {
   // inital data
   msg: number = 123
