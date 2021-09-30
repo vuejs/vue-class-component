@@ -296,7 +296,7 @@ class VueImpl {
       return promise ?? plainData
     }
 
-    let decorators = getOwn(Ctor, '__d')
+    const decorators = getOwn(Ctor, '__d')
     if (decorators) {
       decorators.forEach((fn) => fn(options))
     }
