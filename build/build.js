@@ -56,20 +56,20 @@ build([
     env: 'production'
   },
   {
-    file: resolve('dist/vue-class-component.common.js'),
+    file: resolve('dist/vue-class-component.cjs'),
     format: 'cjs'
   },
   {
-    file: resolve('dist/vue-class-component.esm.js'),
+    file: resolve('dist/vue-class-component.mjs'),
     format: 'esm'
   },
   {
-    file: resolve('dist/vue-class-component.esm.browser.js'),
+    file: resolve('dist/vue-class-component.browser.mjs'),
     format: 'esm',
     env: 'development'
   },
   {
-    file: resolve('dist/vue-class-component.esm.browser.min.js'),
+    file: resolve('dist/vue-class-component.browser.min.mjs'),
     format: 'esm',
     env: 'production'
   }

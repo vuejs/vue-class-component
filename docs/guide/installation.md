@@ -109,9 +109,9 @@ Vue Class Component is provided as different builds for different environments a
 
 - **For development**
   - `vue-class-component.js` (UMD)
-  - `vue-class-component.common.js` (CommonJS)
-  - `vue-class-component.esm.js` (ES Module for bundlers)
-  - `vue-class-component.esm.browser.js` (ES Module for browsers)
+  - `vue-class-component.cjs` (CommonJS)
+  - `vue-class-component.mjs` (ES Module for bundlers)
+  - `vue-class-component.esm.browser.mjs` (ES Module for browsers)
 - **For production (minified)**
   - `vue-class-component.min.js` (UMD)
-  - `vue-class-component.esm.browser.min.js` (ES Module for browsers)
+  - `vue-class-component.esm.browser.min.mjs` (ES Module for browsers)
