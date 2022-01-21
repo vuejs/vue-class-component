@@ -19,7 +19,15 @@ export function collectDataFromConstructor (vm: Vue, Component: VueClass<Vue>) {
     keys.forEach(key => {
       Object.defineProperty(this, key, {
         get: () => vm[key],
-        set: value => { vm[key] = value },
+        set: value => {
+          if (typeof value === "undefined"
+              && typeof vm[key] === "function"
+              && vm[key].name
+              && vm[key].name.startsWith("bound mapped")) {
+            return;
+          }
+          vm[key] = value
+        },
         configurable: true
       })
     })
