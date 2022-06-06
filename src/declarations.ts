@@ -1,6 +1,8 @@
 import Vue, { ComponentOptions } from 'vue'
 
-export type VueClass<V> = { new (...args: any[]): V & Vue } & typeof Vue
+export type VueClass<V> = { new (...args: any[]): V & Vue } & typeof Vue & {
+    components?: Record<string, VueClass<Vue>>;
+  };
 
 export type DecoratedClass = VueClass<Vue> & {
   // Property, method and parameter decorators created by `createDecorator` helper

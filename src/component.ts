@@ -74,6 +74,12 @@ export function componentFactory (
     delete (Component as DecoratedClass).__decorators__
   }
 
+  // static properties
+  const components = Component.components
+  if (components) {
+    options.components = components
+  }
+
   // find super
   const superProto = Object.getPrototypeOf(Component.prototype)
   const Super = superProto instanceof Vue

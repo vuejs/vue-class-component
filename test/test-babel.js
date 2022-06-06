@@ -29,6 +29,21 @@ describe('vue-class-component with Babel', () => {
     expect(c.bar).to.equal(2)
   })
 
+  it('should collect static components', () => {
+
+    @Component
+    class OtherComponent extends Vue {}
+
+    @Component
+    class MyComp extends Vue {
+      static components = [
+        OtherComponent
+      ]
+    }
+
+    expect(MyComp.components[0]).to.equal(OtherComponent)
+  })
+
   it('should collect decorated class properties', () => {
     const valueDecorator = (value) => () => {
       return {
