@@ -1,5 +1,7 @@
 # Vue Class Component
 
+This package is [deprecated](https://github.com/vuejs/vue-class-component/issues/569#issuecomment-1152066898), try https://github.com/facing-dev/vue-facing-decorator .
+
 ECMAScript / TypeScript decorator for class-style Vue components.
 
 [![npm](https://img.shields.io/npm/v/vue-class-component.svg)](https://www.npmjs.com/package/vue-class-component) [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/vuejs/vue-class-component) 
