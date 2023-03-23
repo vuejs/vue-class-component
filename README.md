@@ -1,8 +1,15 @@
-# Vue Class Component
+# [DEPRECATED] Vue Class Component
+
+
+## ⚠️ Notice
+
+This library is no longer actively maintained. It is no longer recommend to use Class-based components in Vue 3. The recommended way to use Vue 3 in large applications is Single-File Components, Composition API, and `<script setup>`. If you still want to use classes, check out the community-maintained project [`vue-facing-decorator`](https://facing-dev.github.io/vue-facing-decorator/#/).
+
+---
 
 ECMAScript / TypeScript decorator for class-style Vue components.
 
-[![npm](https://img.shields.io/npm/v/vue-class-component.svg)](https://www.npmjs.com/package/vue-class-component) [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/vuejs/vue-class-component) 
+[![npm](https://img.shields.io/npm/v/vue-class-component.svg)](https://www.npmjs.com/package/vue-class-component) [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/vuejs/vue-class-component)
 
 ## Document
 
