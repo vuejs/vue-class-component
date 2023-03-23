@@ -4,6 +4,10 @@ ECMAScript / TypeScript decorator for class-style Vue components.
 
 [![npm](https://img.shields.io/npm/v/vue-class-component.svg)](https://www.npmjs.com/package/vue-class-component) [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/vuejs/vue-class-component) 
 
+## Notice
+
+This library is no longer actively maintained. For an alternative that is receiving ongoing development, check [`vue-facing-decorator`](https://facing-dev.github.io/vue-facing-decorator/#/).
+
 ## Document
 
 See [https://class-component.vuejs.org](https://class-component.vuejs.org)
