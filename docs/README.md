@@ -1,5 +1,9 @@
 # Overview
 
+:::warning
+This library is no longer actively maintained. It is no longer recommend to use Class-based components in Vue 3. The recommended way to use Vue 3 in large applications is Single-File Components, Composition API, and `<script setup>`. If you still want to use classes, check out the community-maintained project [`vue-facing-decorator`](https://facing-dev.github.io/vue-facing-decorator/#/).
+:::
+
 Vue Class Component is a library that lets you make your Vue components in class-style syntax. For example, below is a simple counter component written with Vue Class Component:
 
 ```vue
