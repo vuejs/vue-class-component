@@ -5,6 +5,8 @@
 
 This library is no longer actively maintained. It is no longer recommend to use Class-based components in Vue 3. The recommended way to use Vue 3 in large applications is Single-File Components, Composition API, and `<script setup>`. If you still want to use classes, check out the community-maintained project [`vue-facing-decorator`](https://facing-dev.github.io/vue-facing-decorator/#/).
 
+Additionally, if you're interested in migrating out of class components, you might find the CLI tool [`vue-class-migrator`](https://github.com/getyourguide/vue-class-migrator) helpful for the transition.
+
 ---
 
 ECMAScript / TypeScript decorator for class-style Vue components.
