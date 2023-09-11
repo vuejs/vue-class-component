@@ -35,7 +35,7 @@ Note that every super class must be a class component. In other words, it needs 
 
 ## Mixins
 
-Vue Class Component provides `mixins` helper function to use [mixins](https://vuejs.org/v2/guide/mixins.html) in class style manner. By using `mixins` helper, TypeScript can infer mixin types and inherit them on the component type.
+Vue Class Component provides `mixins` helper function to use [mixins](https://v2.vuejs.org/v2/guide/mixins.html) in class style manner. By using `mixins` helper, TypeScript can infer mixin types and inherit them on the component type.
 
 Example of declaring mixins `Hello` and `World`:
 
