@@ -39,10 +39,14 @@ import { Log } from './decorators'
 class MyComp extends Vue {
   // It prints a log when `hello` method is invoked.
   @Log
-  hello(value) {
+  hello(value, compo) {
     // ...
   }
 }
+```
+
+```js
+<button @click="hello">Log</button>
 ```
 
 In the above code, when `hello` method is called with `42`, the following log will be printed:
